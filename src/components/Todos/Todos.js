@@ -11,7 +11,7 @@ class Todos extends Component {
 }
 
 // This is a sanity check for the code.
-Todos.protoTypes = {
+Todos.PropTypes = {
   todos: PropTypes.array.isRequired
 }
 

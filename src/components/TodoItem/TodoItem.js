@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 export class TodoItem extends Component {
   render() {
     return (
-      <div>
+      <div style={{ backgroundColor:'#f4f4f4'}}>
         <p>{this.props.todo.title}</p>
       </div>
     )
   }
 }
 
-// This is a sanity check for the code.
-TodoItem.protoTypes = {
+// pro
+TodoItem.PropTypes = {
     todo: PropTypes.object.isRequired
   }
 
