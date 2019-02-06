@@ -2,3 +2,4 @@
 *.xml
 .idea/.name
 reactdashboard.iml
+node_modules
