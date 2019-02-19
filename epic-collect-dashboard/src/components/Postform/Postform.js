@@ -27,7 +27,7 @@ class PostForm extends Component {
       body: this.state.body
     };
 
-    this.props.createPost(post);
+    this.props.createPostProp(post);
   }
 
   render() {
@@ -64,7 +64,12 @@ class PostForm extends Component {
 }
 
 PostForm.propTypes = {
-  createPost: PropTypes.func.isRequired
+  createPostProp: PropTypes.func.isRequired
 };
 
-export default connect(null, { createPost })(PostForm);
+const mapDispatchToProps = {
+  createPostProp: createPost  
+}
+
+
+export default connect(null, mapDispatchToProps)(PostForm);
