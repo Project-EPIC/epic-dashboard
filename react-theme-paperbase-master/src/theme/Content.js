@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -36,8 +36,9 @@ const styles = theme => ({
   }
 });
 
-function Content(props) {
-  const { classes } = props;
+class Content extends Component {
+  render() {
+  const { classes } = this.props;
   // console.log(`here are content's classes : ${JSON.stringify(classes)}`)
 
   return (
@@ -87,6 +88,7 @@ function Content(props) {
       </div>
     </Paper>
   );
+}
 }
 
 Content.propTypes = {
