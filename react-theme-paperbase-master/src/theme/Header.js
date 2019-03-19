@@ -16,6 +16,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
+
 const lightColor = "rgba(255, 255, 255, 0.7)";
 
 const styles = theme => ({
@@ -40,7 +41,9 @@ const styles = theme => ({
   }
 });
 
-function Header(props) {
+
+function  Header(props) {
+  
   const { classes, onDrawerToggle } = props;
 
   return (
@@ -126,10 +129,11 @@ function Header(props) {
         elevation={0}
       >
         <Tabs value={0} textColor="inherit">
-          <Tab textColor="inherit" label="Users" />
+          <Tab textColor="inherit" label="Users" />          
           <Tab textColor="inherit" label="Sign-in method" />
           <Tab textColor="inherit" label="Templates" />
           <Tab textColor="inherit" label="Usage" />
+          
         </Tabs>
       </AppBar>
     </React.Fragment>

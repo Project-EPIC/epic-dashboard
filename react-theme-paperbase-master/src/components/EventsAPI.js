@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Content from "../theme/Content";
 
-class Component1 extends Component {
+class EventsAPI extends Component {
   render() {
     return (
       <div>
@@ -11,4 +11,4 @@ class Component1 extends Component {
   }
 }
 
-export default Component1;
+export default EventsAPI;

@@ -66,7 +66,7 @@ Finally, handle component rendering in `src\theme\Paperbase`. Specify the compon
 ```javascript
 <main className={classes.mainContent}>
   <Content />
-  <Route path="/component1" component={Component1} />
+  <Route path="/eventsapi" component={Component1} />
   <Route path="/component2" component={Component2} />
 </main>
 ```

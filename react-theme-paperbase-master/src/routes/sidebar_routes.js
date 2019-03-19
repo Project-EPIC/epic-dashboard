@@ -5,7 +5,7 @@ const sidebarRoutes = [
     {
       id: "Epic Collect APIs",
       children: [
-        { id: "Events API", icon: <PeopleIcon />, targetUrl: "/component1", active: true }
+        { id: "Events API", icon: <PeopleIcon />, targetUrl: "/eventsapi", active: true }
       ]
     }
   ];

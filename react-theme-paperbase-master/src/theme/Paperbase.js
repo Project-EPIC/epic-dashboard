@@ -11,7 +11,7 @@ import Hidden from "@material-ui/core/Hidden";
 import Navigator from "./Navigator";
 import Header from "./Header";
 
-import Component1 from "../components/Component1";
+import EventsAPI from "../components/EventsAPI";
 import Component2 from "../components/Component2";
 
 let theme = createMuiTheme({
@@ -191,8 +191,7 @@ class Paperbase extends React.Component {
             {/* React Router routes go here } */ }
             <main className={classes.mainContent}>
             { /* This is what is displayed in the main content */ }              
-              <Route path="/component1" component={Component1} />
-              <Route path="/component2" component={Component2} />
+              <Route path="/eventsapi" component={EventsAPI} />              
             </main>
           </div>
         </div>
