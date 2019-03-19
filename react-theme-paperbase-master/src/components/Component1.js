@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+import Content from "../theme/Content";
 
 class Component1 extends Component {
   render() {
     return (
       <div>
-        <p>This is Component1</p>
+        <Content />
       </div>
     );
   }

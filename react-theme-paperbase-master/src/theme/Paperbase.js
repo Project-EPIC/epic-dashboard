@@ -191,8 +191,7 @@ class Paperbase extends React.Component {
 
             {/* React Router routes go here } */ }
             <main className={classes.mainContent}>
-            { /* This is what is displayed in the main content */ }
-              <Content />
+            { /* This is what is displayed in the main content */ }              
               <Route path="/component1" component={Component1} />
               <Route path="/component2" component={Component2} />
             </main>
