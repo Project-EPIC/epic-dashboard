@@ -13,7 +13,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import HomeIcon from "@material-ui/icons/Home";
 
-import categories from "../routes/sidebar_routes";
+import sidebarRoutes from "../routes/sidebar_routes";
 
 
 const styles = theme => ({
@@ -76,19 +76,21 @@ function Navigator(props) {
         >
           Paperbase
         </ListItem>
-        <ListItem className={classNames(classes.item, classes.itemCategory)}>
+        {/*
+        <ListItem className={classNames(classes.item, classes.itemCategory)}>        
           <ListItemIcon>
             <HomeIcon />
-          </ListItemIcon>
+          </ListItemIcon>          
           <ListItemText
             classes={{
               primary: classes.itemPrimary
             }}
           >
-            Project Overview
+            Project Epic
           </ListItemText>
         </ListItem>
-        {categories.map(({ id, children }) => (
+        */}
+        {sidebarRoutes.map(({ id, children }) => (
           <React.Fragment key={id}>
             <ListItem className={classes.categoryHeader}>
               <ListItemText
