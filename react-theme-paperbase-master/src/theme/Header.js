@@ -42,8 +42,9 @@ const styles = theme => ({
 });
 
 
+
 class  Header extends Component {
-  
+
 
   render() {
     const { classes, onDrawerToggle } = this.props;
@@ -130,13 +131,11 @@ class  Header extends Component {
           position="static"
           elevation={0}
         >
-          <Tabs value={0} textColor="inherit">
-            <Tab textColor="inherit" label="Users" />          
-            <Tab textColor="inherit" label="Sign-in method" />
-            <Tab textColor="inherit" label="Templates" />
-            <Tab textColor="inherit" label="Usage" />
-            
-          </Tabs>
+          <Tabs value={this.props.tabValue} onChange={this.props.onTabChange} textColor="inherit">
+            <Tab textColor="inherit" label="List Events" />          
+            <Tab textColor="inherit" label="Create Events" />                                    
+          </Tabs>         
+
         </AppBar>
       </React.Fragment>
     );

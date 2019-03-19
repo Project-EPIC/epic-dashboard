@@ -10,9 +10,9 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Hidden from "@material-ui/core/Hidden";
 import Navigator from "./Navigator";
 import Header from "./Header";
-
+import Typography from "@material-ui/core/Typography";
 import EventsAPI from "../components/EventsAPI";
-import Component2 from "../components/Component2";
+// import Component2 from "../components/Component2";
 
 let theme = createMuiTheme({
   typography: {
@@ -154,14 +154,30 @@ const styles = {
     background: "#eaeff1"
   }
 };
+function TabContainer(props) {
+  return (
+    <Typography component="div" style={{ padding: 8 * 3 }}>
+      {props.children}
+    </Typography>
+  );
+}
+
+TabContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 class Paperbase extends React.Component {
   state = {
-    mobileOpen: false
+    mobileOpen: false,
+    tabValue: 0
   };
 
   handleDrawerToggle = () => {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+  };
+
+  onTabChange = (event, tabValue) => {
+    this.setState({ tabValue });
   };
 
   render() {
@@ -186,12 +202,15 @@ class Paperbase extends React.Component {
             </Hidden>
           </nav>
           <div className={classes.appContent}>
-            <Header onDrawerToggle={this.handleDrawerToggle} />
+            <Header onDrawerToggle={this.handleDrawerToggle} onTabChange={this.onTabChange} tabValue={this.state.tabValue}/>
 
             {/* React Router routes go here } */ }
             <main className={classes.mainContent}>
             { /* This is what is displayed in the main content */ }              
-              <Route path="/eventsapi" component={EventsAPI} />              
+              <Route path="/eventsapi" component={EventsAPI} />
+              {this.state.tabValue === 0 && <TabContainer>Item One</TabContainer>}
+              {this.state.tabValue === 1 && <TabContainer>Item Two</TabContainer>}
+              {this.state.tabValue === 2 && <TabContainer>Item Three</TabContainer>}                             
             </main>
           </div>
         </div>
