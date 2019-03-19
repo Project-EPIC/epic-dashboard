@@ -9,7 +9,6 @@ import {
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Hidden from "@material-ui/core/Hidden";
 import Navigator from "./Navigator";
-import Content from "./Content";
 import Header from "./Header";
 
 import Component1 from "../components/Component1";

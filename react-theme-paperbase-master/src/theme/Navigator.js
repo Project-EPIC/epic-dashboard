@@ -14,27 +14,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import HomeIcon from "@material-ui/icons/Home";
 
 import categories from "../routes/sidebar_routes";
-// const categories = [
-//   {
-//     id: "Links Category 1",
-//     children: [
-//       { id: "Component 1", icon: <PeopleIcon />, targetUrl: "/component1", active: true },
-//       { id: "Component 2", icon: <DnsRoundedIcon />, targetUrl: "/component2" },
-//       { id: "Storage", icon: <PermMediaOutlinedIcon />, targetUrl: "/storage" },
-//       { id: "Hosting", icon: <PublicIcon />, targetUrl: "/hosting" },
-//       { id: "Functions", icon: <SettingsEthernetIcon />, targetUrl: "/functions" },
-//       { id: "ML Kit", icon: <SettingsInputComponentIcon />, targetUrl: "/mlkit" }
-//     ]
-//   },
-//   {
-//     id: "Links Category 2",
-//     children: [
-//       { id: "Analytics", icon: <SettingsIcon />, targetUrl: "/analytics" },
-//       { id: "Performance", icon: <TimerIcon />, targetUrl: "/performance" },
-//       { id: "Test Lab", icon: <PhonelinkSetupIcon />, targetUrl: "/testlab" }
-//     ]
-//   }
-// ];
+
 
 const styles = theme => ({
   categoryHeader: {

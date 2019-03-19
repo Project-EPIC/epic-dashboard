@@ -38,6 +38,7 @@ const styles = theme => ({
 
 function Content(props) {
   const { classes } = props;
+  // console.log(`here are content's classes : ${JSON.stringify(classes)}`)
 
   return (
     <Paper className={classes.paper}>
