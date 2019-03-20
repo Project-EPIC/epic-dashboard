@@ -55,6 +55,15 @@ class CustomPaginationActionsTable extends React.Component {
     const { classes } = this.props;
     const { rows, rowsPerPage, page } = this.state;    
     const thArray = ["Event Name", "Description", "Keywords", "Status"];
+    const tablecontents = rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
+      <TableRow key={row.id}>
+      <TableCell component="th" scope="row">
+        {row.name}
+      </TableCell>
+      <TableCell align="right">{row.calories}</TableCell>
+      <TableCell align="right">{row.fat}</TableCell>
+    </TableRow>
+    ))
     return (
       <Paper className={classes.root}>
         <div className={classes.tableWrapper}>
@@ -71,15 +80,7 @@ class CustomPaginationActionsTable extends React.Component {
             </TableHead>
             
             <TableBody>
-              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
-                <TableRow key={row.id}>
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell align="right">{row.calories}</TableCell>
-                  <TableCell align="right">{row.fat}</TableCell>
-                </TableRow>
-              ))}
+              { tablecontents }
             </TableBody>
             
             <TableFooter>
