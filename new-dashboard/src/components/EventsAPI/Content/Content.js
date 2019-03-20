@@ -10,7 +10,7 @@ import CreateEvent from "../CreateEvent/CreateEvent";
 class Content extends Component {
   render() {
   const { classes } = this.props;  
-  console.log(this.props.tabValue)
+  
 
   return (
       <div>
