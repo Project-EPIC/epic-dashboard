@@ -9,8 +9,6 @@ import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
 import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
@@ -22,7 +20,7 @@ class  Header extends Component {
 
 
   render() {
-    const { classes, onDrawerToggle } = this.props;
+    const { classes, onDrawerToggle, title, renderTabs } = this.props;        
 
     return (
       <React.Fragment>
@@ -76,7 +74,7 @@ class  Header extends Component {
             <Grid container alignItems="center" spacing={8}>
               <Grid item xs>
                 <Typography color="inherit" variant="h5">
-                  Authentication
+                  { title }
                 </Typography>
               </Grid>
               <Grid item>
@@ -98,20 +96,23 @@ class  Header extends Component {
               </Grid>
             </Grid>
           </Toolbar>
-        </AppBar>
-        <AppBar
-          component="div"
-          className={classes.secondaryBar}
-          color="primary"
-          position="static"
-          elevation={0}
-        >
-          <Tabs value={this.props.tabValue} onChange={this.props.onTabChange} textColor="inherit">
-            <Tab textColor="inherit" label="List Events" />          
-            <Tab textColor="inherit" label="Create Events" />                                    
-          </Tabs>         
-
-        </AppBar>
+        </AppBar>        
+          { renderTabs ?
+            <AppBar
+              component="div"
+              className={classes.secondaryBar}
+              color="primary"
+              position="static"
+              elevation={0}
+            >          
+              {            
+                renderTabs()
+              }               
+            </AppBar>
+            :
+            null
+          }
+        
       </React.Fragment>
     );
   }
