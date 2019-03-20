@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Content from "../theme/Content";
-import TabContainer from "../components/TabContainer/TabContainer";
+import Content from "../../theme/Content";
+import TabContainer from "../TabContainer/TabContainer";
 
 
 class EventsAPI extends Component {

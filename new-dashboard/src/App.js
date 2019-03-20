@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Paperbase from "./theme/Paperbase";
+import Dashboard from "./views/Dashboard/Dashboard";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from './store';
@@ -11,7 +11,7 @@ class App extends Component {
     return (
       <Provider store={store}>
         <BrowserRouter>
-          <Paperbase />
+          <Dashboard />
         </BrowserRouter>
       </Provider>
     );

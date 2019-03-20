@@ -8,9 +8,9 @@ import {
 } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Hidden from "@material-ui/core/Hidden";
-import Navigator from "./Navigator";
-import Header from "./Header";
-import EventsAPI from "../components/EventsAPI";
+import Navigator from "../../theme/Navigator";
+import Header from "../../theme/Header";
+import EventsAPI from "../../components/EventsAPI/EventsAPI";
 // import Component2 from "../components/Component2";
 
 let theme = createMuiTheme({
@@ -154,7 +154,7 @@ const styles = {
   }
 };
 
-class Paperbase extends React.Component {
+class Dashboard extends React.Component {
   state = {
     mobileOpen: false,
     tabValue: 0
@@ -204,8 +204,8 @@ class Paperbase extends React.Component {
   }
 }
 
-Paperbase.propTypes = {
+Dashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Paperbase);
+export default withStyles(styles)(Dashboard);
