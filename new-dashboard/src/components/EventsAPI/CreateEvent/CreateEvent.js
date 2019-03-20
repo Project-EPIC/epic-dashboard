@@ -7,6 +7,8 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
+import ChipInput from 'material-ui-chip-input'
+
 export default class CreateEvent extends Component {
     constructor() {
         super();
@@ -16,8 +18,15 @@ export default class CreateEvent extends Component {
           description: ""
         }
       }
-      updateTags = (tags) => {    
-        this.setState({tags})        
+      handleAddChip = (tag) => {    
+          let tags = this.state.tags;
+          tags.push(tag)
+          this.setState({tags})        
+      }
+      handleDeleteChip = (tag, index) => {
+        let tags = this.state.tags;
+        tags.splice(index,1);
+        this.setState({tags})
       }
       onChange = name => event => {                        
         this.setState(
@@ -45,9 +54,7 @@ export default class CreateEvent extends Component {
             color="default"
             elevation={0}
             >
-            <Toolbar>
-                <Grid container spacing={16} alignItems="center">
-                    
+            <Toolbar>                                    
                     <form onSubmit={this.onSubmit}>
                     <Grid item xs>
                     <TextField
@@ -57,9 +64,7 @@ export default class CreateEvent extends Component {
                         className={classes.TextField}
                         onChange={this.onChange("name")}
                         value={this.state.name}
-                    />
-                    </Grid>
-                    <Grid item xs>
+                    />                                        
                     <TextField
                         fullWidth
                         id="description"
@@ -70,18 +75,13 @@ export default class CreateEvent extends Component {
                         value={this.state.description}
                     />
                     </Grid>
-                    </form>
-                    
-                    <Grid item>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            className={classes.addUser}
-                        >
-                            Add user
-                        </Button>
-                    </Grid>  
-                </Grid>        
+                    <ChipInput
+                        value={this.state.tags}
+                        onAdd={(chip) => this.handleAddChip(chip)}
+                        onDelete={(chip, index) => this.handleDeleteChip(chip, index)}
+                    />                    
+                    <Button variant="outlined" color="primary" className={classes.button}> Create Event</Button>
+                    </form>                                         
             </Toolbar>
       </AppBar>        
     )
