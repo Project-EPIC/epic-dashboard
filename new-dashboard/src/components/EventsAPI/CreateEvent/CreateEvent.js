@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import RefreshIcon from "@material-ui/icons/Refresh";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
 import ChipInput from 'material-ui-chip-input'
+import { connect } from 'react-redux';
+import { createEvent } from "../../../actions/eventActions";
 
 class CreateEvent extends Component {
     constructor() {
@@ -40,7 +39,8 @@ class CreateEvent extends Component {
             name: this.state.name,
             keywords: keywords,
             description: this.state.description            
-        }        
+        }
+        console.log(`new event: ${JSON.stringify(newEvent)}`)        
         this.props.createEvent(newEvent);        
     }
 
@@ -80,7 +80,7 @@ class CreateEvent extends Component {
                         onAdd={(chip) => this.handleAddChip(chip)}
                         onDelete={(chip, index) => this.handleDeleteChip(chip, index)}
                     />                    
-                    <Button variant="outlined" color="primary" className={classes.button}> Create Event</Button>
+                    <Button variant="outlined" color="primary" className={classes.button} type="submit"> Create Event</Button>
                     </form>                                         
             </Toolbar>
       </AppBar>        
@@ -88,4 +88,4 @@ class CreateEvent extends Component {
   }
 }
 
-export default CreateEvent;
+export default connect(null, { createEvent })(CreateEvent);
