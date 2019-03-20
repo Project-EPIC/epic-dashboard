@@ -13,12 +13,13 @@ import { withStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import { styles } from "./styles";
+import EventsTable from "./EventsTable/EventsTable";
 
 
 class Content extends Component {
   render() {
-  const { classes } = this.props;
-  // console.log(`here are content's classes : ${JSON.stringify(classes)}`)
+  const { classes } = this.props;  
+  console.log(this.props.tabValue)
 
   return (
     <Paper className={classes.paper}>
@@ -60,11 +61,10 @@ class Content extends Component {
           </Grid>
         </Toolbar>
       </AppBar>
-      <div className={classes.contentWrapper}>
-        <Typography color="textSecondary" align="center">
-          No users for this project yet
-        </Typography>
+      <div className={classes.contentWrapper}>        
+        <EventsTable/>        
       </div>
+      
     </Paper>
   );
 }
