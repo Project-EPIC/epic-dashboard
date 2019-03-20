@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
 import { TablePaginationActionsWrapped } from "../TablePaginationActions/TablePaginationActions";
 
@@ -61,12 +62,19 @@ class CustomPaginationActionsTable extends React.Component {
   render() {
     const { classes } = this.props;
     const { rows, rowsPerPage, page } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     return (
       <Paper className={classes.root}>
         <div className={classes.tableWrapper}>
           <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell>Food</TableCell>
+                <TableCell align="right">Calories</TableCell>
+                <TableCell align="right">Calories (g)</TableCell>                            
+              </TableRow>
+            </TableHead>
             <TableBody>
               {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
                 <TableRow key={row.id}>
@@ -77,11 +85,11 @@ class CustomPaginationActionsTable extends React.Component {
                   <TableCell align="right">{row.fat}</TableCell>
                 </TableRow>
               ))}
-              {emptyRows > 0 && (
+              {/*emptyRows > 0 && (
                 <TableRow style={{ height: 48 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
-              )}
+              )*/}
             </TableBody>
             <TableFooter>
               <TableRow>
