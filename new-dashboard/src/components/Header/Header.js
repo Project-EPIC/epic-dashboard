@@ -15,32 +15,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
-
-
-const lightColor = "rgba(255, 255, 255, 0.7)";
-
-const styles = theme => ({
-  secondaryBar: {
-    zIndex: 0
-  },
-  menuButton: {
-    marginLeft: -theme.spacing.unit
-  },
-  iconButtonAvatar: {
-    padding: 4
-  },
-  link: {
-    textDecoration: "none",
-    color: lightColor,
-    "&:hover": {
-      color: theme.palette.common.white
-    }
-  },
-  button: {
-    borderColor: lightColor
-  }
-});
-
+import { styles } from "./styles";
 
 
 class  Header extends Component {

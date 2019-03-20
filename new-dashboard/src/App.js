@@ -3,8 +3,7 @@ import Dashboard from "./views/Dashboard/Dashboard";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from './store';
-// Roboto font required by material-ui
-import "typeface-roboto";
+import "typeface-roboto"; // Roboto font required by material-ui
 
 class App extends Component {
   render() {
