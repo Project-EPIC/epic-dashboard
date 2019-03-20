@@ -8,7 +8,6 @@ import {
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Hidden from "@material-ui/core/Hidden";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import Header from "../../components/common-components/Header/Header";
 import EventsAPI from "../../components/EventsAPI/EventsAPI";
 import TweetAnnotation from "../../components/TweetAnnotationAPI/TweetAnnotationAPI";
 import { drawerWidth, theme, styles } from "./styles.js"
@@ -16,17 +15,14 @@ import { drawerWidth, theme, styles } from "./styles.js"
 
 class Dashboard extends React.Component {
   state = {
-    mobileOpen: false,
-    tabValue: 0
+    mobileOpen: false
   };
 
   handleDrawerToggle = () => {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
-  onTabChange = (event, tabValue) => {
-    this.setState({ tabValue });
-  };
+
 
   render() {
     const { classes } = this.props;
@@ -51,7 +47,7 @@ class Dashboard extends React.Component {
           </nav>
           <div className={classes.appContent}>
             {/* React Router routes go here } */ }
-            <Route path="/eventsapi" render={(props) => <EventsAPI {...props} onTabChange={this.onTabChange} tabValue={this.state.tabValue} onDrawerToggle={this.handleDrawerToggle} classes={classes}/>}/>
+            <Route path="/eventsapi" render={(props) => <EventsAPI {...props}  onDrawerToggle={this.handleDrawerToggle} classes={classes}/>}/>
             <Route path="/tweetannotation" render={(props) => <TweetAnnotation {...props} onDrawerToggle={this.handleDrawerToggle} classes={classes}/>}/>                                                           
           </div>
         </div>

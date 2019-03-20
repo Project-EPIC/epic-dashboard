@@ -14,9 +14,9 @@ class Content extends Component {
 
   return (
       <div>
-        {this.props.tabValue === 0 && <EventsTable/>}
+        {this.props.tabValue === "list-events" && <EventsTable/>}
         <div className={classes.contentWrapper}>  
-          {this.props.tabValue === 1 && 
+          {this.props.tabValue === "create-events" && 
             (<Paper className={classes.paper}>  
             <CreateEvent classes={classes}/>
             </Paper>)

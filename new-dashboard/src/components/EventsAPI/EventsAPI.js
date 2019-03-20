@@ -5,11 +5,19 @@ import Content from "./Content/Content";
 import Header from "../common-components/Header/Header";
 
 class EventsAPI extends Component {
-  renderTabs = () => {
+  state = {
+    tabValue: "list-events"
+  }
+  
+  onTabChange = (event, tabValue) => {
+    this.setState({ tabValue });
+  };
+
+  headerTabs = () => {
     return (
-      <Tabs value={this.props.tabValue} onChange={this.props.onTabChange} textColor="inherit">
-        <Tab textColor="inherit" label="List Events" />          
-        <Tab textColor="inherit" label="Create Events" />                                    
+      <Tabs value={this.state.tabValue} onChange={this.onTabChange} textColor="inherit">
+        <Tab textColor="inherit" label="List Events"  value="list-events"/>          
+        <Tab textColor="inherit" label="Create Events" value="create-events" />                                    
       </Tabs>  
     )
   }
@@ -18,9 +26,9 @@ class EventsAPI extends Component {
     const title = "Events API"
     return (
       <div>
-        <Header onDrawerToggle={this.props.onDrawerToggle} onTabChange={this.props.onTabChange} tabValue={this.props.tabValue} title={title} renderTabs={this.renderTabs}/>
+        <Header onDrawerToggle={this.props.onDrawerToggle} title={title} renderTabs={this.headerTabs} />
         <main className={classes.mainContent}>
-          <Content tabValue={this.props.tabValue}/>                     
+          <Content tabValue={this.state.tabValue}/>                     
         </main>
       </div>
     );

@@ -18,9 +18,9 @@ import { styles } from "./styles";
 
 class  Header extends Component {
 
-
   render() {
-    const { classes, onDrawerToggle, title, renderTabs } = this.props;        
+    const { classes, onDrawerToggle, title, renderTabs } = this.props;
+            
 
     return (
       <React.Fragment>
