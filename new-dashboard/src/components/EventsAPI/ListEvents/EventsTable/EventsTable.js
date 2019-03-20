@@ -71,13 +71,19 @@ class CustomPaginationActionsTable extends React.Component {
    
     const rows = this.props.myevents;
     const tablecontents = rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+      let keywords = "";
+      row.keywords.map(kw => {
+        keywords += kw + ","
+        return keywords
+      });
+      keywords = keywords.replace(/,\s*$/, "");  
       return (
-      <TableRow key={row.normalized_name}>
-      <TableCell align="right">{row.name}</TableCell>
-      <TableCell align="right">{row.description}</TableCell>
-      <TableCell align="right">{row.keywords}</TableCell>
-      <TableCell align="right">{row.status}</TableCell>
-    </TableRow>
+        <TableRow key={row.normalized_name}>
+          <TableCell align="right">{row.name}</TableCell>
+          <TableCell align="right">{row.description}</TableCell>
+          <TableCell align="right">{keywords}</TableCell>
+          <TableCell align="right">{row.status}</TableCell>
+        </TableRow>
     )}      
     )
     return (
