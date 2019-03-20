@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import SearchIcon from "@material-ui/icons/Search";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -9,7 +8,35 @@ import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 export default class CreateEvent extends Component {
+    constructor() {
+        super();
+        this.state = {
+          tags: [],
+          name: "",          
+          description: ""
+        }
+      }
+      updateTags = (tags) => {    
+        this.setState({tags})        
+      }
+      onChange = name => event => {                        
+        this.setState(
+          { [name]: event.target.value }
+       );
+      }
+      onSubmit = (e) => {
+        e.preventDefault();
+        var keywords = this.state.tags              
+        const newEvent = {
+            name: this.state.name,
+            keywords: keywords,
+            description: this.state.description            
+        }        
+        this.props.createEvent(newEvent);        
+    }
+
   render() {
+
     const { classes } = this.props;  
     return (              
         <AppBar
@@ -20,19 +47,31 @@ export default class CreateEvent extends Component {
             >
             <Toolbar>
                 <Grid container spacing={16} alignItems="center">
-                    <Grid item>
-                    <SearchIcon className={classes.block} color="inherit" />
+                    
+                    <form onSubmit={this.onSubmit}>
+                    <Grid item xs>
+                    <TextField
+                        id="name"
+                        label="Event Name"
+                        placeholder="Enter Event Name"
+                        className={classes.TextField}
+                        onChange={this.onChange("name")}
+                        value={this.state.name}
+                    />
                     </Grid>
                     <Grid item xs>
                     <TextField
                         fullWidth
-                        placeholder="Search by email address, phone number, or user UID"
-                        InputProps={{
-                        disableUnderline: true,
-                        className: classes.searchInput
-                        }}
+                        id="description"
+                        label="Event Description"
+                        placeholder="Enter Event Description"
+                        className={classes.TextField}
+                        onChange={this.onChange("description")}
+                        value={this.state.description}
                     />
                     </Grid>
+                    </form>
+                    
                     <Grid item>
                         <Button
                             variant="contained"
@@ -41,11 +80,6 @@ export default class CreateEvent extends Component {
                         >
                             Add user
                         </Button>
-                        <Tooltip title="Reload">
-                            <IconButton>
-                                <RefreshIcon className={classes.block} color="inherit" />
-                            </IconButton>
-                        </Tooltip>
                     </Grid>  
                 </Grid>        
             </Toolbar>
