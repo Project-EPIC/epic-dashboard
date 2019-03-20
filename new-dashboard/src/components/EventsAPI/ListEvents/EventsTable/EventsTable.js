@@ -66,15 +66,16 @@ class CustomPaginationActionsTable extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { rows, rowsPerPage, page } = this.state;    
+    const { rowsPerPage, page } = this.state;    
     const thArray = ["Event Name", "Description", "Keywords", "Status"];
+   
+    const rows = this.props.myevents;
     const tablecontents = rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
-      <TableRow key={row.id}>
-      <TableCell component="th" scope="row">
-        {row.name}
-      </TableCell>
-      <TableCell align="right">{row.calories}</TableCell>
-      <TableCell align="right">{row.fat}</TableCell>
+      <TableRow key={row.normalized_name}>
+      <TableCell align="right">{row.name}</TableCell>
+      <TableCell align="right">{row.description}</TableCell>
+      <TableCell align="right">{row.keywords}</TableCell>
+      <TableCell align="right">{row.status}</TableCell>
     </TableRow>
     ))
     return (
