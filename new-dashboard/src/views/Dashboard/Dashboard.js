@@ -50,14 +50,9 @@ class Dashboard extends React.Component {
             </Hidden>
           </nav>
           <div className={classes.appContent}>
-            <Header onDrawerToggle={this.handleDrawerToggle} onTabChange={this.onTabChange} tabValue={this.state.tabValue}/>
-
             {/* React Router routes go here } */ }
-            <main className={classes.mainContent}>
-            { /* This is what is displayed in the main content */ }              
-              <Route path="/eventsapi" render={(props) => <EventsAPI {...props} tabValue={this.state.tabValue} />}/>
-              <Route path="/tweetannotation" render={(props) => <TweetAnnotation {...props} />}/>                       
-            </main>
+            <Route path="/eventsapi" render={(props) => <EventsAPI {...props} onTabChange={this.onTabChange} tabValue={this.state.tabValue} onDrawerToggle={this.handleDrawerToggle} classes={classes}/>}/>
+            <Route path="/tweetannotation" render={(props) => <TweetAnnotation {...props} onDrawerToggle={this.handleDrawerToggle} classes={classes}/>}/>                                                           
           </div>
         </div>
       </MuiThemeProvider>
