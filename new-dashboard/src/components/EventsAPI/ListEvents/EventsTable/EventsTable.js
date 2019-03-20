@@ -70,14 +70,16 @@ class CustomPaginationActionsTable extends React.Component {
     const thArray = ["Event Name", "Description", "Keywords", "Status"];
    
     const rows = this.props.myevents;
-    const tablecontents = rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
+    const tablecontents = rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+      return (
       <TableRow key={row.normalized_name}>
       <TableCell align="right">{row.name}</TableCell>
       <TableCell align="right">{row.description}</TableCell>
       <TableCell align="right">{row.keywords}</TableCell>
       <TableCell align="right">{row.status}</TableCell>
     </TableRow>
-    ))
+    )}      
+    )
     return (
       <Paper className={classes.root}>
         <div className={classes.tableWrapper}>
