@@ -6,7 +6,7 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
-import { actionsStyles } from '../EventsTable/styles';
+import { actionsStyles } from './styles';
 
 
 class TablePaginationActions extends React.Component {

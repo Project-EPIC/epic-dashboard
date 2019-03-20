@@ -9,20 +9,10 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
-import { TablePaginationActionsWrapped } from "../TablePaginationActions/TablePaginationActions";
+import { TablePaginationActionsWrapped } from "../../../common-components/TablePaginationActions/TablePaginationActions";
+import { styles } from "./styles";
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-  },
-  table: {
-    minWidth: 500,
-  },
-  tableWrapper: {
-    overflowX: 'auto',
-  },
-});
+
 
 let counter = 0;
 function createData(name, calories, fat) {
