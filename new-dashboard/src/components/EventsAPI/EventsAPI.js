@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import Content from "../../theme/Content";
+import Content from "./CreateEvent/Content";
 import TabContainer from "../TabContainer/TabContainer";
 
 
 class EventsAPI extends Component {
-  render() {
-    console.log(this.props.tabValue);
+  render() {    
     return (
       <div>
         <Content />

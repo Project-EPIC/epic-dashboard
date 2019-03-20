@@ -8,8 +8,8 @@ import {
 } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Hidden from "@material-ui/core/Hidden";
-import Navigator from "../../theme/Navigator";
-import Header from "../../theme/Header";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import Header from "../../components/Header/Header";
 import EventsAPI from "../../components/EventsAPI/EventsAPI";
 // import Component2 from "../components/Component2";
 
@@ -178,7 +178,7 @@ class Dashboard extends React.Component {
           <nav className={classes.drawer}>
             <Hidden smUp implementation="js">
               { /*This is the side bar */}
-              <Navigator
+              <Sidebar
                 PaperProps={{ style: { width: drawerWidth } }}
                 variant="temporary"
                 open={this.state.mobileOpen}
@@ -186,7 +186,7 @@ class Dashboard extends React.Component {
               />
             </Hidden>
             <Hidden xsDown implementation="css">
-              <Navigator PaperProps={{ style: { width: drawerWidth } }} />
+              <Sidebar PaperProps={{ style: { width: drawerWidth } }} />
             </Hidden>
           </nav>
           <div className={classes.appContent}>
