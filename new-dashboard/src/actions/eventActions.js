@@ -13,8 +13,7 @@ export const fetchEvents = () => dispatch => {
       });;    
 };
 
-export const createEvent = (eventData) => dispatch => { 
-    console.log(` Hey I am inside createEvent eventData`);         
+export const createEvent = (eventData) => dispatch => {          
     fetch('http://34.95.114.189/events', {
         method: 'POST',        
         headers : {

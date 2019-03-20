@@ -39,8 +39,7 @@ class CreateEvent extends Component {
             name: this.state.name,
             keywords: keywords,
             description: this.state.description            
-        }
-        console.log(`new event: ${JSON.stringify(newEvent)}`)        
+        }            
         this.props.createEvent(newEvent);        
     }
 
