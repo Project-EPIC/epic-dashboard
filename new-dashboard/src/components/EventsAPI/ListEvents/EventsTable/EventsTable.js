@@ -61,8 +61,7 @@ class CustomPaginationActionsTable extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { rows, rowsPerPage, page } = this.state;
-    // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    const { rows, rowsPerPage, page } = this.state;    
 
     return (
       <Paper className={classes.root}>
@@ -85,11 +84,6 @@ class CustomPaginationActionsTable extends React.Component {
                   <TableCell align="right">{row.fat}</TableCell>
                 </TableRow>
               ))}
-              {/*emptyRows > 0 && (
-                <TableRow style={{ height: 48 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )*/}
             </TableBody>
             <TableFooter>
               <TableRow>
