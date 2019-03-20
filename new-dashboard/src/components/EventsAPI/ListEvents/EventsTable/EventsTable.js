@@ -23,6 +23,19 @@ function createData(name, calories, fat) {
 }
 
 class CustomPaginationActionsTable extends React.Component {
+  componentDidMount() {    
+    this.props.fetchEvents();    
+  }
+
+  componentWillReceiveProps(nextProps) {        
+    if(nextProps.newEvent) {
+      this.props.myevents.unshift(nextProps.newEvent);
+    }
+  }
+
+  _onLinkClickHandler = (type, normalized_name) => {
+    this.props.modifyEvents(type,normalized_name);
+  }
   state = {
     rows: [
       createData('Cupcake', 305, 3.7),
@@ -117,4 +130,5 @@ const mapStateToProps = state => ({
   newEvent: state.eventsReducer.newEvent    
 });
 
-export default withStyles(styles)(CustomPaginationActionsTable);
+
+export default connect(mapStateToProps, {fetchEvents: fetchEvents, modifyEvents: modifyEvents})(withStyles(styles)(CustomPaginationActionsTable));
