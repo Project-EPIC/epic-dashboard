@@ -13,6 +13,8 @@ import { TablePaginationActionsWrapped } from "../../../common-components/TableP
 import { styles } from "./styles";
 import { connect } from 'react-redux';
 import { fetchEvents, modifyEvents } from "../../../../actions/eventActions";
+import PlayArrow from '@material-ui/icons/PlayArrow';
+import Pause from '@material-ui/icons/Pause';
 
 
 
@@ -76,13 +78,18 @@ class CustomPaginationActionsTable extends React.Component {
         keywords += kw + ","
         return keywords
       });
-      keywords = keywords.replace(/,\s*$/, "");  
+      keywords = keywords.replace(/,\s*$/, "");
+      const button = row.status === "NOT_ACTIVE" ?  
+      <a href="# " onClick={() => {this._onLinkClickHandler("start", row.normalized_name)}}><PlayArrow className={classes.icon} id={"start-"+row.normalized_name}/></a> 
+      : 
+      <a href="# " onClick={() => {this._onLinkClickHandler("pause", row.normalized_name)}}><Pause className={classes.icon} id={"pause-"+row.normalized_name}/></a> 
       return (
         <TableRow key={row.normalized_name}>
           <TableCell align="right">{row.name}</TableCell>
           <TableCell align="right">{row.description}</TableCell>
           <TableCell align="right">{keywords}</TableCell>
           <TableCell align="right">{row.status}</TableCell>
+          <TableCell align="right">{button}</TableCell>
         </TableRow>
     )}      
     )
