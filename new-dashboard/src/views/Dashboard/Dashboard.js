@@ -8,9 +8,9 @@ import {
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Hidden from "@material-ui/core/Hidden";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import Header from "../../components/Header/Header";
+import Header from "../../components/common-components/Header/Header";
 import EventsAPI from "../../components/EventsAPI/EventsAPI";
-
+import TweetAnnotation from "../../components/TweetAnnotationAPI/TweetAnnotationAPI";
 import { drawerWidth, theme, styles } from "./styles.js"
 
 
@@ -55,7 +55,8 @@ class Dashboard extends React.Component {
             {/* React Router routes go here } */ }
             <main className={classes.mainContent}>
             { /* This is what is displayed in the main content */ }              
-              <Route path="/eventsapi" render={(props) => <EventsAPI {...props} tabValue={this.state.tabValue} />}/>                       
+              <Route path="/eventsapi" render={(props) => <EventsAPI {...props} tabValue={this.state.tabValue} />}/>
+              <Route path="/tweetannotation" render={(props) => <TweetAnnotation {...props} />}/>                       
             </main>
           </div>
         </div>
