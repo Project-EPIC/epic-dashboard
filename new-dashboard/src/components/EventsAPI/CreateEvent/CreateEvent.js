@@ -9,7 +9,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import ChipInput from 'material-ui-chip-input'
 
-export default class CreateEvent extends Component {
+class CreateEvent extends Component {
     constructor() {
         super();
         this.state = {
@@ -87,3 +87,5 @@ export default class CreateEvent extends Component {
     )
   }
 }
+
+export default CreateEvent;
