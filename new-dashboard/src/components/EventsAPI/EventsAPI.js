@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Content from "./CreateEvent/Content";
+import Content from "./CreateEvent/Content/Content";
 
 
 class EventsAPI extends Component {
