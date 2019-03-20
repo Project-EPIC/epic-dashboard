@@ -78,6 +78,7 @@ class CreateEvent extends Component {
                         value={this.state.tags}
                         onAdd={(chip) => this.handleAddChip(chip)}
                         onDelete={(chip, index) => this.handleDeleteChip(chip, index)}
+                        placeholder={"Enter hashtags followed by an Enter"}
                     />                    
                     <Button variant="outlined" color="primary" className={classes.button} type="submit"> Create Event</Button>
                     </form>                                         
