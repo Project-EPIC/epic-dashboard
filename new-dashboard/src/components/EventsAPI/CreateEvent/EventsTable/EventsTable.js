@@ -89,7 +89,7 @@ class CustomPaginationActionsTable extends React.Component {
                   rowsPerPageOptions={[5, 10, 25]}
                   colSpan={3}
                   count={rows.length}
-                  rowsPerPage={rowsPerPage}
+                  rowsPerPage={parseInt(rowsPerPage)}
                   page={page}
                   SelectProps={{
                     native: true,
