@@ -11,6 +11,8 @@ import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
 import { TablePaginationActionsWrapped } from "../../../common-components/TablePaginationActions/TablePaginationActions";
 import { styles } from "./styles";
+import { connect } from 'react-redux';
+import { fetchEvents, modifyEvents } from "../../../../actions/eventActions";
 
 
 
@@ -52,18 +54,22 @@ class CustomPaginationActionsTable extends React.Component {
   render() {
     const { classes } = this.props;
     const { rows, rowsPerPage, page } = this.state;    
-
+    const thArray = ["Event Name", "Description", "Keywords", "Status"];
     return (
       <Paper className={classes.root}>
         <div className={classes.tableWrapper}>
+          
           <Table className={classes.table}>
             <TableHead>
-              <TableRow>
-                <TableCell>Food</TableCell>
-                <TableCell align="right">Calories</TableCell>
-                <TableCell align="right">Calories (g)</TableCell>                            
+              <TableRow>                
+                 {
+                   thArray.map( (prop, key) => {
+                     return <TableCell align="right" key={ key }>{ prop }</TableCell>
+                   })
+                 }                                                          
               </TableRow>
             </TableHead>
+            
             <TableBody>
               {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
                 <TableRow key={row.id}>
@@ -75,6 +81,7 @@ class CustomPaginationActionsTable extends React.Component {
                 </TableRow>
               ))}
             </TableBody>
+            
             <TableFooter>
               <TableRow>
                 <TablePagination
@@ -92,6 +99,7 @@ class CustomPaginationActionsTable extends React.Component {
                 />
               </TableRow>
             </TableFooter>
+
           </Table>
         </div>
       </Paper>
@@ -102,5 +110,10 @@ class CustomPaginationActionsTable extends React.Component {
 CustomPaginationActionsTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
+const mapStateToProps = state => ({
+  myevents: state.eventsReducer.myevents,
+  newEvent: state.eventsReducer.newEvent    
+});
 
 export default withStyles(styles)(CustomPaginationActionsTable);
