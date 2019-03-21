@@ -17,7 +17,7 @@ export let theme = createMuiTheme({
       }
     },
     shape: {
-      borderRadius: 8
+      borderRadius: 3
     }
   });
   
@@ -31,13 +31,13 @@ export let theme = createMuiTheme({
       },
       MuiButton: {
         label: {
-          textTransform: "initial"
+          // textTransform: "initial"
         },
         contained: {
-          boxShadow: "none",
-          "&:active": {
-            boxShadow: "none"
-          }
+          // boxShadow: "none",
+          // "&:active": {
+          //   boxShadow: "none"
+          // }
         }
       },
       MuiTabs: {

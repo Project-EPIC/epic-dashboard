@@ -1,4 +1,4 @@
-import { NEW_EVENT, FETCH_EVENTS } from './types';
+import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT } from './types';
 
 
 export const fetchEvents = () => dispatch => {      
@@ -20,7 +20,15 @@ export const createEvent = (eventData) => dispatch => {
             'content-type' : 'application/json'          
         },
         body: JSON.stringify(eventData)
-    }).then(res => res.json())    
+    })
+    .then(res => {
+        if (res.ok){
+            return res.json()
+        } else{
+            console.log("We need to handle this error");
+        }
+        
+    })    
     .then(myevent => dispatch({
         type: NEW_EVENT,
         payload: myevent
@@ -28,13 +36,17 @@ export const createEvent = (eventData) => dispatch => {
     );
 };
 
-export const modifyEvents = (type, normalized_name) => dispatch => {         
-    var status = type === "start" ? "ACTIVE": "NOT_ACTIVE"; 
-                
+export const modifyEvents = (status, normalized_name) => dispatch => {         
     fetch(`http://34.95.114.189/events/${normalized_name}/${status}`, {
         method: 'PUT',        
         headers : {
             'content-type' : 'application/json'          
         }        
-    }).then(res => res.json())    
+    }).then(res => res.json())
+    .then(updatedEvent => dispatch({
+        type: UPDATED_EVENT,
+        payload: updatedEvent
+    })
+    );
+        
 };

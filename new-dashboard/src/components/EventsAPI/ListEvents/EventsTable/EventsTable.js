@@ -18,11 +18,6 @@ import Pause from '@material-ui/icons/Pause';
 
 
 
-let counter = 0;
-function createData(name, calories, fat) {
-  counter += 1;
-  return { id: counter, name, calories, fat };
-}
 
 class CustomPaginationActionsTable extends React.Component {
   componentDidMount() {    
@@ -35,27 +30,21 @@ class CustomPaginationActionsTable extends React.Component {
     }
   }
 
-  _onLinkClickHandler = (type, normalized_name) => {
-    this.props.modifyEvents(type,normalized_name);
+  _onLinkClickHandler = (status, normalized_name) => {
+    this.props.modifyEvents(status, normalized_name);
+    let events = [...this.state.rows];
+    events.find((o, i) => {     
+      if (o.normalized_name === normalized_name) {
+          events[i].status = status
+          return true; // stop searching
+      }
+    });
+    this.setState({rows: events})
   }
   state = {
-    rows: [
-      createData('Cupcake', 305, 3.7),
-      createData('Donut', 452, 25.0),
-      createData('Eclair', 262, 16.0),
-      createData('Frozen yoghurt', 159, 6.0),
-      createData('Gingerbread', 356, 16.0),
-      createData('Honeycomb', 408, 3.2),
-      createData('Ice cream sandwich', 237, 9.0),
-      createData('Jelly Bean', 375, 0.0),
-      createData('KitKat', 518, 26.0),
-      createData('Lollipop', 392, 0.2),
-      createData('Marshmallow', 318, 0),
-      createData('Nougat', 360, 19.0),
-      createData('Oreo', 437, 18.0),
-    ].sort((a, b) => (a.calories < b.calories ? -1 : 1)),
+    rows: [],
     page: 0,
-    rowsPerPage: 5,
+    rowsPerPage: 50,
   };
 
   handleChangePage = (event, page) => {
@@ -69,27 +58,26 @@ class CustomPaginationActionsTable extends React.Component {
   render() {
     const { classes } = this.props;
     const { rowsPerPage, page } = this.state;    
-    const thArray = ["Event Name", "Description", "Keywords", "Status", "Start/Pause"];
-   
+    const thArray = ["Event Name", "Description", "Status", "Start/Pause"];
     const rows = this.props.myevents;
     const tablecontents = rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
-      let keywords = "";
-      row.keywords.map(kw => {
-        keywords += kw + ","
-        return keywords
-      });
-      keywords = keywords.replace(/,\s*$/, "");
-      const button = row.status === "NOT_ACTIVE" ?  
-      <a href="# " onClick={() => {this._onLinkClickHandler("start", row.normalized_name)}}><PlayArrow className={classes.icon} id={"start-"+row.normalized_name}/></a> 
-      : 
-      <a href="# " onClick={() => {this._onLinkClickHandler("pause", row.normalized_name)}}><Pause className={classes.icon} id={"pause-"+row.normalized_name}/></a> 
+      // let keywords = "";
+      // row.keywords.map(kw => {
+      //   keywords += kw + ","
+      //   return keywords
+      // });
+      // keywords = keywords.replace(/,\s*$/, "");
+      const button = row.status === "ACTIVE" ?  
+      <a href="# " onClick={() => {this._onLinkClickHandler("NOT_ACTIVE", row.normalized_name)}}><Pause className={classes.icon} id={"pause-"+row.normalized_name}/></a>
+      :
+      <a href="# " onClick={() => {this._onLinkClickHandler("ACTIVE", row.normalized_name)}}><PlayArrow className={classes.icon} id={"start-"+row.normalized_name}/></a> 
       return (
         <TableRow key={row.normalized_name}>
-          <TableCell align="right">{row.name}</TableCell>
-          <TableCell align="right">{row.description}</TableCell>
-          <TableCell align="right">{keywords}</TableCell>
-          <TableCell align="right">{row.status}</TableCell>
-          <TableCell align="right">{button}</TableCell>
+          <TableCell align="left">{row.name}</TableCell>
+          <TableCell align="left">{row.description}</TableCell>
+          {/* <TableCell align="left">{keywords}</TableCell> */}
+          <TableCell align="left">{row.status}</TableCell>
+          <TableCell align="left">{button}</TableCell>
         </TableRow>
     )}      
     )
@@ -102,7 +90,7 @@ class CustomPaginationActionsTable extends React.Component {
               <TableRow>                
                  {
                    thArray.map( (prop, key) => {
-                     return <TableCell align="right" key={ key }>{ prop }</TableCell>
+                     return <TableCell align="left" key={ key }>{ prop }</TableCell>
                    })
                  }                                                          
               </TableRow>
@@ -115,7 +103,7 @@ class CustomPaginationActionsTable extends React.Component {
             <TableFooter>
               <TableRow>
                 <TablePagination
-                  rowsPerPageOptions={[5, 10, 25]}
+                  rowsPerPageOptions={[5, 10, 25, 50, 100]}
                   colSpan={3}
                   count={rows.length}
                   rowsPerPage={parseInt(rowsPerPage)}
