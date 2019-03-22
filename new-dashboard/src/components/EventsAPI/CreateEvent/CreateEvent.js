@@ -116,7 +116,7 @@ class CreateEvent extends Component {
               Create a new event to start collecting data. Introduce keywords to be collected below.
             </DialogContentText>
             <Grid container spacing={24}>
-              <Grid item item xs={12} md={12}>
+              <Grid item  xs={12} md={12}>
                 <TextField
                   autoFocus
                   required
@@ -132,7 +132,7 @@ class CreateEvent extends Component {
                   margin="dense"
                 />
               </Grid>
-              <Grid item item xs={12} md={12}>
+              <Grid item  xs={12} md={12}>
                 <TextField
                   required
                   id="description"
@@ -147,7 +147,7 @@ class CreateEvent extends Component {
                   margin="dense"
                 />
               </Grid>
-              <Grid item item xs={12} md={12}>
+              <Grid item  xs={12} md={12}>
                 <ChipInput
                   
                   value={this.state.tags}
