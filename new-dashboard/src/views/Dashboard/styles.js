@@ -31,13 +31,13 @@ export let theme = createMuiTheme({
       },
       MuiButton: {
         label: {
-          textTransform: "initial"
+          // textTransform: "initial"
         },
         contained: {
-          boxShadow: "none",
-          "&:active": {
-            boxShadow: "none"
-          }
+          // boxShadow: "none",
+          // "&:active": {
+          //   boxShadow: "none"
+          // }
         }
       },
       MuiTabs: {
@@ -128,6 +128,11 @@ export let theme = createMuiTheme({
         width: drawerWidth,
         flexShrink: 0
       }
+    },
+    appContent: {
+      flex: 1,
+      display: "flex",
+      flexDirection: "column"
     },
     mainContent: {
       flex: 1,
