@@ -38,6 +38,7 @@ class CustomPaginationActionsTable extends React.Component {
           events[i].status = status
           return true; // stop searching
       }
+      return false;
     });
     this.setState({rows: events})
   }
@@ -68,9 +69,9 @@ class CustomPaginationActionsTable extends React.Component {
       // });
       // keywords = keywords.replace(/,\s*$/, "");
       const button = row.status === "ACTIVE" ?  
-      <a  href="#" onClick={(e) => {e.preventDefault();this._onLinkClickHandler("NOT_ACTIVE", row.normalized_name)}}><Pause className={classes.icon} id={"pause-"+row.normalized_name}/></a>
+      <a  href="# " onClick={(e) => {e.preventDefault();this._onLinkClickHandler("NOT_ACTIVE", row.normalized_name)}}><Pause className={classes.icon} id={"pause-"+row.normalized_name}/></a>
       :
-      <a  href="#" onClick={(e) => {e.preventDefault();this._onLinkClickHandler("ACTIVE", row.normalized_name)}}><PlayArrow className={classes.icon} id={"start-"+row.normalized_name}/></a> 
+      <a  href="# " onClick={(e) => {e.preventDefault();this._onLinkClickHandler("ACTIVE", row.normalized_name)}}><PlayArrow className={classes.icon} id={"start-"+row.normalized_name}/></a> 
       return (
         <TableRow key={row.normalized_name}>
           <TableCell align="left">{row.name}</TableCell>

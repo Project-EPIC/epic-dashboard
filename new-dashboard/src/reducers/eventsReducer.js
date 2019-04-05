@@ -32,6 +32,7 @@ export default function(state = initialState, action) {
                     events[i] = action.payload
                     return true; // stop searching
                 }
+                return false;
             });
             return {
                 ...state,
