@@ -11,6 +11,11 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import sidebarRoutes from "../../../routes/sidebar_routes";
 import { styles } from "./styles";
+import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
+import {
+  FirebaseAuthConsumer
+} from "@react-firebase/auth";
+import firebase from "firebase";
 
 class Sidebar extends Component {
   render() {
@@ -67,6 +72,46 @@ class Sidebar extends Component {
             </React.Fragment>
           ))}
         </List>
+        <List disablePadding>
+        <ListItem className={classes.categoryHeader}>
+                <ListItemText
+                  classes={{
+                    primary: classes.categoryHeaderPrimary
+                  }}
+                >
+                 Administration
+                </ListItemText>
+              </ListItem>
+          <FirebaseAuthConsumer>
+            {({ isSignedIn, user }) => {
+              
+              const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+              return <ListItem
+                button
+                dense
+                className={classNames(
+                  classes.item,
+                  classes.itemActionable
+                )}
+                onClick={() => { isSignedIn ? firebase.auth().signOut() : firebase.auth().signInWithPopup(googleAuthProvider) }}>
+                <ListItemIcon><PowerSettingsNewIcon></PowerSettingsNewIcon></ListItemIcon>
+                <ListItemText
+                    classes={{
+                      primary: classes.itemPrimary,
+                      textDense: classes.textDense
+                    }}
+                  >
+                    {isSignedIn ? "Logout" : "Sign in"}
+                  </ListItemText>
+                
+              </ListItem>
+
+            }
+            }
+          </FirebaseAuthConsumer>
+        </List>
+
+
       </Drawer>
     );
   }
