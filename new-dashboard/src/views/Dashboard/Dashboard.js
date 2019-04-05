@@ -11,6 +11,7 @@ import Sidebar from "../../components/common-components/Sidebar/Sidebar";
 import EventsAPI from "../../components/EventsAPI/EventsAPI";
 import TweetAnnotation from "../../components/TweetAnnotationAPI/TweetAnnotationAPI";
 import { drawerWidth, theme, styles } from "./styles.js"
+import ManageUsers from "../../components/UsersAPI/ManageUsers";
 
 
 class Dashboard extends React.Component {
@@ -49,6 +50,7 @@ class Dashboard extends React.Component {
             {/* React Router routes go here } */ }
             <Route path="/eventsapi" render={(props) => <EventsAPI {...props}  onDrawerToggle={this.handleDrawerToggle} classes={classes}/>}/>
             <Route path="/tweetannotation" render={(props) => <TweetAnnotation {...props} onDrawerToggle={this.handleDrawerToggle} classes={classes}/>}/>                                                           
+            <Route path="/users" render={(props) => <ManageUsers {...props} onDrawerToggle={this.handleDrawerToggle} classes={classes}/>}/>                                                           
           </div>
         </div>
       </MuiThemeProvider>

@@ -6,6 +6,8 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from './store';
 import firebase from "firebase";
+
+
 import "typeface-roboto"; // Roboto font required by material-ui
 import {
   FirebaseAuthProvider, FirebaseAuthConsumer,

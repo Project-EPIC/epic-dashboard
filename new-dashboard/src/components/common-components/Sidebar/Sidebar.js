@@ -73,15 +73,6 @@ class Sidebar extends Component {
           ))}
         </List>
         <List disablePadding>
-        <ListItem className={classes.categoryHeader}>
-                <ListItemText
-                  classes={{
-                    primary: classes.categoryHeaderPrimary
-                  }}
-                >
-                 Administration
-                </ListItemText>
-              </ListItem>
           <FirebaseAuthConsumer>
             {({ isSignedIn, user }) => {
               

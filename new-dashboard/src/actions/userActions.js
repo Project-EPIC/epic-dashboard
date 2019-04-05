@@ -1,26 +1,82 @@
 import { FETCH_USERS, UPDATED_USER } from './types';
+import firebase from "firebase";
 
 
-export const fetchUsers = () => dispatch => {      
-    fetch('http://34.95.114.189/users/')
-    .then(res => res.json())
-    .then(users => dispatch({
-        type: FETCH_USERS,
-        payload: users
-    }));    
+export const fetchUsers = () => dispatch => {
+    if (firebase.auth().currentUser == null) {
+        throw Error("Not authed")
+    }
+
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
+        fetch('http://34.95.114.189/users/', {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${idToken}`
+            }
+        })
+            .then(res => res.json())
+            .then(users => dispatch({
+                type: FETCH_USERS,
+                payload: users,
+
+            }));
+    });
 };
 
 
-export const updateUser = (uid) => dispatch => {      
-    fetch('https://jsonplaceholder.typicode.com/posts', {
-        method: 'POST',
-        headers : {
-            'content-type' : 'application/json'
-        },
-        body: JSON.stringify(postData)
-    }).then(res => res.json())
-    .then(post => dispatch({
-        type: UPDATED_USER,
-        payload: post
-    }));
+export const makeAdmin = (uid) => dispatch => {
+    if (firebase.auth().currentUser == null) {
+        throw Error("Not authed")
+    }
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
+        fetch(`http://34.95.114.189/users/${uid}/admin`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': "Bearer " + idToken
+            }
+        }).then(res => res.json())
+            .then(user => dispatch({
+                type: UPDATED_USER,
+                payload: user
+            }));
+    });
+};
+
+export const enableUser = (uid) => dispatch => {
+    if (firebase.auth().currentUser == null) {
+        throw Error("Not authed")
+    }
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
+        fetch(`http://34.95.114.189/users/${uid}/enable`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': "Bearer " + idToken
+            }
+        }).then(res => res.json())
+            .then(user => dispatch({
+                type: UPDATED_USER,
+                payload: user
+            }));
+    });
+};
+
+export const disableUser = (uid) => dispatch => {
+    if (firebase.auth().currentUser == null) {
+        throw Error("Not authed")
+    }
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
+        fetch(`http://34.95.114.189/users/${uid}/disable`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': "Bearer " + idToken
+            }
+        }).then(res => res.json())
+            .then(user => dispatch({
+                type: UPDATED_USER,
+                payload: user
+            }));
+    });
 };
