@@ -104,11 +104,11 @@ class CreateEvent extends Component {
 
       <div>
 
-        <Fab onClick={this.toggleOpen(true)} variant="contained" color="secondary" aria-label="Add" className={classes.fab}>
+        <Fab onClick={this.toggleOpen(true)} variant="round" color="secondary" aria-label="Add" className={classes.fab}>
           <AddIcon />
         </Fab>
-        {/* <Drawer className={classes.DrawerNewEvent} anchor="bottom" open={this.state.drawer} onClose={this.toggleDrawer(false)}> */}
-        <Dialog open={this.state.open} onClose={this.toggleOpen(false)} aria-labelledby="form-dialog-title">
+        {/* <Drawer className={classes.DrawerNewEvent} anchor="bottom" open={this.state.drawer} onClose={this.toggleDrawer(false)}> */}        
+        <Dialog open={this.state.open} onClose={this.toggleOpen(false)} aria-labelledby="form-dialog-title">        
         <form onSubmit={this.createEvent}>
           <DialogTitle id="form-dialog-title">Create event</DialogTitle>
           <DialogContent>

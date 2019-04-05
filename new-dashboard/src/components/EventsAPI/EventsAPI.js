@@ -9,10 +9,10 @@ import { withStyles } from '@material-ui/core/styles';
 
 
 export const styles = theme => ({
-  Main: {
-    minHeight: '100%',
-    display:"block",
-  },
+  // Main: {
+  //   minHeight: '100%',
+  //   display:"block",
+  // },
 });
 
 class EventsAPI extends Component {
