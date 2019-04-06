@@ -162,7 +162,7 @@ class CustomPaginationActionsTable extends React.Component {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={ () => this.toggleOpen(false)} color="primary">Close</Button>          
+          <Button onClick={ () => this.toggleOpen(null, false)} color="primary">Close</Button>          
         </DialogActions>
       </Dialog>
         <div className={classes.tableWrapper}>

@@ -9,17 +9,20 @@ import Content from "./Content/Content";
 
 
 export const styles = theme => ({
-  // Main: {
-  //   minHeight: '100%',
-  //   display:"block",
-  // },
+  Main: {
+    minHeight: '100%',
+    display:"block",
+  },
 });
 
 
 class TweetAnnotation extends Component {
-  state = {
-    tabValue: "list-events"
-  }
+  constructor(props) {
+    super(props);
+    this.state = {
+      tabValue: "list-events"
+    }
+}
 
   onTabChange = (event, tabValue) => {
     this.setState({ tabValue });
