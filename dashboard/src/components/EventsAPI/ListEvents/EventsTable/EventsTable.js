@@ -20,6 +20,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Grid from "@material-ui/core/Grid";
+import Typography from '@material-ui/core/Typography';
+import ChipInput from 'material-ui-chip-input'
+import Button from "@material-ui/core/Button";
 
 
 
@@ -51,6 +55,7 @@ class CustomPaginationActionsTable extends React.Component {
     page: 0,
     rowsPerPage: 50,
     open: false,
+    detailedViewRow: null
   };
 
   handleChangePage = (event, page) => {
@@ -65,12 +70,24 @@ class CustomPaginationActionsTable extends React.Component {
   toggleOpen = (row, state) => {
     console.log(`handle open clicked ..${state}`)
     console.log(row)
-    this.setState({ open: state });
+    this.setState({ 
+      open: state,
+      detailedViewRow: row 
+    });
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({ 
+      open: false,
+      detailedViewRow: null 
+    });
   };
+
+  displayDate = (date) => {
+    var d = new Date(date);
+    console.log(d)
+    return d.toString()
+  }
 
   render() {
     const { classes } = this.props;
@@ -99,9 +116,54 @@ class CustomPaginationActionsTable extends React.Component {
     )}      
     )
     return (
-      <Paper className={classes.root}>
+      <Paper className={classes.root}>      
       <Dialog open={this.state.open} onClose={() => this.toggleOpen(false, null)} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">My Modal</DialogTitle>
+        <DialogTitle id="form-dialog-title">Detailed Event View for: {this.state.detailedViewRow ? this.state.detailedViewRow.normalized_name : null}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <Grid container spacing={24}>
+              <Grid item  xs={12} md={12}>
+              <Typography gutterBottom variant="subtitle2">
+                  Name
+              </Typography>
+              <Typography component="p">
+                {this.state.detailedViewRow ? this.state.detailedViewRow.name : null}
+              </Typography>
+              <Typography gutterBottom variant="subtitle2">
+                  Created At
+              </Typography>
+              <Typography component="p">
+                {this.state.detailedViewRow ? this.displayDate(this.state.detailedViewRow.created_at) : null}
+              </Typography>
+              <Typography gutterBottom variant="subtitle2">
+                  Status
+              </Typography>
+              <Typography component="p">
+                {this.state.detailedViewRow ? this.state.detailedViewRow.status : null}
+              </Typography> 
+              <Typography gutterBottom variant="subtitle2">
+                Description
+              </Typography>
+              <Typography component="p">
+                {this.state.detailedViewRow ? this.state.detailedViewRow.description : null}
+              </Typography>              
+                </Grid>
+                <Grid item  xs={12} md={12}>
+                  <ChipInput                  
+                    value={this.state.detailedViewRow ? this.state.detailedViewRow.keywords : []}                                        
+                    label="Keywords"                                                            
+                    fullWidth
+                    newChipKeyCodes={[13, 188]}
+                    margin="dense"
+                    disabled
+                />
+              </Grid>
+            </Grid>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={ () => this.toggleOpen(false)} color="primary">Close</Button>          
+        </DialogActions>
       </Dialog>
         <div className={classes.tableWrapper}>
           
