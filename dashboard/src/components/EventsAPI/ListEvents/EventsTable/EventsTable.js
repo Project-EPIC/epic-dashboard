@@ -46,6 +46,7 @@ class CustomPaginationActionsTable extends React.Component {
     rows: [],
     page: 0,
     rowsPerPage: 50,
+    open: false,
   };
 
   handleChangePage = (event, page) => {
@@ -54,6 +55,24 @@ class CustomPaginationActionsTable extends React.Component {
 
   handleChangeRowsPerPage = event => {
     this.setState({ page: 0, rowsPerPage: event.target.value });
+  };
+
+  toggleOpen = (state) => () => {
+    this.setState({
+      ...state,
+      open: state,
+    });
+  };
+
+
+
+  handleOpen = (row) => {        
+    console.log(row)
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
   };
 
   render() {
@@ -72,21 +91,21 @@ class CustomPaginationActionsTable extends React.Component {
       <a  href="# " onClick={(e) => {e.preventDefault();this._onLinkClickHandler("NOT_ACTIVE", row.normalized_name)}}><Pause className={classes.icon} id={"pause-"+row.normalized_name}/></a>
       :
       <a  href="# " onClick={(e) => {e.preventDefault();this._onLinkClickHandler("ACTIVE", row.normalized_name)}}><PlayArrow className={classes.icon} id={"start-"+row.normalized_name}/></a> 
-      return (
-        <TableRow key={row.normalized_name}>
-          <TableCell align="left">{row.name}</TableCell>
-          <TableCell align="left">{row.description}</TableCell>
-          {/* <TableCell align="left">{keywords}</TableCell> */}
-          <TableCell align="left">{row.status}</TableCell>
-          <TableCell align="left">{button}</TableCell>
-        </TableRow>
+      return (         
+          <TableRow key={row.normalized_name} onClick={() => this.handleOpen(row)} >
+            <TableCell align="left" id={row.normalized_name + '_name'}>{row.name}</TableCell>
+            <TableCell align="left" id={row.normalized_name + '_description'}>{row.description}</TableCell>
+            {/* <TableCell align="left">{keywords}</TableCell> */}
+            <TableCell align="left" id={row.normalized_name + '_status'}>{row.status}</TableCell>
+            <TableCell align="left">{button}</TableCell>
+          </TableRow>                   
     )}      
     )
     return (
       <Paper className={classes.root}>
         <div className={classes.tableWrapper}>
           
-          <Table className={classes.table}>
+          <Table className={classes.table} >
             <TableHead>
               <TableRow>                
                  {
