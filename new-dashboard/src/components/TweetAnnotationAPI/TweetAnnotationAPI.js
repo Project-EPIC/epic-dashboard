@@ -5,6 +5,7 @@ import EventsTable from "../EventsAPI/ListEvents/EventsTable/EventsTable";
 import CreateEvent from "../EventsAPI/CreateEvent/CreateEvent";
 import Header from "../common-components/Header/Header";
 import { withStyles } from '@material-ui/core/styles';
+import Content from "./Content/Content";
 
 
 export const styles = theme => ({
@@ -44,8 +45,9 @@ class TweetAnnotation extends Component {
         <Header onDrawerToggle={this.props.onDrawerToggle} title={title} renderTabs={this.headerTabs}/>
         {/* <div className={classes.Main}>               */}
           <main className={classes.mainContent}>
-            <CreateEvent classes={classes}/>
-            <EventsTable/>                   
+            {/* <CreateEvent classes={classes}/> */}
+            {/* <EventsTable/>                    */}
+            <Content tabValue={this.state.tabValue}/> 
           </main>
         {/* </div> */}
       </div>
