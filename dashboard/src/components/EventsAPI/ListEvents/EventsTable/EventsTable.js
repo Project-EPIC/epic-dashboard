@@ -28,6 +28,16 @@ import Button from "@material-ui/core/Button";
 
 
 class CustomPaginationActionsTable extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      rows: [],
+      page: 0,
+      rowsPerPage: 50,
+      open: false,
+      detailedViewRow: null
+    };
+  }
   componentDidMount() {    
     this.props.fetchEvents();    
   }
@@ -50,13 +60,6 @@ class CustomPaginationActionsTable extends React.Component {
     });
     this.setState({rows: events})
   }
-  state = {
-    rows: [],
-    page: 0,
-    rowsPerPage: 50,
-    open: false,
-    detailedViewRow: null
-  };
 
   handleChangePage = (event, page) => {
     this.setState({ page });
