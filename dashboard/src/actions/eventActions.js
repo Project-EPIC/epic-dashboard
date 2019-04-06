@@ -24,7 +24,7 @@ export const createEvent = (eventData) => dispatch => {
         throw Error("Not authed")
     }
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch('http://34.95.114.189/events', {
+        fetch('http://34.95.114.189/events/', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
