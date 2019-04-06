@@ -67,9 +67,7 @@ class CustomPaginationActionsTable extends React.Component {
   };
 
 
-  toggleOpen = (row, state) => {
-    console.log(`handle open clicked ..${state}`)
-    console.log(row)
+  toggleOpen = (row, state) => {    
     this.setState({ 
       open: state,
       detailedViewRow: row 
@@ -84,8 +82,7 @@ class CustomPaginationActionsTable extends React.Component {
   };
 
   displayDate = (date) => {
-    var d = new Date(date);
-    console.log(d)
+    var d = new Date(date);    
     return d.toString()
   }
 
