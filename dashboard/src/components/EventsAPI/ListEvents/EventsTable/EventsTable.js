@@ -15,7 +15,11 @@ import { connect } from 'react-redux';
 import { fetchEvents, modifyEvents } from "../../../../actions/eventActions";
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
-
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 
 
@@ -57,18 +61,11 @@ class CustomPaginationActionsTable extends React.Component {
     this.setState({ page: 0, rowsPerPage: event.target.value });
   };
 
-  toggleOpen = (state) => () => {
-    this.setState({
-      ...state,
-      open: state,
-    });
-  };
 
-
-
-  handleOpen = (row) => {        
+  toggleOpen = (row, state) => {
+    console.log(`handle open clicked ..${state}`)
     console.log(row)
-    this.setState({ open: true });
+    this.setState({ open: state });
   };
 
   handleClose = () => {
@@ -92,7 +89,7 @@ class CustomPaginationActionsTable extends React.Component {
       :
       <a  href="# " onClick={(e) => {e.preventDefault();this._onLinkClickHandler("ACTIVE", row.normalized_name)}}><PlayArrow className={classes.icon} id={"start-"+row.normalized_name}/></a> 
       return (         
-          <TableRow key={row.normalized_name} onClick={() => this.handleOpen(row)} >
+          <TableRow key={row.normalized_name} onClick={() => this.toggleOpen(row, true)} >
             <TableCell align="left" id={row.normalized_name + '_name'}>{row.name}</TableCell>
             <TableCell align="left" id={row.normalized_name + '_description'}>{row.description}</TableCell>
             {/* <TableCell align="left">{keywords}</TableCell> */}
@@ -103,6 +100,9 @@ class CustomPaginationActionsTable extends React.Component {
     )
     return (
       <Paper className={classes.root}>
+      <Dialog open={this.state.open} onClose={() => this.toggleOpen(false, null)} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">My Modal</DialogTitle>
+      </Dialog>
         <div className={classes.tableWrapper}>
           
           <Table className={classes.table} >
