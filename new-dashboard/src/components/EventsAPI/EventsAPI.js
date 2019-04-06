@@ -16,11 +16,9 @@ export const styles = theme => ({
 });
 
 class EventsAPI extends Component {
-
   render() { 
     const { classes } = this.props;   
-    const title = "Events Collection"
-    console.log('events api tabvalue is: ' + this.state.tabValue);
+    const title = "Events Collection"    
     return (
       <div className={classes.Main}>
         <Header onDrawerToggle={this.props.onDrawerToggle} title={title} />
