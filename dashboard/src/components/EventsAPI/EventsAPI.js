@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
 import EventsTable from "./ListEvents/EventsTable/EventsTable";
 import CreateEvent from "./CreateEvent/CreateEvent";
 import Header from "../common-components/Header/Header";
