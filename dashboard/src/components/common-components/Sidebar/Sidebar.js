@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -11,6 +10,8 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import sidebarRoutes from "../../../routes/sidebar_routes";
 import { styles } from "./styles";
+import { NavLink } from 'react-router-dom'
+
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import {
   FirebaseAuthConsumer
@@ -49,13 +50,13 @@ class Sidebar extends Component {
                   button
                   dense
                   key={childId}
-                  component={Link}
+                  component={NavLink}
                   to={targetUrl}
                   className={classNames(
                     classes.item,
                     classes.itemActionable,
-                    active && classes.itemActiveItem
                   )}
+                  activeClassName={classes.itemActiveItem}
                 >
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText

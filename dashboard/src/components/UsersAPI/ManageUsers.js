@@ -17,16 +17,12 @@ class ManageUsers extends React.Component {
         this.props.fetchUsers();
     }
     state = {
-        adminUsers: [],
-        disabledUsers: [],
-        otherUsers: [],
+        users: [],
     };
 
     render() {
         const { classes } = this.props;
-        this.adminUsers = this.props.users.filter(user => user.admin && !user.disabled);
-        this.disabledUsers = this.props.users.filter(user => user.disabled);
-        this.otherUsers = this.props.users.filter(user => !user.disabled && !user.admin);
+        this.users = this.props.users;
 
         return (
 
@@ -42,16 +38,16 @@ class ManageUsers extends React.Component {
                                     { title: 'Email', field: 'email' },
 
                                 ]}
-                                options={{ search: false, paging: false, actionsColumnIndex:-1 }}
-                                data={this.adminUsers}
+                                options={{ search: false, paging: false, actionsColumnIndex: -1 }}
+                                data={this.props.users.filter(user => user.admin && !user.disabled)}
                                 title="Users with access"
                                 actions={[
                                     {
-                                      icon: 'close',
-                                      tooltip: 'Disable user',
-                                      onClick: (event, rowData) => {
-                                        this.props.disableUser(rowData.uid);
-                                      },
+                                        icon: 'close',
+                                        tooltip: 'Disable user',
+                                        onClick: (event, rowData) => {
+                                            this.props.disableUser(rowData);  
+                                        },
                                     }]}
                             />
                         </Grid>
@@ -63,16 +59,17 @@ class ManageUsers extends React.Component {
                                     { title: 'Email', field: 'email' },
 
                                 ]}
-                                options={{ search: false, paging: false, actionsColumnIndex:-1 }}
-                                data={this.disabledUsers}
+                                options={{ search: false, paging: false, actionsColumnIndex: -1 }}
+                                data={this.props.users.filter(user => user.disabled)}
                                 title="Disabled users"
                                 actions={[
                                     {
-                                      icon: 'add',
-                                      tooltip: 'Enable user',
-                                      onClick: (event, rowData) => {
-                                        this.props.enableUser(rowData.uid);
-                                      },
+                                        icon: 'add',
+                                        tooltip: 'Enable user',
+                                        onClick: (event, rowData) => {
+                                            this.props.enableUser(rowData);
+                                            
+                                        },
                                     }]}
                             />
                         </Grid>
@@ -84,16 +81,16 @@ class ManageUsers extends React.Component {
                                     { title: 'Email', field: 'email' },
 
                                 ]}
-                                options={{ search: false, paging: false, actionsColumnIndex:-1 }}
-                                data={this.otherUsers}
+                                options={{ search: false, paging: false, actionsColumnIndex: -1 }}
+                                data={this.props.users.filter(user => !user.disabled && !user.admin)}
                                 title="Users without access"
                                 actions={[
                                     {
-                                      icon: 'add',
-                                      tooltip: 'Make user admin',
-                                      onClick: (event, rowData) => {
-                                        this.props.makeAdmin(rowData.uid);
-                                      },
+                                        icon: 'add',
+                                        tooltip: 'Make user admin',
+                                        onClick: (event, rowData) => {
+                                            this.props.makeAdmin(rowData);
+                                        },
                                     }]}
                             />
                         </Grid>
@@ -104,7 +101,7 @@ class ManageUsers extends React.Component {
         );
     }
 
-    
+
 }
 
 ManageUsers.propTypes = {
@@ -116,4 +113,4 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps, { fetchUsers: fetchUsers, makeAdmin: makeAdmin, disableUser:disableUser, enableUser:enableUser })(withStyles(styles)(ManageUsers));
+export default connect(mapStateToProps, { fetchUsers: fetchUsers, makeAdmin: makeAdmin, disableUser: disableUser, enableUser: enableUser })(withStyles(styles)(ManageUsers));
