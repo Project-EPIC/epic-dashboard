@@ -9,20 +9,13 @@ import MaterialTable from 'material-table'
 import Header from "../common-components/Header/Header";
 
 
-
-
-
 class ManageUsers extends React.Component {
     componentDidMount() {
         this.props.fetchUsers();
     }
-    state = {
-        users: [],
-    };
 
     render() {
         const { classes } = this.props;
-        this.users = this.props.users;
 
         return (
 
@@ -33,7 +26,6 @@ class ManageUsers extends React.Component {
                     <Grid container spacing={24}>
                         <Grid item xs={12} sm={6}>
                             <MaterialTable
-                                // className={classes.table}
                                 columns={[
                                     { title: 'Email', field: 'email' },
 
@@ -54,7 +46,6 @@ class ManageUsers extends React.Component {
 
                         <Grid item xs={12} sm={6}>
                             <MaterialTable
-                                // className={classes.table}
                                 columns={[
                                     { title: 'Email', field: 'email' },
 
