@@ -1,5 +1,6 @@
 import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT } from './types';
 import firebase from "firebase";
+import fetch from 'cross-fetch';
 
 export const fetchEvents = () => dispatch => {
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
