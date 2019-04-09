@@ -17,7 +17,7 @@ class TweetAnnotation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabValue: "list-events"
+      tabValue: "annotate-tweet"
     }
 }
 
@@ -28,9 +28,8 @@ class TweetAnnotation extends Component {
   headerTabs = () => {
     console.log(`headerTabs() called: ${this.state.tabValue}`);
     return (
-      <Tabs value={this.state.tabValue} onChange={this.onTabChange} textColor="inherit">
-        <Tab textColor="inherit" label="List Events"  value="list-events"/>          
-        <Tab textColor="inherit" label="Create Events" value="create-events" />                                    
+      <Tabs value={this.state.tabValue} onChange={this.onTabChange} textColor="inherit">                         
+        <Tab textColor="inherit" label="Annotate Tweet" value="annotate-tweet" />                                    
       </Tabs>  
     )
   }

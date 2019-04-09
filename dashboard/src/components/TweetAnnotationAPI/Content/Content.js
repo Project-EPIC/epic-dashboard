@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import { styles } from "./styles";
-import EventsTable from "../../EventsAPI/ListEvents/EventsTable/EventsTable";
+import TweetAnnotationTable from "../TweetAnnotationTable/TweetAnnotationTable";
 import CreateEvent from "../../EventsAPI/CreateEvent/CreateEvent";
 
 
@@ -13,18 +13,10 @@ class Content extends Component {
   const { classes } = this.props;  
   console.log(this.props.tabValue)
 
-  return (
-      <div>
-        {this.props.tabValue === "list-events" && <EventsTable/>}
-        <div className={classes.contentWrapper}>  
-          {this.props.tabValue === "create-events" && 
-            (<Paper className={classes.paper}>  
-            <CreateEvent classes={classes}/>
-            </Paper>)
-          }
-        </div>
-      </div>                  
-    
+  return (      
+        <div className={classes.contentWrapper}>             
+          {this.props.tabValue === "annotate-tweet" && <TweetAnnotationTable/>}
+        </div>          
   );
 }
 }
@@ -34,7 +26,3 @@ Content.propTypes = {
 };
 
 export default withStyles(styles)(Content);
-
-
-/*
-*/
