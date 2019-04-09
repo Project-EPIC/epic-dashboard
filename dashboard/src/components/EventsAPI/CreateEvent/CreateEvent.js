@@ -148,8 +148,7 @@ class CreateEvent extends Component {
                 />
               </Grid>
               <Grid item  xs={12} md={12}>
-                <ChipInput
-                  
+                <ChipInput                  
                   value={this.state.tags}
                   onAdd={(chip) => this.handleAddChip(chip)}
                   onDelete={(chip, index) => this.handleDeleteChip(chip, index)}

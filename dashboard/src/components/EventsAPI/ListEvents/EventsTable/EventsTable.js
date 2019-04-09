@@ -120,6 +120,7 @@ class CustomPaginationActionsTable extends React.Component {
       <Dialog open={this.state.open} onClose={() => this.toggleOpen(false, null)} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Detailed Event View for: {this.state.detailedViewRow ? this.state.detailedViewRow.normalized_name : null}</DialogTitle>
         <DialogContent>
+          <DialogContentText>
             <Grid container spacing={24}>
               <Grid item  xs={12} md={12}>
               <Typography gutterBottom variant="subtitle2">
@@ -158,9 +159,10 @@ class CustomPaginationActionsTable extends React.Component {
                 />
               </Grid>
             </Grid>
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={ () => this.toggleOpen(null, false)} color="primary">Close</Button>          
+          <Button onClick={ () => this.toggleOpen(null,false)} color="primary">Close</Button>          
         </DialogActions>
       </Dialog>
         <div className={classes.tableWrapper}>
