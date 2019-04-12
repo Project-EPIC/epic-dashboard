@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { styles } from "./styles";
 import { connect } from 'react-redux';
-import { fetchEvents, modifyEvents } from "../../../actions/eventActions";
+import { fetchEvents, modifyEvents } from "../../../../actions/eventActions";
 import Grid from "@material-ui/core/Grid";
 import TweetCard from "../TweetCard/TweetCard";
 

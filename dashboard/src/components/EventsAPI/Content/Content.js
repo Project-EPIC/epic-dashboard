@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import { styles } from "./styles";
-import TweetAnnotationTable from "../../TweetAnnotationAPI/TweetAnnotationTable/TweetAnnotationTable";
+import TweetAnnotationTable from "../TweetAnnotation/TweetAnnotationTable/TweetAnnotationTable";
 import CreateEvent from "../../EventsAPI/CreateEvent/CreateEvent";
 import EventsTable from "../ListEvents/EventsTable/EventsTable";
 
