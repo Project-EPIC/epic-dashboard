@@ -116,32 +116,31 @@ class CustomPaginationActionsTable extends React.Component {
       <Paper className={classes.root}>      
       <Dialog open={this.state.open} onClose={() => this.toggleOpen(false, null)} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Detailed Event View for: {this.state.detailedViewRow ? this.state.detailedViewRow.normalized_name : null}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
+        <DialogContent>          
             <Grid container spacing={24}>
               <Grid item  xs={12} md={12}>
               <Typography gutterBottom variant="subtitle2">
                   Name
               </Typography>
-              <Typography component="p">
+              <Typography component="span">
                 {this.state.detailedViewRow ? this.state.detailedViewRow.name : null}
               </Typography>
               <Typography gutterBottom variant="subtitle2">
                   Created At
               </Typography>
-              <Typography component="p">
+              <Typography component="span">
                 {this.state.detailedViewRow ? this.displayDate(this.state.detailedViewRow.created_at) : null}
               </Typography>
               <Typography gutterBottom variant="subtitle2">
                   Status
               </Typography>
-              <Typography component="p">
+              <Typography component="span">
                 {this.state.detailedViewRow ? this.state.detailedViewRow.status : null}
               </Typography> 
               <Typography gutterBottom variant="subtitle2">
                 Description
               </Typography>
-              <Typography component="p">
+              <Typography component="span">
                 {this.state.detailedViewRow ? this.state.detailedViewRow.description : null}
               </Typography>              
                 </Grid>
@@ -155,8 +154,7 @@ class CustomPaginationActionsTable extends React.Component {
                     disabled
                 />
               </Grid>
-            </Grid>
-          </DialogContentText>
+            </Grid>          
         </DialogContent>
         <DialogActions>
           <Button onClick={ () => this.toggleOpen(null,false)} color="primary">Close</Button>          
