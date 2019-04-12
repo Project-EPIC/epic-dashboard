@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import { fetchEvents, modifyEvents } from "../../../../actions/eventActions";
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
+import Edit from '@material-ui/icons/Edit';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -92,26 +93,21 @@ class CustomPaginationActionsTable extends React.Component {
   render() {
     const { classes } = this.props;
     const { rowsPerPage, page } = this.state;    
-    const thArray = ["Event Name", "Description", "Status", "Start/Pause"];
+    const thArray = ["Event Name", "Description", "Status", "Start/Pause", "Annotate Tweet"];
     const rows = this.props.myevents;
     const tablecontents = rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
-      // let keywords = "";
-      // row.keywords.map(kw => {
-      //   keywords += kw + ","
-      //   return keywords
-      // });
-      // keywords = keywords.replace(/,\s*$/, "");
-      const button = row.status === "ACTIVE" ?  
+      const playPauseButton = row.status === "ACTIVE" ?  
       <a  href="# " onClick={(e) => {e.preventDefault();this._onLinkClickHandler("NOT_ACTIVE", row.normalized_name)}}><Pause className={classes.icon} id={"pause-"+row.normalized_name}/></a>
       :
       <a  href="# " onClick={(e) => {e.preventDefault();this._onLinkClickHandler("ACTIVE", row.normalized_name)}}><PlayArrow className={classes.icon} id={"start-"+row.normalized_name}/></a> 
+      const annotateTweetButton = <a href="# " onClick={(e) => {e.preventDefault(); this._annotateTweetHandler()}}><Edit className={classes.icon} id={"annotate-"+row.normalized_name}/></a>
       return (         
           <TableRow key={row.normalized_name} onClick={() => this.toggleOpen(row, true)} >
             <TableCell align="left" id={row.normalized_name + '_name'}>{row.name}</TableCell>
             <TableCell align="left" id={row.normalized_name + '_description'}>{row.description}</TableCell>
-            {/* <TableCell align="left">{keywords}</TableCell> */}
             <TableCell align="left" id={row.normalized_name + '_status'}>{row.status}</TableCell>
-            <TableCell align="left">{button}</TableCell>
+            <TableCell align="left">{playPauseButton}</TableCell>
+            <TableCell align="left">{annotateTweetButton}</TableCell>
           </TableRow>                   
     )}      
     )
