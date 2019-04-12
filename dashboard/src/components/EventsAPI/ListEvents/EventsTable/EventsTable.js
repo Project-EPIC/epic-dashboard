@@ -89,6 +89,8 @@ class CustomPaginationActionsTable extends React.Component {
   _annotateTweetHandler(e) {
     console.log(`helloooo in _annotateTweetHandler ${e}`)
     // this.props.onTabChange(e, "annotate-tweet");    
+    //annotate-tweet
+    this.props.onTabChange(null,"annotate-tweet");
     this.setState({      
       displayAnnotation: true
     })

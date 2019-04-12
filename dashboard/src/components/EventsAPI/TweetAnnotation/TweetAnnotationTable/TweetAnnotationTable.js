@@ -101,7 +101,7 @@ class TweetAnnotationTable extends React.Component {
               }}
               detailPanel={rowData => {
                 return (
-                  <TweetCard classes={classes}/>
+                  <TweetCard/>
                 )
               }}
             />
