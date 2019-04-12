@@ -2,16 +2,8 @@ import React, { Component } from "react";
 import EventsTable from "./ListEvents/EventsTable/EventsTable";
 import CreateEvent from "./CreateEvent/CreateEvent";
 import Header from "../common-components/Header/Header";
-import { withStyles } from '@material-ui/core/styles';
 
 
-
-export const styles = theme => ({
-  Main: {
-    minHeight: '100%',
-    display:"block",
-  },
-});
 
 class EventsAPI extends Component {
   render() { 
@@ -29,4 +21,4 @@ class EventsAPI extends Component {
   }
 }
 
-export default withStyles(styles)(EventsAPI);
+export default EventsAPI;

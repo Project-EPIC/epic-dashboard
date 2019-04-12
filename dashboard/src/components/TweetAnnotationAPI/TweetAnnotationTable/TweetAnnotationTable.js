@@ -6,6 +6,7 @@ import { styles } from "./styles";
 import { connect } from 'react-redux';
 import { fetchEvents, modifyEvents } from "../../../actions/eventActions";
 import Grid from "@material-ui/core/Grid";
+import TweetCard from "../TweetCard/TweetCard";
 
 import MaterialTable from 'material-table'
 
@@ -96,14 +97,7 @@ class TweetAnnotationTable extends React.Component {
               title="Detail Panel Example"
               detailPanel={rowData => {
                 return (
-                  <iframe
-                    width="100%"
-                    height="315"
-                    src="https://www.youtube.com/embed/C0DPdy98e4c"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                  />
+                  <TweetCard classes={classes}/>
                 )
               }}
             />
