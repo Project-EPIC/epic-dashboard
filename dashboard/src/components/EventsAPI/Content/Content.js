@@ -19,8 +19,10 @@ class Content extends Component {
           {this.props.tabValue === "annotate-tweet" && <TweetAnnotationTable/>}
           {this.props.tabValue === "list-events" && (
             <div>
-              <CreateEvent classes={classes}/>
-              <EventsTable/>                    
+              <Paper className={classes.root}>  
+                <CreateEvent/>
+                <EventsTable/>                    
+              </Paper>
             </div>
             )}
         </div>          
