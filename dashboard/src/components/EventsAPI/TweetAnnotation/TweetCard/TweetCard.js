@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = {
   card: {
-    maxWidth: 345, // should be set to this.     
+    maxWidth: 555, // should be set to this.     
     // maxWidth: '100%',
   },
   media: {
@@ -73,11 +73,10 @@ class TweetCard extends Component {
         <ChipInput                  
                   value={this.state.tags}
                   onAdd={(chip) => this.handleAddChip(chip)}
-                  onDelete={(chip, index) => this.handleDeleteChip(chip, index)}
-                  label="Add Annotations"
-                  helperText={this.state.tagsError !== "" ? this.state.tagsError : "Keywords to use to collect tweets."}
+                  onDelete={(chip, index) => this.handleDeleteChip(chip, index)}                  
+                  helperText={this.state.tagsError !== "" ? this.state.tagsError : "annotations to annotate tweets"}
                   error={this.state.tagsError !== ""}
-                  placeholder={"Enter annotated followed by an Enter"}
+                  placeholder={"Enter annotation followed by an Enter"}
                   fullWidth
                   newChipKeyCodes={[13, 188]}
                   margin="dense"
