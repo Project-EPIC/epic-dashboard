@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { styles } from "./styles";
+import Avatar from "@material-ui/core/Avatar";
 import { connect } from 'react-redux';
 import { fetchUsers, makeAdmin, enableUser, disableUser } from "../../actions/userActions";
 import MaterialTable from 'material-table'
@@ -27,6 +28,13 @@ class ManageUsers extends React.Component {
                         <Grid item xs={12} sm={6}>
                             <MaterialTable
                                 columns={[
+                                    {
+                                        title: "Photo", field: 'photoURL', render: rowData =>
+                                            <Avatar
+                                                className={classes.avatar}
+                                                src={rowData.photoURL}
+                                            />
+                                    },
                                     { title: 'Email', field: 'email' },
 
                                 ]}
@@ -38,7 +46,7 @@ class ManageUsers extends React.Component {
                                         icon: 'close',
                                         tooltip: 'Disable user',
                                         onClick: (event, rowData) => {
-                                            this.props.disableUser(rowData);  
+                                            this.props.disableUser(rowData);
                                         },
                                     }]}
                             />
@@ -46,9 +54,15 @@ class ManageUsers extends React.Component {
 
                         <Grid item xs={12} sm={6}>
                             <MaterialTable
-                                columns={[
+                                columns={[                                  
+                                    {
+                                        title: "Photo", field: 'photoURL', render: rowData =>
+                                            <Avatar
+                                                className={classes.avatar}
+                                                src={rowData.photoURL}
+                                            />
+                                    },
                                     { title: 'Email', field: 'email' },
-
                                 ]}
                                 options={{ search: false, paging: false, actionsColumnIndex: -1 }}
                                 data={this.props.users.filter(user => user.disabled)}
@@ -59,7 +73,7 @@ class ManageUsers extends React.Component {
                                         tooltip: 'Enable user',
                                         onClick: (event, rowData) => {
                                             this.props.enableUser(rowData);
-                                            
+
                                         },
                                     }]}
                             />
@@ -69,6 +83,13 @@ class ManageUsers extends React.Component {
                             <MaterialTable
                                 // className={classes.table}
                                 columns={[
+                                    {
+                                        title: "Photo", field: 'photoURL', render: rowData =>
+                                            <Avatar
+                                                className={classes.avatar}
+                                                src={rowData.photoURL}
+                                            />
+                                    },
                                     { title: 'Email', field: 'email' },
 
                                 ]}
