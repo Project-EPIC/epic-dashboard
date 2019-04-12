@@ -49,7 +49,8 @@ class CustomPaginationActionsTable extends React.Component {
     }
   }
 
-  _onLinkClickHandler = (status, normalized_name) => {
+  _onLinkClickHandler = (status, normalized_name) => {    
+    this.setState({open: false})
     this.props.modifyEvents(status, normalized_name);
     let events = [...this.state.rows];
     events.find((o, i) => {     
@@ -102,10 +103,10 @@ class CustomPaginationActionsTable extends React.Component {
       <a  href="# " onClick={(e) => {e.preventDefault();this._onLinkClickHandler("ACTIVE", row.normalized_name)}}><PlayArrow className={classes.icon} id={"start-"+row.normalized_name}/></a> 
       const annotateTweetButton = <a href="# " onClick={(e) => {e.preventDefault(); this._annotateTweetHandler()}}><Edit className={classes.icon} id={"annotate-"+row.normalized_name}/></a>
       return (         
-          <TableRow key={row.normalized_name} onClick={() => this.toggleOpen(row, true)} >
-            <TableCell align="left" id={row.normalized_name + '_name'}>{row.name}</TableCell>
-            <TableCell align="left" id={row.normalized_name + '_description'}>{row.description}</TableCell>
-            <TableCell align="left" id={row.normalized_name + '_status'}>{row.status}</TableCell>
+          <TableRow key={row.normalized_name} >
+            <TableCell align="left" id={row.normalized_name + '_name'}  onClick={() => this.toggleOpen(row, true)}>{row.name}</TableCell>
+            <TableCell align="left" id={row.normalized_name + '_description'}  onClick={() => this.toggleOpen(row, true)} >{row.description}</TableCell>
+            <TableCell align="left" id={row.normalized_name + '_status'}  onClick={() => this.toggleOpen(row, true)} >{row.status}</TableCell>
             <TableCell align="left">{playPauseButton}</TableCell>
             <TableCell align="left">{annotateTweetButton}</TableCell>
           </TableRow>                   
