@@ -16,15 +16,8 @@ import { fetchEvents, modifyEvents } from "../../../../actions/eventActions";
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
 import Edit from '@material-ui/icons/Edit';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Grid from "@material-ui/core/Grid";
-import Typography from '@material-ui/core/Typography';
-import ChipInput from 'material-ui-chip-input'
-import Button from "@material-ui/core/Button";
-
+import { Redirect } from "react-router-dom";
+import DetailedEventDialog from "../DetailedEventDialog/DetailedEventDialog";
 
 
 class CustomPaginationActionsTable extends React.Component {
@@ -35,7 +28,8 @@ class CustomPaginationActionsTable extends React.Component {
       page: 0,
       rowsPerPage: 50,
       open: false,
-      detailedViewRow: null
+      detailedViewRow: null,
+      displayAnnotation: false
     };
   }
   componentDidMount() {    
@@ -48,7 +42,8 @@ class CustomPaginationActionsTable extends React.Component {
     }
   }
 
-  _onLinkClickHandler = (status, normalized_name) => {    
+  _onLinkClickHandler = (status, normalized_name) => {   
+    console.log('in handle link click') 
     this.setState({open: false})
     this.props.modifyEvents(status, normalized_name);
     let events = [...this.state.rows];
@@ -71,7 +66,8 @@ class CustomPaginationActionsTable extends React.Component {
   };
 
 
-  toggleOpen = (row, state) => {    
+  toggleOpen = (row, state) => { 
+    console.log(`in toggle open`)   
     this.setState({ 
       open: state,
       detailedViewRow: row 
@@ -91,10 +87,20 @@ class CustomPaginationActionsTable extends React.Component {
   }
 
   _annotateTweetHandler(e) {
-    console.log(`in _annotateTweetHandler ${e}`)
-    this.props.onTabChange(e, "annotate-tweet");    
+    console.log(`helloooo in _annotateTweetHandler ${e}`)
+    // this.props.onTabChange(e, "annotate-tweet");    
+    this.setState({      
+      displayAnnotation: true
+    })
+    
   }
   render() {
+    {
+      if(this.state.displayAnnotation == true) {
+        return <Redirect to='/dashboard' />
+      }
+    }  
+
     const { classes } = this.props;
     const { rowsPerPage, page } = this.state;    
     const thArray = ["Event Name", "Description", "Status", "Start/Pause", "Annotate Tweet"];
@@ -115,54 +121,9 @@ class CustomPaginationActionsTable extends React.Component {
           </TableRow>                   
     )}      
     )
-    return (
-      <Paper className={classes.root}>      
-      <Dialog open={this.state.open} onClose={() => this.toggleOpen(false, null)} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Detailed Event View for: {this.state.detailedViewRow ? this.state.detailedViewRow.normalized_name : null}</DialogTitle>
-        <DialogContent>          
-            <Grid container spacing={24}>
-              <Grid item  xs={12} md={12}>
-              <Typography gutterBottom variant="subtitle2">
-                  Name
-              </Typography>
-              <Typography component="span">
-                {this.state.detailedViewRow ? this.state.detailedViewRow.name : null}
-              </Typography>
-              <Typography gutterBottom variant="subtitle2">
-                  Created At
-              </Typography>
-              <Typography component="span">
-                {this.state.detailedViewRow ? this.displayDate(this.state.detailedViewRow.created_at) : null}
-              </Typography>
-              <Typography gutterBottom variant="subtitle2">
-                  Status
-              </Typography>
-              <Typography component="span">
-                {this.state.detailedViewRow ? this.state.detailedViewRow.status : null}
-              </Typography> 
-              <Typography gutterBottom variant="subtitle2">
-                Description
-              </Typography>
-              <Typography component="span">
-                {this.state.detailedViewRow ? this.state.detailedViewRow.description : null}
-              </Typography>              
-                </Grid>
-                <Grid item  xs={12} md={12}>
-                  <ChipInput                  
-                    value={this.state.detailedViewRow ? this.state.detailedViewRow.keywords : []}                                        
-                    label="Keywords"                                                            
-                    fullWidth
-                    newChipKeyCodes={[13, 188]}
-                    margin="dense"
-                    disabled
-                />
-              </Grid>
-            </Grid>          
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={ () => this.toggleOpen(null,false)} color="primary">Close</Button>          
-        </DialogActions>
-      </Dialog>
+    return (      
+      <Paper className={classes.root}> 
+      <DetailedEventDialog open={this.state.open} toggleOpen={this.toggleOpen} detailedViewRow={this.state.detailedViewRow}/>   
         <div className={classes.tableWrapper}>
           
           <Table className={classes.table} >
