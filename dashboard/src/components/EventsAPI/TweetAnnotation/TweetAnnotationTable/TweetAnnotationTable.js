@@ -95,6 +95,10 @@ class TweetAnnotationTable extends React.Component {
                 { name: 'Zerya Betül', surname: 'Baran', birthYear: 1987, birthCity: 63 },
               ]}
               title="Detail Panel Example"
+              options={{
+                pageSize: 10,
+                pageSizeOptions: [10,20,30]
+              }}
               detailPanel={rowData => {
                 return (
                   <TweetCard classes={classes}/>
