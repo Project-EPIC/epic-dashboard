@@ -21,7 +21,7 @@ class Content extends Component {
             <div>
               <Paper className={classes.root}>  
                 <CreateEvent/>
-                <EventsTable/>                    
+                <EventsTable onTabChange={this.props.onTabChange}/>                    
               </Paper>
             </div>
             )}

@@ -21,6 +21,8 @@ class EventsAPI extends Component {
   }
 
   onTabChange = (event, tabValue) => {
+    console.log(`onTabChange called: ${tabValue}`)
+    console.log(event)
     this.setState({ tabValue });
   };
 
@@ -43,7 +45,7 @@ class EventsAPI extends Component {
         <Header onDrawerToggle={this.props.onDrawerToggle} title={title} renderTabs={this.headerTabs}/>
         <div className={classes.Main}>
           <main className={classes.mainContent}>            
-            <Content tabValue={this.state.tabValue}/>
+            <Content tabValue={this.state.tabValue} onTabChange={this.onTabChange}/>
           </main>
         </div>
       </div>
