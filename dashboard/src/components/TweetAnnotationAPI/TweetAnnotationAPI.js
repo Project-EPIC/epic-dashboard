@@ -38,7 +38,7 @@ class TweetAnnotation extends Component {
   render() {
     const title = "Tweet Annotation";
     const { classes } = this.props;
-    console.log('tweet anno api tabvalue is: ' + this.state.tabValue);
+    
     return (      
       <div>
         <Header onDrawerToggle={this.props.onDrawerToggle} title={title} renderTabs={this.headerTabs}/>
