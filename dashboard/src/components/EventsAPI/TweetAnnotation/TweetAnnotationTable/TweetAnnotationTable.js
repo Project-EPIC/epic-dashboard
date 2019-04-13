@@ -12,69 +12,9 @@ import MaterialTable from 'material-table'
 
 
 class TweetAnnotationTable extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      rows: [],
-      page: 0,
-      rowsPerPage: 50,
-      open: false,
-      detailedViewRow: null
-    };
-  }
-  // componentDidMount() {    
-  //   this.props.fetchEvents();    
-  // }
-
-  // componentWillReceiveProps(nextProps) {        
-  //   if(nextProps.newEvent) {
-  //     this.props.myevents.unshift(nextProps.newEvent);
-  //   }
-  // }
-
-  // _onLinkClickHandler = (status, normalized_name) => {
-  //   this.props.modifyEvents(status, normalized_name);
-  //   let events = [...this.state.rows];
-  //   events.find((o, i) => {     
-  //     if (o.normalized_name === normalized_name) {
-  //         events[i].status = status
-  //         return true; // stop searching
-  //     }
-  //     return false;
-  //   });
-  //   this.setState({rows: events})
-  // }
-
-  // handleChangePage = (event, page) => {
-  //   this.setState({ page });
-  // };
-
-  // handleChangeRowsPerPage = event => {
-  //   this.setState({ page: 0, rowsPerPage: event.target.value });
-  // };
-
-
-  // toggleOpen = (row, state) => {    
-  //   this.setState({ 
-  //     open: state,
-  //     detailedViewRow: row 
-  //   });
-  // };
-
-  // handleClose = () => {
-  //   this.setState({ 
-  //     open: false,
-  //     detailedViewRow: null 
-  //   });
-  // };
-
-  // displayDate = (date) => {
-  //   var d = new Date(date);    
-  //   return d.toString()
-  // }
-
   render() {
     const { classes } = this.props;    
+    console.log(`in TweetAnnotationTable: ${this.props.annotateEvent}`)
     return (
       <Paper className={classes.root}>      
         <main className={classes.mainContent}>
@@ -116,9 +56,8 @@ TweetAnnotationTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  myevents: state.eventsReducer.myevents,
-  newEvent: state.eventsReducer.newEvent    
+const mapStateToProps = state => ({    
+  annotateEvent: state.eventsReducer.annotateEvent    
 });
 
 

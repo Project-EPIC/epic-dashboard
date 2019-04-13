@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import { TablePaginationActionsWrapped } from "../../../common-components/TablePaginationActions/TablePaginationActions";
 import { styles } from "./styles";
 import { connect } from 'react-redux';
-import { fetchEvents, modifyEvents } from "../../../../actions/eventActions";
+import { fetchEvents, modifyEvents, annotateTweet } from "../../../../actions/eventActions";
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
 import Edit from '@material-ui/icons/Edit';
@@ -86,23 +86,12 @@ class CustomPaginationActionsTable extends React.Component {
     return d.toString()
   }
 
-  _annotateTweetHandler(e) {
-    console.log(`helloooo in _annotateTweetHandler ${e}`)
-    // this.props.onTabChange(e, "annotate-tweet");    
-    //annotate-tweet
-    this.props.onTabChange(null,"annotate-tweet");
-    this.setState({      
-      displayAnnotation: true
-    })
-    
+  _annotateTweetHandler(e, normalized_name) {
+    console.log(`in annotate TweetHandler : ${e} and name is ${normalized_name}`);
+    this.props.annotateTweet(normalized_name);
+    this.props.onTabChange(e,"annotate-tweet");    
   }
   render() {
-    {
-      if(this.state.displayAnnotation == true) {
-        return <Redirect to='/dashboard' />
-      }
-    }  
-
     const { classes } = this.props;
     const { rowsPerPage, page } = this.state;    
     const thArray = ["Event Name", "Description", "Status", "Start/Pause", "Annotate Tweet"];
@@ -112,7 +101,7 @@ class CustomPaginationActionsTable extends React.Component {
       <a  href="# " onClick={(e) => {e.preventDefault();this._onLinkClickHandler("NOT_ACTIVE", row.normalized_name)}}><Pause className={classes.icon} id={"pause-"+row.normalized_name}/></a>
       :
       <a  href="# " onClick={(e) => {e.preventDefault();this._onLinkClickHandler("ACTIVE", row.normalized_name)}}><PlayArrow className={classes.icon} id={"start-"+row.normalized_name}/></a> 
-      const annotateTweetButton = <a href="# " onClick={(e) => {e.preventDefault(); this._annotateTweetHandler()}}><Edit className={classes.icon} id={"annotate-"+row.normalized_name}/></a>
+      const annotateTweetButton = <a href="# " onClick={(e) => {e.preventDefault(); this._annotateTweetHandler(e, row.normalized_name)}}><Edit className={classes.icon} id={"annotate-"+row.normalized_name}/></a>
       return (         
           <TableRow key={row.normalized_name} >
             <TableCell align="left" id={row.normalized_name + '_name'}  onClick={() => this.toggleOpen(row, true)}>{row.name}</TableCell>
@@ -174,8 +163,15 @@ CustomPaginationActionsTable.propTypes = {
 
 const mapStateToProps = state => ({
   myevents: state.eventsReducer.myevents,
-  newEvent: state.eventsReducer.newEvent    
+  newEvent: state.eventsReducer.newEvent,
+  annotateEvent: state.eventsReducer.annotateEvent    
 });
 
+const mapDispatchToProps = {
+  fetchEvents: fetchEvents, 
+  modifyEvents: modifyEvents,
+  annotateTweet: annotateTweet
+}
 
-export default connect(mapStateToProps, {fetchEvents: fetchEvents, modifyEvents: modifyEvents})(withStyles(styles)(CustomPaginationActionsTable));
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CustomPaginationActionsTable));
