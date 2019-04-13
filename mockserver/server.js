@@ -19,7 +19,13 @@ app.get('/fetchevents', function (req, res, next) {
 
 app.put('/:normalized_name/:type', function (req, res, next) {    
     res.json(modifyevent)
-})  
+})
+
+app.get('/tweets/:eventId', function (req, res, next) {
+  let page = req.query.page;
+  // let limit = req.query.limit;
+  res.json(fetchEvents)
+})
 
 
 app.listen(9001, function () {

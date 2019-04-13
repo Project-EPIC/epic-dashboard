@@ -11,9 +11,7 @@ import EventsTable from "../ListEvents/EventsTable/EventsTable";
 
 class Content extends Component {
   render() {
-  const { classes } = this.props;  
-  console.log(this.props.tabValue)
-
+  const { classes } = this.props;    
   return (      
         <div className={classes.contentWrapper}>             
           {this.props.tabValue === "annotate-tweet" && <TweetAnnotationTable/>}

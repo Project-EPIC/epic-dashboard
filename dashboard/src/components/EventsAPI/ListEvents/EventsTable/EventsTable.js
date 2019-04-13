@@ -16,7 +16,6 @@ import { fetchEvents, modifyEvents, annotateTweet } from "../../../../actions/ev
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
 import Edit from '@material-ui/icons/Edit';
-import { Redirect } from "react-router-dom";
 import DetailedEventDialog from "../DetailedEventDialog/DetailedEventDialog";
 
 
@@ -43,7 +42,6 @@ class CustomPaginationActionsTable extends React.Component {
   }
 
   _onLinkClickHandler = (status, normalized_name) => {   
-    console.log('in handle link click') 
     this.setState({open: false})
     this.props.modifyEvents(status, normalized_name);
     let events = [...this.state.rows];
@@ -66,8 +64,7 @@ class CustomPaginationActionsTable extends React.Component {
   };
 
 
-  toggleOpen = (row, state) => { 
-    console.log(`in toggle open`)   
+  toggleOpen = (row, state) => {  
     this.setState({ 
       open: state,
       detailedViewRow: row 
@@ -87,7 +84,6 @@ class CustomPaginationActionsTable extends React.Component {
   }
 
   _annotateTweetHandler(e, normalized_name) {
-    console.log(`in annotate TweetHandler : ${e} and name is ${normalized_name}`);
     this.props.annotateTweet(normalized_name);
     this.props.onTabChange(e,"annotate-tweet");    
   }
@@ -163,8 +159,7 @@ CustomPaginationActionsTable.propTypes = {
 
 const mapStateToProps = state => ({
   myevents: state.eventsReducer.myevents,
-  newEvent: state.eventsReducer.newEvent,
-  annotateEvent: state.eventsReducer.annotateEvent    
+  newEvent: state.eventsReducer.newEvent     
 });
 
 const mapDispatchToProps = {

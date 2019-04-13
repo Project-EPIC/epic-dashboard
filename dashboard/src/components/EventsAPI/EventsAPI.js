@@ -21,13 +21,10 @@ class EventsAPI extends Component {
   }
 
   onTabChange = (event, tabValue) => {
-    console.log(`onTabChange called: ${tabValue}`)
-    console.log(event)
     this.setState({ tabValue });
   };
 
   headerTabs = () => {
-    console.log(`headerTabs() called: ${this.state.tabValue}`);
     return (
       <Tabs value={this.state.tabValue} onChange={this.onTabChange} textColor="inherit">                         
         <Tab textColor="inherit" label="List Events" value="list-events" />
@@ -38,8 +35,7 @@ class EventsAPI extends Component {
 
   render() { 
     const { classes } = this.props;   
-    const title = "Events Collection"
-    console.log('Events API Tabvalue: ' + this.state.tabValue);    
+    const title = "Events Collection";  
     return (
       <div>
         <Header onDrawerToggle={this.props.onDrawerToggle} title={title} />

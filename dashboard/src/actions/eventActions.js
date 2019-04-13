@@ -1,4 +1,4 @@
-import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, ANNOTATE_TWEET } from './types';
+import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, ANNOTATE_TWEET, EVENT_TWEETS } from './types';
 import firebase from "firebase";
 import fetch from 'cross-fetch';
 
@@ -72,4 +72,16 @@ export const annotateTweet = (normalized_name) => dispatch => {
             type: ANNOTATE_TWEET,
             payload: normalized_name
         }) 
+};
+
+export const fetchEventTweets = (eventId, page, numOfRecords) => dispatch => {   
+        fetch(`http://localhost:9001/tweets/${eventId}?page=${page}`)
+            .then(res => res.json())
+            .then(tweets => dispatch({
+                type: EVENT_TWEETS,
+                payload: tweets
+            }))
+            .catch(function (error) {
+                console.log('There has been a problem with your fetch operation: ', error.message);
+            });;    
 };
