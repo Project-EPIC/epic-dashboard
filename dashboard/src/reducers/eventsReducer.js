@@ -1,4 +1,4 @@
-import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, ANNOTATE_TWEET, EVENT_TWEETS } from '../actions/types';
+import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, ANNOTATE_TWEET } from '../actions/types';
 
 const initialState = {
     myevents: [],
@@ -43,12 +43,6 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 annotateEvent: action.payload
-            }
-        case EVENT_TWEETS:
-            // console.log(`EVENT_TWEET: ${JSON.stringify(action.payload)}`)
-            return {
-                ...state,
-                annotateTweets: action.payload
             }
         default:
         return state

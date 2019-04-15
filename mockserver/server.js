@@ -1,7 +1,7 @@
 var express = require('express')
 var cors = require('cors')
 var app = express()
-app.use(cors())
+Yess
 
 
 var newevent = require('./mocks/newevent.json');
@@ -23,7 +23,9 @@ app.put('/:normalized_name/:type', function (req, res, next) {
 })
 
 app.get('/tweets/:eventId', function (req, res, next) {
+  let per_page = req.query.per_page;
   let page = req.query.page;
+  console.log(`query params: per_page:: ${per_page} Page:: ${page}`)
   // let limit = req.query.limit;
   res.json(annotateTweets)
 })

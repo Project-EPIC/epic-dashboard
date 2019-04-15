@@ -6,25 +6,14 @@ import { styles } from "./styles";
 import { connect } from 'react-redux';
 import Grid from "@material-ui/core/Grid";
 import TweetCard from "../TweetCard/TweetCard";
-import { fetchEventTweets } from "../../../../actions/eventActions";
 import MaterialTable from 'material-table'
 
 
 class TweetAnnotationTable extends React.Component {
-  componentDidMount() {    
-    const pageNumber = 1; // TODO
-    const numberOfRecords = 100; // TODO
-    console.log(`in TweetAnnotationTable: ${this.props.annotateEvent}`);
-    this.props.fetchEventTweets(this.props.annotateEvent, pageNumber, numberOfRecords);
-  }
 
   render() {
     const { classes } = this.props;    
     const title = `Tweet Annotation API for ${this.props.annotateEvent}`
-    // console.log(`in render: ${JSON.stringify(this.props.annotateTweets)}`);
-    // const data = this.props.annotateTweets.map((prop, key) => {
-
-    // });
     return (           
       <Paper className={classes.root}>      
         <main className={classes.mainContent}>
@@ -34,8 +23,23 @@ class TweetAnnotationTable extends React.Component {
                 { title: 'Created At', field: 'created_at' },
                 { title: 'Text', field: 'text' },
               ]}
-              data={                                
-                this.props.annotateTweets ? this.props.annotateTweets.tweets : []
+              data={                                                
+                query => 
+                new Promise( (resolve, reject) => {
+                  // Note: this does not work for the bombcyclone2019 event                  
+                  let url = `http://34.95.114.189/tweets/${this.props.annotateEvent}/?page=${query.page + 1}&count=${query.pageSize}`
+                  console.log('url is: '+ url)
+                  fetch(url)
+                  .then(response => response.json())                  
+                  .then(result => {
+                    console.log(`result.meta: ${JSON.stringify(result.meta)}`)
+                    resolve({
+                      data: result.tweets,
+                      page: result.meta.page -1,
+                      totalCount: result.meta.total_count,
+                    })
+                  })
+                })
               }
               title={title}
               options={{
@@ -61,13 +65,9 @@ TweetAnnotationTable.propTypes = {
 };
 
 const mapStateToProps = state => ({    
-  annotateEvent: state.eventsReducer.annotateEvent,   
-  annotateTweets: state.eventsReducer.annotateTweets
+  annotateEvent: state.eventsReducer.annotateEvent
 });
 
-const mapDispatchToProps = {
-  fetchEventTweets: fetchEventTweets
-}
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TweetAnnotationTable));
+export default connect(mapStateToProps, null)(withStyles(styles)(TweetAnnotationTable));

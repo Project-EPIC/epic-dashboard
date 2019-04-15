@@ -6,4 +6,3 @@ export const UPDATED_EVENT = 'UPDATE_EVENTS';
 export const FETCH_USERS = "FETCH_USERS";
 export const UPDATED_USER = "UPDATED_USER";
 export const ANNOTATE_TWEET = "ANNOTATE_TWEET";
-export const EVENT_TWEETS = "EVENT_TWEETS";
