@@ -50,6 +50,8 @@ class TweetCard extends Component {
   
   render() {
     const { classes } = this.props;
+    const { tweet } = this.props;
+    console.log(`This is the prop that I got: ${JSON.stringify(tweet)}`)
     return (
       <Card className={classes.card} >
         <CardActionArea>
@@ -100,6 +102,7 @@ class TweetCard extends Component {
 
 TweetCard.propTypes = {
   classes: PropTypes.object.isRequired,
+  tweet: PropTypes.object
 };
 
 export default withStyles(styles)(TweetCard);

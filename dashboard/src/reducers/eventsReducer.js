@@ -45,7 +45,7 @@ export default function(state = initialState, action) {
                 annotateEvent: action.payload
             }
         case EVENT_TWEETS:
-            console.log(`EVENT_TWEET: ${JSON.stringify(action.payload)}`)
+            // console.log(`EVENT_TWEET: ${JSON.stringify(action.payload)}`)
             return {
                 ...state,
                 annotateTweets: action.payload

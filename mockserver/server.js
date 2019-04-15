@@ -7,6 +7,7 @@ app.use(cors())
 var newevent = require('./mocks/newevent.json');
 var fetchEvents = require('./mocks/fetchevents.json');
 var modifyevent = require('./mocks/modifyevent.json');
+var annotateTweets = require('./mocks/annotatetweets.json');
 
 
 app.post('/newevent', function (req, res, next) {
@@ -24,7 +25,7 @@ app.put('/:normalized_name/:type', function (req, res, next) {
 app.get('/tweets/:eventId', function (req, res, next) {
   let page = req.query.page;
   // let limit = req.query.limit;
-  res.json(fetchEvents)
+  res.json(annotateTweets)
 })
 
 

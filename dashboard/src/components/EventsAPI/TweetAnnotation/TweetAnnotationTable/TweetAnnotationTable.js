@@ -20,34 +20,32 @@ class TweetAnnotationTable extends React.Component {
 
   render() {
     const { classes } = this.props;    
-    
-    return (
+    const title = `Tweet Annotation API for ${this.props.annotateEvent}`
+    // console.log(`in render: ${JSON.stringify(this.props.annotateTweets)}`);
+    // const data = this.props.annotateTweets.map((prop, key) => {
+
+    // });
+    return (           
       <Paper className={classes.root}>      
         <main className={classes.mainContent}>
           <Grid item xs={12} >
           <MaterialTable
               columns={[
-                { title: 'Name', field: 'name' },
-                { title: 'Surname', field: 'surname' },
-                { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-                {
-                  title: 'Birth Place',
-                  field: 'birthCity',
-                  lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-                },
+                { title: 'Created At', field: 'created_at' },
+                { title: 'Text', field: 'text' },
               ]}
-              data={[
-                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                { name: 'Zerya Betül', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-              ]}
-              title="Detail Panel Example"
+              data={                                
+                this.props.annotateTweets ? this.props.annotateTweets.tweets : []
+              }
+              title={title}
               options={{
                 pageSize: 10,
                 pageSizeOptions: [10,20,30]
               }}
               detailPanel={rowData => {
+                console.log(`rowData: ${JSON.stringify(rowData)}`)
                 return (
-                  <TweetCard/>
+                  <TweetCard tweet={rowData}/>
                 )
               }}
             />
