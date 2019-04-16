@@ -54,15 +54,21 @@ class TweetCard extends Component {
     const { tweet } = this.props;
     // console.log(`This is the prop that I got: ${JSON.stringify(tweet)}`)
     const { user } = tweet;
-    console.log(`user is ${JSON.stringify(tweet)}`)
+    console.log(`user is ${JSON.stringify(tweet.extended_entities)}`)
+    const media = tweet.extended_entities ? tweet.extended_entities.media : null
+    const media_url = media ? media[0].media_url : null;
+    if(media) {
+      console.log(`Media is present here: ${tweet.text}`)
+    }
+    const cardMedia = tweet.extended_entities ?   (<CardMedia
+      className={classes.media}
+      image={media_url}
+      title="Contemplative Reptile"
+    /> ) : null;
     return (
       <Card className={classes.card} >
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
-            title="Contemplative Reptile"
-          />          
+        <CardActionArea>  
+          {cardMedia}       
           <CardContent>
             <Avatar alt="Remy Sharp" src={user.profile_image_url} className={classes.avatar} />
             <Typography gutterBottom variant="h5" component="h2">

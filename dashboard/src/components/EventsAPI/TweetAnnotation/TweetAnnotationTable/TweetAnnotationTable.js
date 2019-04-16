@@ -31,8 +31,8 @@ class TweetAnnotationTable extends React.Component {
                     />
                   ),
                 },
-                { title: 'Created At', field: 'created_at' },
-                { title: 'Text', field: 'text' },                
+                { title: 'Text', field: 'text' }, 
+                { title: 'Created At', field: 'created_at' },                               
               ]}
               data={                                                
                 query => 
