@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
-import Drawer from "@material-ui/core/Drawer";
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -23,7 +23,7 @@ class Sidebar extends Component {
     const { classes, ...other } = this.props;
 
     return (
-      <Drawer variant="permanent" {...other}>
+      <SwipeableDrawer {...other}>
         <List disablePadding>
           <ListItem
             className={classNames(
@@ -56,6 +56,7 @@ class Sidebar extends Component {
                     classes.item,
                     classes.itemActionable,
                   )}
+                  onClick={()=>other.onClose()}
                   activeClassName={classes.itemActiveItem}
                 >
                   <ListItemIcon>{icon}</ListItemIcon>
@@ -104,7 +105,7 @@ class Sidebar extends Component {
         </List>
 
 
-      </Drawer>
+      </SwipeableDrawer>
     );
   }
 }

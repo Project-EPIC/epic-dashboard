@@ -40,10 +40,16 @@ class Dashboard extends React.Component {
                 variant="temporary"
                 open={this.state.mobileOpen}
                 onClose={this.handleDrawerToggle}
+                onOpen={this.handleDrawerToggle}
               />
             </Hidden>
             <Hidden xsDown implementation="css">
-              <Sidebar PaperProps={{ style: { width: drawerWidth } }} />
+              <Sidebar 
+              PaperProps={{ style: { width: drawerWidth } }} 
+              variant="permanent" 
+              open={true} 
+              onOpen={()=>{""}}  
+              onClose={()=>{""}}/>
             </Hidden>
           </nav>
           <div className={classes.appContent}>
