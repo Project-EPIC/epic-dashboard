@@ -20,19 +20,29 @@ class TweetAnnotationTable extends React.Component {
           <Grid item xs={12} >
           <MaterialTable
               columns={[
-                { title: 'Created At', field: 'created_at' },
-                { title: 'Text', field: 'text' },
+                {
+                  title: 'Avatar',
+                  field: 'avatar',
+                  render: rowData => (
+                    <img
+                      style={{ height: 36, borderRadius: '50%' }}
+                      src={rowData.user.profile_image_url}
+                      alt="Avatar"
+                    />
+                  ),
+                },
+                { title: 'Text', field: 'text' }, 
+                { title: 'Created At', field: 'created_at' },                               
               ]}
               data={                                                
                 query => 
                 new Promise( (resolve, reject) => {
                   // Note: this does not work for the bombcyclone2019 event                  
-                  let url = `https://epicapi.gerard.space/tweets/${this.props.annotateEvent}/?page=${query.page + 1}&count=${query.pageSize}`
-                  console.log('url is: '+ url)
+                  let url = `https://epicapi.gerard.space/tweets/${this.props.annotateEvent}/?page=${query.page + 1}&count=${query.pageSize}`                  
+                  // let url = `http://34.95.114.189/tweets/${this.props.annotateEvent}/?page=${query.page + 1}&count=${query.pageSize}`                  
                   fetch(url)
                   .then(response => response.json())                  
-                  .then(result => {
-                    console.log(`result.meta: ${JSON.stringify(result.meta)}`)
+                  .then(result => {                    
                     resolve({
                       data: result.tweets,
                       page: result.meta.page -1,
@@ -46,8 +56,7 @@ class TweetAnnotationTable extends React.Component {
                 pageSize: 10,
                 pageSizeOptions: [10,20,30]
               }}
-              detailPanel={rowData => {
-                console.log(`rowData: ${JSON.stringify(rowData)}`)
+              detailPanel={rowData => {                
                 return (
                   <TweetCard tweet={rowData}/>
                 )
