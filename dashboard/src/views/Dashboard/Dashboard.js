@@ -11,6 +11,7 @@ import Sidebar from "../../components/common-components/Sidebar/Sidebar";
 import EventsAPI from "../../components/EventsAPI/EventsAPI";
 import { drawerWidth, theme, styles } from "./styles.js"
 import ManageUsers from "../../components/UsersAPI/ManageUsers";
+import MentionsAPI from "../../components/MentionsAPI/MentionsAPI";
 
 
 class Dashboard extends React.Component {
@@ -48,7 +49,8 @@ class Dashboard extends React.Component {
           <div className={classes.appContent}>
             {/* React Router routes go here } */ }
             <Route path="/eventsapi" render={(props) => <EventsAPI {...props}  onDrawerToggle={this.handleDrawerToggle} classes={classes}/>}/>                                                                       
-            <Route path="/users" render={(props) => <ManageUsers {...props} onDrawerToggle={this.handleDrawerToggle} classes={classes}/>}/>                               
+            <Route path="/users" render={(props) => <ManageUsers {...props} onDrawerToggle={this.handleDrawerToggle} classes={classes}/>}/>                              
+            <Route path="/mentions" render={(props) => <MentionsAPI {...props} onDrawerToggle={this.handleDrawerToggle} classes={classes}/>}/>                                                                    
           </div>
         </div>
       </MuiThemeProvider>
