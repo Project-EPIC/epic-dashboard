@@ -20,8 +20,19 @@ class TweetAnnotationTable extends React.Component {
           <Grid item xs={12} >
           <MaterialTable
               columns={[
+                {
+                  title: 'Avatar',
+                  field: 'avatar',
+                  render: rowData => (
+                    <img
+                      style={{ height: 36, borderRadius: '50%' }}
+                      src={rowData.user.profile_image_url}
+                      alt="Avatar"
+                    />
+                  ),
+                },
                 { title: 'Created At', field: 'created_at' },
-                { title: 'Text', field: 'text' },
+                { title: 'Text', field: 'text' },                
               ]}
               data={                                                
                 query => 
