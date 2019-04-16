@@ -17,6 +17,6 @@ export const styles = theme => ({
       marginRight: theme.spacing.unit
     },
     contentWrapper: {
-      margin: "40px 16px"
+      margin: "0"
     }
   });

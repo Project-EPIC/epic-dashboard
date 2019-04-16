@@ -120,7 +120,9 @@ export let theme = createMuiTheme({
   
   export const styles = {
     root: {
-      display: "flex",
+      [theme.breakpoints.up("sm")]: {
+        display: "flex",
+      },
       minHeight: "100vh"
     },
     drawer: {
@@ -137,6 +139,9 @@ export let theme = createMuiTheme({
     mainContent: {
       flex: 1,
       padding: "48px 36px 0",
+      [theme.breakpoints.down("sm")]: {
+        padding: "20px 10px 0",
+      },
       background: "#eaeff1"
     }
   };
