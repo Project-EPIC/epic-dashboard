@@ -8,7 +8,7 @@ export const fetchUsers = () => dispatch => {
     }
 
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch('http://34.95.114.189/users/', {
+        fetch('https://epicapi.gerard.space/users/', {
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${idToken}`
@@ -37,7 +37,7 @@ export const makeAdmin = (user) => dispatch => {
 
     // Do the request and dispatch again in case there's any error.
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch(`http://34.95.114.189/users/${user.uid}/admin`, {
+        fetch(`https://epicapi.gerard.space/users/${user.uid}/admin`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json',
@@ -65,7 +65,7 @@ export const enableUser = (user) => dispatch => {
 
     // Do the request and dispatch again in case there's any error.
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch(`http://34.95.114.189/users/${user.uid}/enable`, {
+        fetch(`https://epicapi.gerard.space/users/${user.uid}/enable`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json',
@@ -92,7 +92,7 @@ export const disableUser = (user) => dispatch => {
 
     // Do the request and dispatch again in case there's any error.
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch(`http://34.95.114.189/users/${user.uid}/disable`, {
+        fetch(`https://epicapi.gerard.space/users/${user.uid}/disable`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json',

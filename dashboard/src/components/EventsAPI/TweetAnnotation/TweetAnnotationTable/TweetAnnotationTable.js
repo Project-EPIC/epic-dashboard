@@ -27,7 +27,7 @@ class TweetAnnotationTable extends React.Component {
                 query => 
                 new Promise( (resolve, reject) => {
                   // Note: this does not work for the bombcyclone2019 event                  
-                  let url = `http://34.95.114.189/tweets/${this.props.annotateEvent}/?page=${query.page + 1}&count=${query.pageSize}`
+                  let url = `https://epicapi.gerard.space/tweets/${this.props.annotateEvent}/?page=${query.page + 1}&count=${query.pageSize}`
                   console.log('url is: '+ url)
                   fetch(url)
                   .then(response => response.json())                  

@@ -4,7 +4,7 @@ import fetch from 'cross-fetch';
 
 export const fetchEvents = () => dispatch => {
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch('http://34.95.114.189/events/', {
+        fetch('https://epicapi.gerard.space/events/', {
             headers: {
                 'Authorization': `Bearer ${idToken}`,
             }
@@ -25,7 +25,7 @@ export const createEvent = (eventData) => dispatch => {
         throw Error("Not authed")
     }
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch('http://34.95.114.189/events/', {
+        fetch('https://epicapi.gerard.space/events/', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
@@ -51,7 +51,7 @@ export const createEvent = (eventData) => dispatch => {
 
 export const modifyEvents = (status, normalized_name) => dispatch => {
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch(`http://34.95.114.189/events/${normalized_name}/${status}`, {
+        fetch(`https://epicapi.gerard.space/events/${normalized_name}/${status}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json',

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import {
   MuiThemeProvider,  
   withStyles
@@ -48,7 +48,10 @@ class Dashboard extends React.Component {
           <div className={classes.appContent}>
             {/* React Router routes go here } */ }
             <Route path="/eventsapi" render={(props) => <EventsAPI {...props}  onDrawerToggle={this.handleDrawerToggle} classes={classes}/>}/>                                                                       
-            <Route path="/users" render={(props) => <ManageUsers {...props} onDrawerToggle={this.handleDrawerToggle} classes={classes}/>}/>                                                           
+            <Route path="/users" render={(props) => <ManageUsers {...props} onDrawerToggle={this.handleDrawerToggle} classes={classes}/>}/>  
+
+            <Redirect from="/" to="/eventsapi" />
+                                                         
           </div>
         </div>
       </MuiThemeProvider>
