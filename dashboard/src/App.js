@@ -21,7 +21,8 @@ class App extends Component {
       authDomain: "crypto-eon-164220.firebaseapp.com",
     }
 
-
+// look at this for nested routing: https://www.youtube.com/watch?v=sfvrjwVihFY
+// better series: https://www.youtube.com/watch?v=rIoflwHFd6ols
     return (
       <Provider store={store}>
         <FirebaseAuthProvider {...firebaseConfig} firebase={firebase}>
