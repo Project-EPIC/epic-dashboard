@@ -85,8 +85,7 @@ class CustomPaginationActionsTable extends React.Component {
   }
 
   render() {
-    const { classes, match } = this.props;
-    console.log(`in ListEventsContent 843574378953: ${JSON.stringify(match)}`)
+    const { classes, match } = this.props;    
     const { rowsPerPage, page } = this.state;    
     const thArray = ["Event Name", "Description", "Status", "Start/Pause", "Annotate Tweet"];
     const rows = this.props.myevents;

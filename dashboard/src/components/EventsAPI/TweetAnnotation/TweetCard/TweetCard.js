@@ -52,14 +52,10 @@ class TweetCard extends Component {
   render() {
     const { classes } = this.props;
     const { tweet } = this.props;
-    // console.log(`This is the prop that I got: ${JSON.stringify(tweet)}`)
-    const { user } = tweet;
-    console.log(`user is ${JSON.stringify(tweet.extended_entities)}`)
+    const { user, text } = tweet; // TODO the text field needs to be changed later on based on what needs to be set
     const media = tweet.extended_entities ? tweet.extended_entities.media : null
     const media_url = media ? media[0].media_url : null;
-    if(media) {
-      console.log(`Media is present here: ${tweet.text}`)
-    }
+    
     const cardMedia = tweet.extended_entities ?   (<CardMedia
       className={classes.media}
       image={media_url}
@@ -75,7 +71,7 @@ class TweetCard extends Component {
               {user.name}              
             </Typography>
             <Typography component="p">
-            {tweet.text}
+            {text}
             </Typography>
           </CardContent>
         </CardActionArea>

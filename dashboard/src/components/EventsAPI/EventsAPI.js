@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Header from "../common-components/Header/Header";
 import { Route} from "react-router-dom";
-import ListEventsContent from "./ListEventsContent/ListEventsContent";
-import AnnotateEventsContent from "./AnnotateEventsContent/AnnotateEventsContent";
+import ListEventsContent from "./Content/ListEventsContent/ListEventsContent";
+import AnnotateEventsContent from "./Content/AnnotateEventsContent/AnnotateEventsContent";
 
 
 export const styles = theme => ({

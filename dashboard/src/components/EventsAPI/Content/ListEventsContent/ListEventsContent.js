@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import { styles } from "./styles";
-import CreateEvent from "../CreateEvent/CreateEvent";
-import EventsTable from "../ListEvents/EventsTable/EventsTable";
+import CreateEvent from "../../CreateEvent/CreateEvent";
+import EventsTable from "../../ListEvents/EventsTable/EventsTable";
 
 
 class ListEventsContent extends Component {
