@@ -73,8 +73,5 @@ TweetAnnotationTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({});
-
-
 
 export default connect(null, null)(withStyles(styles)(TweetAnnotationTable));

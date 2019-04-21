@@ -16,7 +16,7 @@ class ListEventsContent extends Component {
             <div>
               <Paper className={classes.root}>  
                 <CreateEvent/>
-                <EventsTable match={match} onTabChange={this.props.onTabChange}/>                    
+                <EventsTable match={match}/>                    
               </Paper>
             </div>            
         </div>          

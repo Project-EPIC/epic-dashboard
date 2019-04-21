@@ -1,4 +1,4 @@
-import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, ANNOTATE_TWEET } from '../actions/types';
+import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT } from '../actions/types';
 
 const initialState = {
     myevents: [],
@@ -38,12 +38,7 @@ export default function(state = initialState, action) {
                 ...state,
                 myevents: events
             }
-        case ANNOTATE_TWEET:
-            console.log(`in reducer ANNOTATE_TWEET: ${action.payload}`)
-            return {
-                ...state,
-                annotateEvent: action.payload
-            }
+
         default:
         return state
     }

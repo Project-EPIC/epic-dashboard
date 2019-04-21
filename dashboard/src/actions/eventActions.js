@@ -1,4 +1,4 @@
-import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, ANNOTATE_TWEET } from './types';
+import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT } from './types';
 import firebase from "firebase";
 import fetch from 'cross-fetch';
 
@@ -67,10 +67,4 @@ export const modifyEvents = (status, normalized_name) => dispatch => {
 
 };
 
-export const annotateTweet = (normalized_name) => dispatch => {    
-        dispatch({
-            type: ANNOTATE_TWEET,
-            payload: normalized_name
-        }) 
-};
 

@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import { TablePaginationActionsWrapped } from "../../../common-components/TablePaginationActions/TablePaginationActions";
 import { styles } from "./styles";
 import { connect } from 'react-redux';
-import { fetchEvents, modifyEvents, annotateTweet } from "../../../../actions/eventActions";
+import { fetchEvents, modifyEvents } from "../../../../actions/eventActions";
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
 import Edit from '@material-ui/icons/Edit';
@@ -84,10 +84,6 @@ class CustomPaginationActionsTable extends React.Component {
     return d.toString()
   }
 
-  _annotateTweetHandler(e, normalized_name) {
-    this.props.annotateTweet(normalized_name);
-    this.props.onTabChange(e,"annotate-tweet");    
-  }
   render() {
     const { classes, match } = this.props;
     console.log(`in ListEventsContent 843574378953: ${JSON.stringify(match)}`)
@@ -99,9 +95,9 @@ class CustomPaginationActionsTable extends React.Component {
       <a  href="# " onClick={(e) => {e.preventDefault();this._onLinkClickHandler("NOT_ACTIVE", row.normalized_name)}}><Pause className={classes.icon} id={"pause-"+row.normalized_name}/></a>
       :
       <a  href="# " onClick={(e) => {e.preventDefault();this._onLinkClickHandler("ACTIVE", row.normalized_name)}}><PlayArrow className={classes.icon} id={"start-"+row.normalized_name}/></a> 
-      // const annotateTweetButton = <a href="# " onClick={(e) => {e.preventDefault(); this._annotateTweetHandler(e, row.normalized_name)}}><Edit className={classes.icon} id={"annotate-"+row.normalized_name}/></a>
-      const annotateTweetButton = <Link to={`${match.url}/annotatetweets/${row.normalized_name}`}><Edit className={classes.icon} id={"annotate-"+row.normalized_name}/></Link>
-      // const annotateTweetButton = <Link to={`/tryingsomething`}><Edit className={classes.icon} id={"annotate-"+row.normalized_name}/></Link>
+      
+    const annotateTweetButton = <Link to={`${match.url}/annotatetweets/${row.normalized_name}`}><Edit className={classes.icon} id={"annotate-"+row.normalized_name}/></Link>
+      
       return (         
           <TableRow key={row.normalized_name} >
             <TableCell align="left" id={row.normalized_name + '_name'}  onClick={() => this.toggleOpen(row, true)}>{row.name}</TableCell>
@@ -169,7 +165,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   fetchEvents: fetchEvents, 
   modifyEvents: modifyEvents,
-  annotateTweet: annotateTweet
 }
 
 
