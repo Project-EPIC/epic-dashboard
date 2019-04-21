@@ -73,10 +73,8 @@ TweetAnnotationTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({    
-  annotateEvent: state.eventsReducer.annotateEvent
-});
+const mapStateToProps = state => ({});
 
 
 
-export default connect(mapStateToProps, null)(withStyles(styles)(TweetAnnotationTable));
+export default connect(null, null)(withStyles(styles)(TweetAnnotationTable));
