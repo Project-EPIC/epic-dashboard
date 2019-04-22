@@ -9,6 +9,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import ChipInput from 'material-ui-chip-input'
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import { connect } from 'react-redux';
+import { updateAnnotation } from "../../../../actions/eventActions"
 
 const styles = {
   card: {
@@ -48,6 +51,12 @@ class TweetCard extends Component {
     this.setState({ tags })
   }
 
+  _submitAnnotation = (e) => {    
+    var { tags } = this.state;
+    var { tweet, eventName } = this.props;
+    this.props.updateAnnotation(tweet, tags, eventName);
+  }
+
   
   render() {
     const { classes } = this.props;
@@ -56,7 +65,7 @@ class TweetCard extends Component {
     const media = tweet.extended_entities ? tweet.extended_entities.media : null
     const media_url = media ? media[0].media_url : null;
     
-    const cardMedia = tweet.extended_entities ?   (<CardMedia
+    const cardMedia = tweet.extended_entities ?   ( <CardMedia
       className={classes.media}
       image={media_url}
       title="Contemplative Reptile"
@@ -76,29 +85,33 @@ class TweetCard extends Component {
           </CardContent>
         </CardActionArea>
         <CardActions>
-        <ChipInput                  
-                  value={this.state.tags}
-                  onAdd={(chip) => this.handleAddChip(chip)}
-                  onDelete={(chip, index) => this.handleDeleteChip(chip, index)}                  
-                  helperText={this.state.tagsError !== "" ? this.state.tagsError : "annotations to annotate tweets"}
-                  error={this.state.tagsError !== ""}
-                  placeholder={"Enter annotation followed by an Enter"}
-                  fullWidth
-                  newChipKeyCodes={[13, 188]}
-                  margin="dense"
-                  onPaste={(event) => {
+          <ChipInput                  
+            value={this.state.tags}
+            onAdd={(chip) => this.handleAddChip(chip)}
+            onDelete={(chip, index) => this.handleDeleteChip(chip, index)}                  
+            helperText={this.state.tagsError !== "" ? this.state.tagsError : "annotations to annotate tweets"}
+            error={this.state.tagsError !== ""}
+            placeholder={"Enter annotation followed by an Enter"}
+            fullWidth
+            newChipKeyCodes={[13, 188]}
+            margin="dense"
+            onPaste={(event) => {
 
-                    const clipboardText = event.clipboardData.getData('Text')
+              const clipboardText = event.clipboardData.getData('Text')
 
-                    event.preventDefault()
+              event.preventDefault()
 
-                    this.handleAdd(...clipboardText.split(/(\n|,)/).filter((t) => t !== ',' && t !== '\n' && t.length > 0))
+              this.handleAdd(...clipboardText.split(/(\n|,)/).filter((t) => t !== ',' && t !== '\n' && t.length > 0))
 
-                    if (this.props.onPaste) {
-                      this.props.onPaste(event)
-                    }
-                  }}
+              if (this.props.onPaste) {
+                this.props.onPaste(event)
+              }
+          }
+          }
           />
+          <Button size="small" color="primary" onClick={(e) => {e.preventDefault(); this._submitAnnotation()}}>          
+            Annotate
+          </Button>
         </CardActions>
       </Card>
     );
@@ -110,4 +123,9 @@ TweetCard.propTypes = {
   tweet: PropTypes.object
 };
 
-export default withStyles(styles)(TweetCard);
+
+const mapDispatchToProps = {
+  updateAnnotation: updateAnnotation,   
+}
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(TweetCard));

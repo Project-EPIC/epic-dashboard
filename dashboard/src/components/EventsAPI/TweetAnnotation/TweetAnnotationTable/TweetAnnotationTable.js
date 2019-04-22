@@ -58,7 +58,7 @@ class TweetAnnotationTable extends React.Component {
               }}
               detailPanel={rowData => {                
                 return (
-                  <TweetCard tweet={rowData}/>
+                  <TweetCard tweet={rowData} eventName={this.props.annotateEvent}/>
                 )
               }}
             />

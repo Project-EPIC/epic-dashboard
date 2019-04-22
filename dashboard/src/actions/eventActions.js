@@ -67,4 +67,28 @@ export const modifyEvents = (status, normalized_name) => dispatch => {
 
 };
 
+export const updateAnnotation = (tags, tweet, eventName) => dispatch => {   
+        var data = {
+            'tags' : tags,
+            'tweet' : tweet,
+            'tweetId': tweet.id,
+            'eventName': eventName
+        }
+        fetch(`http://localhost:9001/annotate`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'content-type': 'application/json',                
+            },
+            body: JSON.stringify(data)
+        })
+        // fetch('http://localhost:9001/fetchevents')
+        .then(res => res.json())
+        .then(res => console.log(res))
+        .then(res => dispatch({                        
+            type: 'TWEET_ANNOTATION',
+            payload: res
+        })
+        );
+};
 
