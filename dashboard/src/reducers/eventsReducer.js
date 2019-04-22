@@ -1,4 +1,4 @@
-import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT } from '../actions/types';
+import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, FETCH_TAGS } from '../actions/types';
 
 const initialState = {
     myevents: [],
@@ -38,6 +38,12 @@ export default function(state = initialState, action) {
                 ...state,
                 myevents: events
             }
+        case FETCH_TAGS:
+        console.log(` in FETCH_TAGS reducer: ${JSON.stringify(action)}`)
+        return {
+            ...state,
+            initialTags: action.payload
+        }
 
         default:
         return state

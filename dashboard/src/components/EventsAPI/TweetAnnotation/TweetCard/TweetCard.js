@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import { updateAnnotation } from "../../../../actions/eventActions"
+import { fetchTags, updateAnnotation } from "../../../../actions/eventActions"
 
 const styles = {
   card: {
@@ -52,9 +52,16 @@ class TweetCard extends Component {
   }
 
   _submitAnnotation = (e) => {    
-    var { tags } = this.state;
+    var { tags, initialTags } = this.state;
     var { tweet, eventName } = this.props;
-    this.props.updateAnnotation(tweet, tags, eventName);
+    this.props.updateAnnotation(tweet, initialTags, tags, eventName);
+    this.props.fetchTags(tweet.id);
+  }
+
+  componentDidMount() {    
+    this.props.fetchTags(this.props.tweet.id); 
+    console.log(`in compdidMount. initialTags is: ${this.state.initialTags}`)   
+    this.setState({tags:this.state.initialTags})
   }
 
   
@@ -123,9 +130,12 @@ TweetCard.propTypes = {
   tweet: PropTypes.object
 };
 
-
+const mapStateToProps = state => ({
+  initialTags:  state.eventsReducer.initialTags,
+})
 const mapDispatchToProps = {
   updateAnnotation: updateAnnotation,   
+  fetchTags: fetchTags
 }
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(TweetCard));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TweetCard));

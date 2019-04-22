@@ -48,6 +48,13 @@ app.post(`/annotate`, jsonParser,function(req, res, next) {
   res.json({'success': true})
 });
 
+app.get('/annotate', function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  console.log(`in the server hander, ID: ${req.query.id}`)
+  res.json({"tags":["initaltag1", "initaltag2", "initaltag3"]})
+})
+
 
 app.listen(9001, function () {
   console.log('CORS-enabled web server listening on port 9001')

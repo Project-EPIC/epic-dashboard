@@ -1,4 +1,4 @@
-import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT } from './types';
+import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, TWEET_ANNOTATION, FETCH_TAGS} from './types';
 import firebase from "firebase";
 import fetch from 'cross-fetch';
 
@@ -67,8 +67,9 @@ export const modifyEvents = (status, normalized_name) => dispatch => {
 
 };
 
-export const updateAnnotation = (tags, tweet, eventName) => dispatch => {   
+export const updateAnnotation = (tweet, initialTags ,tags, eventName) => dispatch => {       
         var data = {
+            'initialTags': initialTags,
             'tags' : tags,
             'tweet' : tweet,
             'tweetId': tweet.id,
@@ -81,14 +82,32 @@ export const updateAnnotation = (tags, tweet, eventName) => dispatch => {
                 'content-type': 'application/json',                
             },
             body: JSON.stringify(data)
-        })
-        // fetch('http://localhost:9001/fetchevents')
-        .then(res => res.json())
-        .then(res => console.log(res))
+        })        
+        .then(res => res.json())        
         .then(res => dispatch({                        
-            type: 'TWEET_ANNOTATION',
+            type: TWEET_ANNOTATION,
             payload: res
         })
         );
 };
+
+export const fetchTags = (tweetId) => dispatch => {    
+        fetch('http://localhost:9001/annotate?id='+tweetId, {
+            headers: {}
+        })
+        .then(res => res.json())  
+        .then(mytags => console.log(`getting response in action fetchTags: ${JSON.stringify(mytags)}`))      
+        .then(mytags => dispatch({
+            type: FETCH_TAGS,
+            payload: mytags
+        }))
+        .catch(function (error) {
+            console.log('There has been a problem with your fetch operation: ', error.message);
+        });;    
+};
+
+
+
+
+
 
