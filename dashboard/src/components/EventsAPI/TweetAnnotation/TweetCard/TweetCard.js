@@ -59,13 +59,18 @@ class TweetCard extends Component {
   }
 
   componentDidMount() {    
-    this.props.fetchTags(this.props.tweet.id); 
-    console.log(`in compdidMount. initialTags is: ${this.state.initialTags}`)   
-    this.setState({tags:this.state.initialTags})
+    this.props.fetchTags(this.props.tweet.id);         
+  }
+  componentDidUpdate(prevProps) {
+    console.log(`in Component Did Update: ${this.props.initialTags}`)
+    if(this.props.initialTags !== prevProps.initialTags) {
+      this.setState({tags:this.props.initialTags.tags})
+    }
   }
 
   
-  render() {
+  render() {  
+        
     const { classes } = this.props;
     const { tweet } = this.props;
     const { user, text } = tweet; // TODO the text field needs to be changed later on based on what needs to be set

@@ -38,8 +38,7 @@ export default function(state = initialState, action) {
                 ...state,
                 myevents: events
             }
-        case FETCH_TAGS:
-        console.log(` in FETCH_TAGS reducer: ${JSON.stringify(action)}`)
+        case FETCH_TAGS:        
         return {
             ...state,
             initialTags: action.payload

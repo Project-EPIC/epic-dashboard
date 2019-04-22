@@ -95,8 +95,7 @@ export const fetchTags = (tweetId) => dispatch => {
         fetch('http://localhost:9001/annotate?id='+tweetId, {
             headers: {}
         })
-        .then(res => res.json())  
-        .then(mytags => console.log(`getting response in action fetchTags: ${JSON.stringify(mytags)}`))      
+        .then(res => res.json())             
         .then(mytags => dispatch({
             type: FETCH_TAGS,
             payload: mytags
@@ -105,9 +104,3 @@ export const fetchTags = (tweetId) => dispatch => {
             console.log('There has been a problem with your fetch operation: ', error.message);
         });;    
 };
-
-
-
-
-
-
