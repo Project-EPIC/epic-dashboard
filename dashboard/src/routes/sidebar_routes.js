@@ -11,7 +11,7 @@ const sidebarRoutes = [
     {
       id: "Mentions",
       children: [
-        { id: "Mentions Api", icon: <PeopleIcon />, targetUrl: "/mentions" },
+        { id: "Mentions API", icon: <PeopleIcon />, targetUrl: "/mentions" },
       ]
     },
     {
