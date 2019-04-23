@@ -10,7 +10,7 @@ import Header from "../common-components/Header/Header";
 
 class MentionsAPI extends Component {
   componentDidMount() {
-    this.props.fetchMentions();
+    // this.props.fetchMentions();
   }
 
   render() {
@@ -28,7 +28,7 @@ class MentionsAPI extends Component {
                                 columns={[
                                     { title: "User ID", field: 'user_id', },
                                     { title: 'Screen names', field: 'user', render: rowData =>
-                                            <a href={"https://www.twitter.com/" + rowData.user[rowData.user.length-1]} target="_blank">{rowData.user[rowData.user.length-1]}</a>
+                                            <a href={"https://www.twitter.com/" + rowData.user[rowData.user.length-1]} rel="noopener noreferrer" target="_blank">{rowData.user[rowData.user.length-1]}</a>
                                     },
                                     { title: 'Times Mentioned', field: 'times_mentioned' },
                                     { title: 'Total Retweets', field: 'total_retweets' },
@@ -41,7 +41,7 @@ class MentionsAPI extends Component {
                                   query => 
                                     new Promise( (resolve, reject) => {
                                       // Note: this does not work for the bombcyclone2019 event ${normalized_name}             
-                                      let url = `https://epicapi.gerard.space/mentions/winter?page=${query.page + 1}&count=${query.pageSize}`
+                                      let url = `https://epicapi.gerard.space/mentions/winter/?page=${query.page + 1}&count=${query.pageSize}`
                                       fetch(url)
                                       .then(response => response.json())                  
                                       .then(result => {                    

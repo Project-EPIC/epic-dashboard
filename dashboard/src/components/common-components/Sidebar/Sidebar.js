@@ -32,7 +32,7 @@ class Sidebar extends Component {
               classes.itemCategory
             )}
           >
-            Project Epic
+            Project EPIC
           </ListItem>
           {sidebarRoutes.map(({ id, children }) => (
             <React.Fragment key={id}>

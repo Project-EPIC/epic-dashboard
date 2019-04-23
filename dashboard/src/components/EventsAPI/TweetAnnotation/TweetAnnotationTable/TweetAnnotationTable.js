@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import Grid from "@material-ui/core/Grid";
 import TweetCard from "../TweetCard/TweetCard";
 import MaterialTable from 'material-table'
+import firebase from "firebase";
 import TweetsChart from '../TweetsChart/TweetsChart'
 
 
@@ -45,16 +46,22 @@ class TweetAnnotationTable extends React.Component {
                 new Promise( (resolve, reject) => {
                   // Note: this does not work for the bombcyclone2019 event                  
                   let url = `https://epicapi.gerard.space/tweets/${this.props.annotateEvent}/?page=${query.page + 1}&count=${query.pageSize}`                  
-                  // let url = `http://34.95.114.189/tweets/${this.props.annotateEvent}/?page=${query.page + 1}&count=${query.pageSize}`                  
-                  fetch(url)
-                  .then(response => response.json())                  
-                  .then(result => {                    
-                    resolve({
-                      data: result.tweets,
-                      page: result.meta.page -1,
-                      totalCount: result.meta.total_count,
+                  // let url = `http://34.95.114.189/tweets/${this.props.annotateEvent}/?page=${query.page + 1}&count=${query.pageSize}` 
+                  firebase.auth().currentUser.getIdToken(/* forceRefresh */ false).then(idToken => {                 
+                    fetch(url, {
+                        headers: {
+                            'Authorization': `Bearer ${idToken}`,
+                        }
                     })
-                  })
+                    .then(response => response.json())                  
+                    .then(result => {                    
+                      resolve({
+                        data: result.tweets,
+                        page: result.meta.page -1,
+                        totalCount: result.meta.total_count,
+                      })
+                    })
+                  });
                 })
               }
               title={title}
