@@ -8,7 +8,6 @@ import { fetchMentions } from "../../actions/mentionActions";
 import MaterialTable from 'material-table'
 import Header from "../common-components/Header/Header";
 
-
 class MentionsAPI extends Component {
   componentDidMount() {
     this.props.fetchMentions();
@@ -29,7 +28,7 @@ class MentionsAPI extends Component {
                                 columns={[
                                     { title: "User ID", field: 'user_id', },
                                     { title: 'Screen names', field: 'user', render: rowData =>
-                                            <a href={"https://www.twitter.com/" + rowData.user[rowData.user.length-1]}>{rowData.user[rowData.user.length-1]}</a>
+                                            <a href={"https://www.twitter.com/" + rowData.user[rowData.user.length-1]} target="_blank">{rowData.user[rowData.user.length-1]}</a>
                                     },
                                     { title: 'Times Mentioned', field: 'times_mentioned' },
                                     { title: 'Total Retweets', field: 'total_retweets' },
@@ -58,14 +57,6 @@ class MentionsAPI extends Component {
                                   "Most Mentioned Users"
                                   
                                 }
-                                /* actions={[
-                                    {
-                                        icon: 'add',
-                                        tooltip: 'Make user admin',
-                                        onClick: (event, rowData) => {
-                                            this.props.makeAdmin(rowData);
-                                        },
-                                    }]} */
                             />
                         </Grid>
 
