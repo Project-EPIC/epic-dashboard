@@ -1,9 +1,10 @@
-import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, FETCH_TAGS } from '../actions/types';
+import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, FETCH_TAGS, FETCH_COUNTS } from '../actions/types';
 
 const initialState = {
     myevents: [],
     newEvent: {},
-    errorsNewEvent: {}
+    errorsNewEvent: {},
+    counts: {}
 };
 
 export default function(state = initialState, action) {
@@ -43,6 +44,15 @@ export default function(state = initialState, action) {
             ...state,
             initialTags: action.payload
         }
+        case FETCH_COUNTS:
+            
+            return {
+                ...state,
+                counts: {
+                    ...state.counts,
+                    [action.payload.meta.event_name] :action.payload.tweets
+                },
+            }
 
         default:
         return state

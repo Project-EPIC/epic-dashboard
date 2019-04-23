@@ -1,4 +1,4 @@
-import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, TWEET_ANNOTATION, FETCH_TAGS} from './types';
+import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, TWEET_ANNOTATION, FETCH_TAGS, FETCH_COUNTS} from './types';
 import firebase from "firebase";
 import fetch from 'cross-fetch';
 
@@ -104,3 +104,28 @@ export const fetchTags = (tweetId) => dispatch => {
             console.log('There has been a problem with your fetch operation: ', error.message);
         });;    
 };
+
+export const fetchCounts=(eventId)=>dispatch => {
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
+    fetch(`https://epicapi.gerard.space/tweets/${eventId}/counts`, {
+        headers: {
+            'content-type': 'application/json',
+            'Authorization': `Bearer ${idToken}`
+        }
+        })
+        .then(res => res.json())  
+        .then(counts => dispatch({
+            type: FETCH_COUNTS,
+            payload: counts
+        }))
+        .catch(function (error) {
+            console.log('There has been a problem with your fetch operation: ', error.message);
+        });    
+    });
+}
+
+
+
+
+
+

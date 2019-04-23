@@ -7,14 +7,20 @@ import { connect } from 'react-redux';
 import Grid from "@material-ui/core/Grid";
 import TweetCard from "../TweetCard/TweetCard";
 import MaterialTable from 'material-table'
+import TweetsChart from '../TweetsChart/TweetsChart'
 
 
 class TweetAnnotationTable extends React.Component {
 
   render() {
     const { classes } = this.props;    
-    const title = `Tweet Annotation API for ${this.props.annotateEvent}`
-    return (           
+    const title = `Tweets for "${this.props.annotateEvent}"`
+    return (
+      <div>
+        <Paper className={classes.root}> 
+        <TweetsChart annotateEvent={this.props.annotateEvent}/>
+
+        </Paper>     
       <Paper className={classes.root}>      
         <main className={classes.mainContent}>
           <Grid item xs={12} >
@@ -54,6 +60,7 @@ class TweetAnnotationTable extends React.Component {
               title={title}
               options={{
                 pageSize: 10,
+                search:false,
                 pageSizeOptions: [10,20,30]
               }}
               detailPanel={rowData => {                
@@ -65,6 +72,7 @@ class TweetAnnotationTable extends React.Component {
           </Grid>
         </main>
       </Paper>
+      </div>           
     );
   }
 }

@@ -8,3 +8,4 @@ export const UPDATED_USER = "UPDATED_USER";
 export const TWEET_ANNOTATION = "TWEET_ANNOTATION";
 export const FETCH_TAGS = "FETCH_TAGS";
 export const FETCH_MENTIONS = "FETCH_MENTIONS";
+export const FETCH_COUNTS = "FETCH_COUNTS";
