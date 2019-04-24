@@ -42,7 +42,7 @@ class DetailEventContent extends Component {
 
     return (
       <div className={classes.Main}>
-        <Header onDrawerToggle={this.props.onDrawerToggle} title={title} renderTabs={renderTabs(params.eventId)} backLink="/eventsapi/"/>
+        <Header onDrawerToggle={this.props.onDrawerToggle} title={title} renderTabs={renderTabs(params.eventId)} backLink="/events/"/>
 
         <main className={classes.mainContent}>
 
