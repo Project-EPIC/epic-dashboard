@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from "./styles";
 import { connect } from 'react-redux';
-import C3Chart from 'react-c3js';
-import 'c3/c3.css';
+import 'react-vis/dist/style.css';
+import { FlexibleWidthXYPlot, HorizontalGridLines, VerticalGridLines, XAxis, YAxis, Crosshair, Highlight, LineSeries } from 'react-vis';
+
+
 import { fetchCounts } from "../../../../actions/eventActions";
 
 
 const initialState = {
-  startRange: null,
-  endRange:null,
-  timeseries: [
-  ]
+  crosshairValue: [],
+  selectionStart: null,
+  selectionEnd: null
+
 }
 
 class TweetsChart extends React.Component {
@@ -22,60 +24,70 @@ class TweetsChart extends React.Component {
     this.state = initialState;
   }
 
+  /**
+   * Event handler for onMouseLeave.
+   * @private
+   */
+  _onMouseLeave = () => {
+    this.setState({ crosshairValues: [] });
+  };
+
+  /**
+   * Event handler for onNearestX.
+   * @param {Object} value Selected value.
+   * @param {index} index Index of the value in the data array.
+   * @private
+   */
+  _onNearestX = (value, { index }) => {
+    this.setState({ crosshairValues: [value] });
+  };
 
   componentDidMount() {
     this.props.fetchCounts(this.props.annotateEvent);
   }
-  
+
+
 
   render() {
-    const { classes } = this.props;
-    
-    const data = {
-      xFormat: '%Y-%m-%dT%H:%M:%S%Z',
-      json: this.props.counts[this.props.annotateEvent] || [],
-      keys: {
-        x: 'time',
-        value: ['count']
-      },
-      types: {
-        count: 'area'
-      }
+    const timeseries = this.props.counts[this.props.annotateEvent] || [];
 
-    }
-
-    
-    const axis = {
-      x: {
-        show: true,
-        type: 'timeseries',
-        tick: {
-          format: '%Y-%m-%d %H:%M'
-        }
-      },
-      y: {
-        show: true,
-      },
-      
-    }
-
-    const regions=[];
-    if (this.state.startRange!=null && this.state.endRange!=null) {
-      regions.push({axis:'x', start:this.state.startRange, end:this.state.endRange})
-    }
-   
-
+    const updateTimePeriod = this.props.updateTimePeriod;
+    const transf = timeseries.map(item => {
+      return { x: new Date(item.time).getTime(), y: item.count }
+    })
 
 
     return (
-
-      <C3Chart data={data} axis={axis} legend={{ show: false }} className={classes.chart} regions={regions} />
+      <div>
+      <FlexibleWidthXYPlot onMouseLeave={this._onMouseLeave} height={200} xType="time" >
+        <HorizontalGridLines />
+        <VerticalGridLines />
+        <XAxis title="Date" />
+        <YAxis title="Tweet count" />
+        <Crosshair
+          values={this.state.crosshairValues}
+          className={'test-class-name'}
+          titleFormat={(d) => ({title: 'Date', value: new Date(d[0].x).toLocaleString()})}
+          itemsFormat={(d)=>([{title:"Tweet count", value:d[0].y}])}
+        />
+        <LineSeries curve="curveBasis" data={transf} onNearestX={this._onNearestX} />
+        <Highlight
+          color="#829AE3"
+          drag
+          enableY={false}
+          onDragEnd={updateTimePeriod}
+        />
+      </FlexibleWidthXYPlot>
+    
+    </div>
     );
   }
 }
 
 TweetsChart.propTypes = {
   classes: PropTypes.object.isRequired,
+  annotateEvent: PropTypes.string.isRequired,
+  updateTimePeriod: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

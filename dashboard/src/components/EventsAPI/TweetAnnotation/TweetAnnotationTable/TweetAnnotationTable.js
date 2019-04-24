@@ -11,21 +11,50 @@ import firebase from "firebase";
 import TweetsChart from '../TweetsChart/TweetsChart'
 
 
+const initialState = {
+  since: null,
+  until: null
+
+}
+
+
 class TweetAnnotationTable extends React.Component {
+
+  tableRef = React.createRef();
+
+  constructor(props) {
+    super(props);
+    this.state = initialState;
+    this.updateTimePeriod = this.updateTimePeriod.bind(this)
+  }
+
+  updateTimePeriod(area) {
+    this.setState({
+      since: area && area.left,
+      until: area && area.right
+    });
+    
+    
+    this.tableRef.current.state.page = 0;
+    this.tableRef.current.state.query.page = 0;
+    
+    this.tableRef.current.onQueryChange();
+    
+  }
 
   render() {
     const { classes } = this.props;    
     const title = `Tweets for "${this.props.annotateEvent}"`
     return (
       <div>
-        <Paper className={classes.root}> 
-        <TweetsChart annotateEvent={this.props.annotateEvent}/>
-
-        </Paper>     
+      <Paper className={classes.chartPaper}> 
+        <TweetsChart annotateEvent={this.props.annotateEvent} updateTimePeriod={this.updateTimePeriod}/>
+      </Paper>  
       <Paper className={classes.root}>      
         <main className={classes.mainContent}>
           <Grid item xs={12} >
           <MaterialTable
+              tableRef={this.tableRef}
               columns={[
                 {
                   title: 'Avatar',
@@ -45,7 +74,11 @@ class TweetAnnotationTable extends React.Component {
                 query => 
                 new Promise( (resolve, reject) => {
                   // Note: this does not work for the bombcyclone2019 event                  
-                  let url = `https://epicapi.gerard.space/tweets/${this.props.annotateEvent}/?page=${query.page + 1}&count=${query.pageSize}`                  
+                  let url = `https://epicapi.gerard.space/tweets/${this.props.annotateEvent}/?page=${query.page + 1}&count=${query.pageSize}`
+                  if (this.state.since !== null && this.state.until!==null) {
+                    url = url+`&since=${this.state.since.toISOString()}&until=${this.state.until.toISOString()}`
+                  }                  
+                  console.log(url);
                   // let url = `http://34.95.114.189/tweets/${this.props.annotateEvent}/?page=${query.page + 1}&count=${query.pageSize}` 
                   firebase.auth().currentUser.getIdToken(/* forceRefresh */ false).then(idToken => {                 
                     fetch(url, {
@@ -57,8 +90,8 @@ class TweetAnnotationTable extends React.Component {
                     .then(result => {                    
                       resolve({
                         data: result.tweets,
-                        page: result.meta.page -1,
-                        totalCount: result.meta.total_count,
+                        page: result.meta && result.meta.page -1,
+                        totalCount: result.meta && result.meta.total_count,
                       })
                     })
                   });
