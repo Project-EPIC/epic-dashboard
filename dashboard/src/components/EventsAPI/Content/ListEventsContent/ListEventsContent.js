@@ -1,27 +1,32 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import { styles } from "./styles";
 import CreateEvent from "../../CreateEvent/CreateEvent";
-import EventsTable from "../../ListEvents/EventsTable/EventsTable";
+import Header from "../../../common-components/Header/Header";
+import ListEvents from "../../ListEvents/ListEvents";
 
 
 class ListEventsContent extends Component {
   render() {
-  const { classes, match } = this.props;       
-  return (      
-        <div className={classes.contentWrapper}>             
+    const { classes, match, title } = this.props;
+    return (
+      <div className={classes.Main}>
+        <Header onDrawerToggle={this.props.onDrawerToggle} title={title} />
+
+        <main className={classes.mainContent}>
+          <div className={classes.contentWrapper}>
             <div>
-              <Paper className={classes.root}>  
-                <CreateEvent/>
-                <EventsTable match={match}/>                    
-              </Paper>
-            </div>            
-        </div>          
-  );
-}
+                <ListEvents match={match} />
+                <CreateEvent />
+            </div>
+          </div>
+        </main>
+      </div>
+
+    );
+  }
 }
 
 ListEventsContent.propTypes = {

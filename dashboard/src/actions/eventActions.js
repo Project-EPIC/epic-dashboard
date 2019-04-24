@@ -50,6 +50,10 @@ export const createEvent = (eventData) => dispatch => {
 };
 
 export const modifyEvents = (status, normalized_name) => dispatch => {
+    dispatch({
+        type: UPDATED_EVENT,
+        payload: {status:status,normalized_name:normalized_name}
+    });
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
         fetch(`https://epicapi.gerard.space/events/${normalized_name}/${status}`, {
             method: 'PUT',
@@ -62,7 +66,7 @@ export const modifyEvents = (status, normalized_name) => dispatch => {
                 type: UPDATED_EVENT,
                 payload: updatedEvent
             })
-            );
+        );
     });
 
 };

@@ -37,16 +37,14 @@ class TweetAnnotationTable extends React.Component {
     
     this.tableRef.current.state.page = 0;
     this.tableRef.current.state.query.page = 0;
-    
     this.tableRef.current.onQueryChange();
-    
   }
 
   render() {
     const { classes } = this.props;    
     const title = `Tweets for "${this.props.annotateEvent}"`
     return (
-      <div>
+      <div className={classes.contentWrapper}>
       <Paper className={classes.chartPaper}> 
         <TweetsChart annotateEvent={this.props.annotateEvent} updateTimePeriod={this.updateTimePeriod}/>
       </Paper>  
@@ -78,8 +76,6 @@ class TweetAnnotationTable extends React.Component {
                   if (this.state.since !== null && this.state.until!==null) {
                     url = url+`&since=${this.state.since.toISOString()}&until=${this.state.until.toISOString()}`
                   }                  
-                  console.log(url);
-                  // let url = `http://34.95.114.189/tweets/${this.props.annotateEvent}/?page=${query.page + 1}&count=${query.pageSize}` 
                   firebase.auth().currentUser.getIdToken(/* forceRefresh */ false).then(idToken => {                 
                     fetch(url, {
                         headers: {

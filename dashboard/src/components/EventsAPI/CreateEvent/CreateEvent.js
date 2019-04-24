@@ -84,18 +84,7 @@ class CreateEvent extends Component {
     }
     
     this.props.createEvent(newEvent)
-    // Capture errors, empty form and close dialog
-    // this.setState(
-    //   {
-    //     name: "",
-    //     nameError: "",
-    //     descriptionError: "",
-    //     keywordsError:"",
-    //     tags: [],
-    //     description: "",
-    //     open: false
-    //   }
-    // );
+    this.toggleOpen(false);
   }
 
   render() {

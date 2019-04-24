@@ -18,6 +18,7 @@ export const styles = theme => ({
     }
   },
   button: {
-    borderColor: lightColor
+    borderColor: lightColor,
+    color:lightColor
   }
 });

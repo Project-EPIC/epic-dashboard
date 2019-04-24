@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import Header from "../common-components/Header/Header";
 import { Route} from "react-router-dom";
 import ListEventsContent from "./Content/ListEventsContent/ListEventsContent";
-import AnnotateEventsContent from "./Content/AnnotateEventsContent/AnnotateEventsContent";
+import DetailEventContent from "./Content/DetailEventContent/DetailEventContent";
 
 
 export const styles = theme => ({
@@ -12,21 +11,18 @@ export const styles = theme => ({
   },
 });
 
+
+
 class EventsAPI extends Component {
-  render() { 
-    const { classes } = this.props;       
+
+  render() {       
     const title = "Events Collection";  
-       
+    const {classes, onDrawerToggle}  = this.props; 
     return (
       
-      <div>
-        <Header onDrawerToggle={this.props.onDrawerToggle} title={title} />
-        <div className={classes.Main}>
-          <main className={classes.mainContent}>                    
-              <Route exact path="/eventsapi" render={(props) => (<ListEventsContent {...props} />)} />              
-              <Route path="/eventsapi/annotatetweets/:eventId" render={(props) => (<AnnotateEventsContent {...props} />)} />                            
-          </main>
-        </div>
+      <div>              
+          <Route exact path="/events/" render={(props) => (<ListEventsContent {...props} title={title} classes={classes} onDrawerToggle={onDrawerToggle} />)} />              
+          <Route path="/events/:eventId/" render={(props) => (<DetailEventContent {...props} title={title} classes={classes} onDrawerToggle={onDrawerToggle} />)} />                            
       </div>
     );
   }

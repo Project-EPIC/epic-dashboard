@@ -1,43 +1,35 @@
 import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, FETCH_TAGS, FETCH_COUNTS } from '../actions/types';
 
 const initialState = {
-    myevents: [],
-    newEvent: {},
-    errorsNewEvent: {},
+    events: [],
     counts: {}
 };
 
 export default function(state = initialState, action) {
     switch(action.type) {        
         case NEW_EVENT:
-            
-            if (typeof action.payload !== 'undefined'){
-                return {
-                    ...state,
-                    newEvent: action.payload,
-                    myevents: [action.payload,...state.myevents]
-                }
-            } else {
-                return {...state}
-            }      
+            return {
+                ...state,
+                events: [action.payload,...state.events]
+            }
            
         case FETCH_EVENTS:        
             return {
                 ...state,
-                myevents: action.payload
+                events: action.payload
             }
         case UPDATED_EVENT:
-            let events = [...state.myevents];
+            let events = [...state.events];
             events.find((o, i) => {     
                 if (o.normalized_name === action.payload.normalized_name) {
-                    events[i] = action.payload
+                    events[i] = {...events[i],...action.payload}
                     return true; // stop searching
                 }
                 return false;
             });
             return {
                 ...state,
-                myevents: events
+                events: events
             }
         case FETCH_TAGS:        
         return {
@@ -45,7 +37,6 @@ export default function(state = initialState, action) {
             initialTags: action.payload
         }
         case FETCH_COUNTS:
-            
             return {
                 ...state,
                 counts: {

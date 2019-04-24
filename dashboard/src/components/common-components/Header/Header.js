@@ -8,6 +8,8 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { Link } from 'react-router-dom'
 import { withStyles } from "@material-ui/core/styles";
 import { styles } from "./styles";
 import {
@@ -18,7 +20,7 @@ import {
 class  Header extends Component {
 
   render() {
-    const { classes, onDrawerToggle, title, renderTabs } = this.props;
+    const { classes, onDrawerToggle, title, renderTabs, backLink } = this.props;
             
 
     return (
@@ -39,28 +41,27 @@ class  Header extends Component {
                 </Grid>
               </Hidden>
               <Grid item xs />
-              <IfFirebaseAuthed>
-              {({ user }) =>  
-              <Grid item>
-                <Typography className={classes.link} >
-                  {user.email}
-                </Typography>
-              </Grid>
-              }
+                <IfFirebaseAuthed>
+                {({ user }) =>  
+                <Grid item>
+                  <Typography className={classes.link} >
+                    {user.email}
+                  </Typography>
+                </Grid>
+                }
+                </IfFirebaseAuthed>
+                <IfFirebaseAuthed>
+                {({ user }) => 
+                <Grid item>
+                  <IconButton color="inherit" className={classes.iconButtonAvatar}>
+                    <Avatar
+                      className={classes.avatar}
+                      src={user.photoURL}
+                    />
+                  </IconButton>
+                </Grid>
+                }
               </IfFirebaseAuthed>
-              <IfFirebaseAuthed>
-              {({ user }) => 
-               <Grid item>
-                <IconButton color="inherit" className={classes.iconButtonAvatar}>
-                  <Avatar
-                    className={classes.avatar}
-                    src={user.photoURL}
-                  />
-                </IconButton>
-              </Grid>
-              }
-            </IfFirebaseAuthed>
-              
             </Grid>
           </Toolbar>
         </AppBar>
@@ -73,8 +74,17 @@ class  Header extends Component {
         >
           <Toolbar>
             <Grid container alignItems="center" spacing={8}>
+
               <Grid item xs>
+
                 <Typography color="inherit" variant="h5">
+                { backLink ?
+                    <IconButton className={classes.button} component={Link} to={backLink} aria-label="Back">
+                      <ArrowBackIcon />
+                    </IconButton> 
+                    :
+                    null
+              }
                   { title }
                 </Typography>
               </Grid>
