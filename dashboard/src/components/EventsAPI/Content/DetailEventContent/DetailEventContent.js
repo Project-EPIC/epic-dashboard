@@ -8,15 +8,17 @@ import TweetAnnotationTable from "../../TweetAnnotation/TweetAnnotationTable/Twe
 import { Tabs, Tab } from "@material-ui/core";
 import { NavLink } from 'react-router-dom'
 import ListMentions from "../../ListMentions/ListMentions";
-import {withRouter} from 'react-router-dom';
 
 
 
 class DetailEventContent extends Component {
 
+
+
   state = {
-    value: 0,
+    value: window.location.pathname,
   };
+
 
 
   handleChange = (event, value) => {
@@ -25,7 +27,7 @@ class DetailEventContent extends Component {
 
 
   render() {
-    const { classes, match, location} = this.props;
+    const { classes, match} = this.props;
     const { params } = match;
     const { value } = this.state;
 
@@ -33,8 +35,8 @@ class DetailEventContent extends Component {
 
     const renderTabs = (eventId) => () => {
       return <Tabs value={value} onChange={this.handleChange} >
-        <Tab component={NavLink} to={`/events/${eventId}/`} label="Tweets" />
-        <Tab component={NavLink} to={`/events/${eventId}/mentions`} label="Mentions" />
+        <Tab component={NavLink} to={`/events/${eventId}/`} value={`/events/${eventId}/`} label="Tweets" />
+        <Tab component={NavLink} to={`/events/${eventId}/mentions`} value={`/events/${eventId}/mentions`} label="Mentions" />
       </Tabs>
     }
 
@@ -58,4 +60,4 @@ DetailEventContent.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(withRouter(DetailEventContent));
+export default withStyles(styles)(DetailEventContent);
