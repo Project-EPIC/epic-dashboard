@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { styles } from "./styles";
 import { connect } from 'react-redux';
-import { fetchEvent, modifyEvents } from "../../../actions/eventActions";
+import { fetchEvent, fetchCounts,modifyEvents } from "../../../actions/eventActions";
 import PauseIcon from "@material-ui/icons/Pause"
 import PlayArrowIcon from "@material-ui/icons/PlayArrow"
 import Card from '@material-ui/core/Card';
@@ -20,6 +20,8 @@ class EventDashboard extends React.Component {
 
     componentDidMount() {
         this.props.fetchEvent(this.props.eventId);
+        this.props.fetchCounts(this.props.eventId);
+
     }
 
 
@@ -30,17 +32,22 @@ class EventDashboard extends React.Component {
         const event = rows.find((o) => {
             return o.normalized_name === eventId;
         });
+        const totalCount = (this.props.counts[eventId] && this.props.counts[eventId].map((item)=> item.count).reduce((x,y)=> x+y))||0;
+
+        
 
         if (event !== undefined)
             return (
 
                 <Grid container spacing={24}>
 
-                    <Grid item md={4} xs={12} >
+                    <Grid item md={3} xs={12} >
                         <Card className={classes.card}>
                             <CardContent>
-
-                                <Typography variant="h5" component="h2">
+                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                    Event details
+                                </Typography>
+                                <Typography variant="h5" component="h5">
                                     {event.name}
 
                                 </Typography>
@@ -59,13 +66,13 @@ class EventDashboard extends React.Component {
 
                         </Card>
                     </Grid>
-                    <Grid item md={4} xs={12}>
+                    <Grid item md={3} xs={12}>
                         <Card className={classes.card}>
                             <CardContent>
-
-                                <Typography variant="h5" component="h2">
-                                    Keywords used
+                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                Keywords for collection
                                 </Typography>
+                                
                                 <List dense>
                                     {event.keywords.map(keyword =>
                                         <ListItem key={keyword}>
@@ -77,12 +84,29 @@ class EventDashboard extends React.Component {
 
                         </Card>
                     </Grid>
-                    <Grid item md={4} xs={12} >
+                    <Grid item md={3} xs={12}>
                         <Card className={classes.card}>
                             <CardContent>
+                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                Tweets collected
+                                </Typography>
+                                <Typography variant="h2" component="h2">
+                                    {totalCount}
 
-                                <Typography variant="h5" component="h2">
-                                    Status: {event.status==="ACTIVE"?"Collecting data":(event.status==="FAILED"? "Collection failed!":"Collection paused")}
+                                </Typography>
+                                
+                            </CardContent>
+
+                        </Card>
+                    </Grid>
+                    <Grid item md={3} xs={12} >
+                        <Card className={classes.card}>
+                            <CardContent>
+                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                Status
+                                </Typography>
+                                <Typography variant="h5" component="h5">
+                                    {event.status==="ACTIVE"?"Collecting data":(event.status==="FAILED"? "Collection failed!":"Not collecting new data")}
                                 </Typography>
 
 
@@ -109,9 +133,9 @@ class EventDashboard extends React.Component {
                     </Grid>
                     <Grid item xs={12} >
                         <Paper className={classes.chartPaper}>
-                            <Typography variant="h5" component="h2">
+                        <Typography className={classes.title} color="textSecondary" gutterBottom>
                                 Tweets per hour
-                            </Typography>
+                                </Typography>
                             <TweetsChart annotateEvent={event.normalized_name} updateTimePeriod={(d)=>(d)} />
                         </Paper>
                     </Grid>
@@ -130,11 +154,13 @@ EventDashboard.propTypes = {
 
 const mapStateToProps = state => ({
     events: state.eventsReducer.events,
+    counts: state.eventsReducer.counts,
 });
 
 const mapDispatchToProps = {
     fetchEvent: fetchEvent,
     modifyEvents: modifyEvents,
+    fetchCounts: fetchCounts,
 }
 
 
