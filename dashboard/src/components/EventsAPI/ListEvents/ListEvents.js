@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { styles } from "./styles";
 import { connect } from 'react-redux';
-import { fetchEvents, modifyEvents } from "../../../actions/eventActions";
+import { fetchEvents } from "../../../actions/eventActions";
 import EventTable from './EventTable/EventTable';
 
 
@@ -57,7 +57,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   fetchEvents: fetchEvents, 
-  modifyEvents: modifyEvents,
 }
 
 

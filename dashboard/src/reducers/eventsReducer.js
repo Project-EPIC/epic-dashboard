@@ -20,13 +20,17 @@ export default function(state = initialState, action) {
             }
         case UPDATED_EVENT:
             let events = [...state.events];
-            events.find((o, i) => {     
+            let result = events.find((o, i) => {     
                 if (o.normalized_name === action.payload.normalized_name) {
                     events[i] = {...events[i],...action.payload}
                     return true; // stop searching
                 }
                 return false;
             });
+            // If not found, add it!
+            if (result===undefined) {
+                events=[action.payload,...events]
+            }
             return {
                 ...state,
                 events: events

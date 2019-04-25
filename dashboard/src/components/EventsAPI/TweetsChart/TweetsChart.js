@@ -7,7 +7,7 @@ import 'react-vis/dist/style.css';
 import { FlexibleWidthXYPlot, HorizontalGridLines, VerticalGridLines, XAxis, YAxis, Crosshair, Highlight, LineSeries } from 'react-vis';
 
 
-import { fetchCounts } from "../../../../actions/eventActions";
+import { fetchCounts } from "../../../actions/eventActions";
 
 
 const initialState = {

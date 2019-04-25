@@ -8,6 +8,7 @@ import TweetAnnotationTable from "../../TweetAnnotation/TweetAnnotationTable/Twe
 import { Tabs, Tab } from "@material-ui/core";
 import { NavLink } from 'react-router-dom'
 import ListMentions from "../../ListMentions/ListMentions";
+import EventDashboard from "../../EventDashboard/EventDashboard";
 
 
 
@@ -37,6 +38,7 @@ class DetailEventContent extends Component {
       return <Tabs value={value} onChange={this.handleChange} >
         <Tab component={NavLink} to={`/events/${eventId}/`} value={`/events/${eventId}/`} label="Tweets" />
         <Tab component={NavLink} to={`/events/${eventId}/mentions`} value={`/events/${eventId}/mentions`} label="Mentions" />
+        <Tab component={NavLink} to={`/events/${eventId}/dashboard`} value={`/events/${eventId}/dashboard`} label="Dashboard" />
       </Tabs>
     }
 
@@ -48,6 +50,7 @@ class DetailEventContent extends Component {
 
           <Route exact path="/events/:eventId/" render={(props) => (<TweetAnnotationTable annotateEvent={params.eventId} {...props} />)} />
           <Route exact path="/events/:eventId/mentions" render={(props) => (<ListMentions eventId={params.eventId} {...props} />)} />
+          <Route exact path="/events/:eventId/dashboard" render={(props) => (<EventDashboard eventId={params.eventId} {...props} />)} />
 
         </main>
       </div>

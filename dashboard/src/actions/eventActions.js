@@ -71,6 +71,25 @@ export const modifyEvents = (status, normalized_name) => dispatch => {
 
 };
 
+export const fetchEvent = (normalized_name) => dispatch => {
+    
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
+        fetch(`https://epicapi.gerard.space/events/${normalized_name}/`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${idToken}`
+            }
+        }).then(res => res.json())
+            .then(updatedEvent => dispatch({
+                type: UPDATED_EVENT,
+                payload: updatedEvent
+            })
+        );
+    });
+
+};
+
 export const updateAnnotation = (tweet, initialTags ,tags, eventName) => dispatch => {       
         var data = {
             'initialTags': initialTags,

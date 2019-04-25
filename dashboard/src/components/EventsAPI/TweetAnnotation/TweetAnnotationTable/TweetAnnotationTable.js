@@ -8,7 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import TweetCard from "../TweetCard/TweetCard";
 import MaterialTable from 'material-table'
 import firebase from "firebase";
-import TweetsChart from '../TweetsChart/TweetsChart'
+import TweetsChart from '../../TweetsChart/TweetsChart'
 
 
 const initialState = {
