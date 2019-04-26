@@ -59,7 +59,7 @@ class TweetsChart extends React.Component {
 
     return (
       <div>
-      <FlexibleWidthXYPlot onMouseLeave={this._onMouseLeave} height={200} xType="time" >
+      <FlexibleWidthXYPlot onMouseLeave={this._onMouseLeave} height={200} xType="time-utc" >
         <HorizontalGridLines />
         <VerticalGridLines />
         <XAxis title="Date" />
@@ -67,7 +67,7 @@ class TweetsChart extends React.Component {
         <Crosshair
           values={this.state.crosshairValues}
           className={'test-class-name'}
-          titleFormat={(d) => ({title: 'Date', value: new Date(d[0].x).toLocaleString()})}
+          titleFormat={(d) => ({title: 'Date', value: new Date(d[0].x).toUTCString()})}
           itemsFormat={(d)=>([{title:"Tweet count", value:d[0].y}])}
         />
         <LineSeries curve="curveBasis" data={transf} onNearestX={this._onNearestX} />

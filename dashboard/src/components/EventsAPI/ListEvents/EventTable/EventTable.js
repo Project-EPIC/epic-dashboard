@@ -39,7 +39,7 @@ class EventTable extends React.Component {
                   },
               }),
               {
-                icon:"add",
+                icon:"remove_red_eye",
                 tooltip:"Event details",
                 onClick: (event, rowData) => {
                   history.push(`/events/${rowData.normalized_name}/`)

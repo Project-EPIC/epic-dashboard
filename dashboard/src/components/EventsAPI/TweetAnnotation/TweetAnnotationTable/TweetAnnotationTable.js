@@ -42,11 +42,12 @@ class TweetAnnotationTable extends React.Component {
 
   render() {
     const { classes } = this.props;    
-    const title = `Tweets for "${this.props.annotateEvent}"`
+    const eventId = this.props.eventId;
+    const title = `Tweets for "${eventId}"`
     return (
       <div className={classes.contentWrapper}>
       <Paper className={classes.chartPaper}> 
-        <TweetsChart annotateEvent={this.props.annotateEvent} updateTimePeriod={this.updateTimePeriod}/>
+        <TweetsChart annotateEvent={eventId} updateTimePeriod={this.updateTimePeriod}/>
       </Paper>  
       <Paper className={classes.root}>      
         <main className={classes.mainContent}>
@@ -72,7 +73,7 @@ class TweetAnnotationTable extends React.Component {
                 query => 
                 new Promise( (resolve, reject) => {
                   // Note: this does not work for the bombcyclone2019 event                  
-                  let url = `https://epicapi.gerard.space/tweets/${this.props.annotateEvent}/?page=${query.page + 1}&count=${query.pageSize}`
+                  let url = `https://epicapi.gerard.space/tweets/${eventId}/?page=${query.page + 1}&count=${query.pageSize}`
                   if (this.state.since !== null && this.state.until!==null) {
                     url = url+`&since=${this.state.since.toISOString()}&until=${this.state.until.toISOString()}`
                   }                  
@@ -101,7 +102,7 @@ class TweetAnnotationTable extends React.Component {
               }}
               detailPanel={rowData => {                
                 return (
-                  <TweetCard tweet={rowData} eventName={this.props.annotateEvent}/>
+                  <TweetCard tweet={rowData} eventName={eventId}/>
                 )
               }}
             />

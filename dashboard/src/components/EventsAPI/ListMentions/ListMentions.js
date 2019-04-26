@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { styles } from "./styles";
 import { connect } from 'react-redux';
+import firebase from "firebase";
 import MaterialTable from 'material-table'
 
 class ListMentions extends Component {
@@ -34,15 +35,23 @@ class ListMentions extends Component {
                 new Promise((resolve, reject) => {
                   // Note: this does not work for the bombcyclone2019 event ${normalized_name}             
                   let url = `https://epicapi.gerard.space/mentions/${eventId}/?page=${query.page + 1}&count=${query.pageSize}`
-                  fetch(url)
-                    .then(response => response.json())
-                    .then(result => {
-                      resolve({
-                        data: result.mentions,
-                        page: result.meta.page - 1,
-                        totalCount: result.meta.total_count,
+
+                  firebase.auth().currentUser.getIdToken(/* forceRefresh */ false).then(idToken => {
+                    fetch(url, {
+                      headers: {
+                        'Authorization': `Bearer ${idToken}`,
+                      }
+                    }
+                    )
+                      .then(response => response.json())
+                      .then(result => {
+                        resolve({
+                          data: result.mentions,
+                          page: result.meta && (result.meta.page - 1),
+                          totalCount: result.meta && result.meta.total_count,
+                        })
                       })
-                    })
+                  });
                 })
             }
             title={`Most Mentioned Users for "${eventId}"`}

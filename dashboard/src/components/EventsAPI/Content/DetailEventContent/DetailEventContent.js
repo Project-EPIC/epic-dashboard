@@ -11,6 +11,24 @@ import ListMentions from "../../ListMentions/ListMentions";
 import EventDashboard from "../../EventDashboard/EventDashboard";
 
 
+const navigation = (eventId) => [
+  {
+    url: `/events/${eventId}/`,
+    label: "Tweets",
+    component: TweetAnnotationTable,
+  },
+  {
+    url: `/events/${eventId}/mentions`,
+    label: "Mentions",
+    component: ListMentions,
+  },
+  {
+    url: `/events/${eventId}/dashboard`,
+    label: "Dashboard",
+    component: EventDashboard,
+  },
+
+]
 
 class DetailEventContent extends Component {
 
@@ -33,24 +51,25 @@ class DetailEventContent extends Component {
     const { value } = this.state;
 
     const title = `Event detail: ${params.eventId}`
+    const eventsId = params.eventId;
 
-    const renderTabs = (eventId) => () => {
-      return <Tabs value={value} onChange={this.handleChange} >
-        <Tab component={NavLink} to={`/events/${eventId}/`} value={`/events/${eventId}/`} label="Tweets" />
-        <Tab component={NavLink} to={`/events/${eventId}/mentions`} value={`/events/${eventId}/mentions`} label="Mentions" />
-        <Tab component={NavLink} to={`/events/${eventId}/dashboard`} value={`/events/${eventId}/dashboard`} label="Dashboard" />
+    const renderTabs =  () =>  <Tabs value={value} onChange={this.handleChange} >
+      { navigation(eventsId).map(
+        nav => <Tab key={nav.url} component={NavLink} to={nav.url} value={nav.url} label={nav.label} />
+      )}
       </Tabs>
-    }
+    
 
     return (
       <div className={classes.Main}>
-        <Header onDrawerToggle={this.props.onDrawerToggle} title={title} renderTabs={renderTabs(params.eventId)} backLink="/events/"/>
+        <Header onDrawerToggle={this.props.onDrawerToggle} title={title} renderTabs={renderTabs} backLink="/events/"/>
 
         <main className={classes.mainContent}>
+        {navigation(eventsId).map(
+          nav => <Route exact key={nav.url} path={nav.url} render={() => <nav.component eventId={eventsId}/>} />
+        )}
 
-          <Route exact path="/events/:eventId/" render={(props) => (<TweetAnnotationTable annotateEvent={params.eventId} {...props} />)} />
-          <Route exact path="/events/:eventId/mentions" render={(props) => (<ListMentions eventId={params.eventId} {...props} />)} />
-          <Route exact path="/events/:eventId/dashboard" render={(props) => (<EventDashboard eventId={params.eventId} {...props} />)} />
+      
 
         </main>
       </div>
