@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { styles } from "./styles";
 import { connect } from 'react-redux';
 import 'react-vis/dist/style.css';
-import { FlexibleWidthXYPlot, HorizontalGridLines, VerticalGridLines, XAxis, YAxis, Crosshair, Highlight, LineSeries } from 'react-vis';
+import { FlexibleWidthXYPlot, HorizontalGridLines, XAxis, YAxis, Crosshair, Highlight, LineSeries } from 'react-vis';
 
 
 import { fetchCounts } from "../../../actions/eventActions";
@@ -61,7 +61,6 @@ class TweetsChart extends React.Component {
       <div>
       <FlexibleWidthXYPlot onMouseLeave={this._onMouseLeave} height={200} xType="time-utc" >
         <HorizontalGridLines />
-        <VerticalGridLines />
         <XAxis title="Date" />
         <YAxis title="Tweet count" />
         <Crosshair
