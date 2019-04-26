@@ -39,7 +39,14 @@ class EventTable extends React.Component {
                   },
               }),
               {
-                icon:"remove_red_eye",
+                icon:"search",
+                tooltip:"Explore in BigQuery",
+                onClick: (event, rowData) => {
+                  window.open(rowData.big_query_table_url, "_blank");
+                },
+              },
+              {
+                icon:"add",
                 tooltip:"Event details",
                 onClick: (event, rowData) => {
                   history.push(`/events/${rowData.normalized_name}/`)

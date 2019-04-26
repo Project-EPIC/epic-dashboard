@@ -6,6 +6,7 @@ import { styles } from "./styles";
 import { connect } from 'react-redux';
 import { fetchEvent, fetchCounts,modifyEvents } from "../../../actions/eventActions";
 import PauseIcon from "@material-ui/icons/Pause"
+import OpenInNewIcon from "@material-ui/icons/OpenInNew"
 import PlayArrowIcon from "@material-ui/icons/PlayArrow"
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -96,7 +97,13 @@ class EventDashboard extends React.Component {
                                 </Typography>
                                 
                             </CardContent>
-
+                            <CardActions>
+                            <Button color="default" className={classes.button} target="_blank" component="a" href={event.big_query_table_url}>
+                                        Explore in BigQuery
+                                        <OpenInNewIcon className={classes.rightIcon} />
+                                    </Button>
+                                
+                            </CardActions>
                         </Card>
                     </Grid>
                     <Grid item md={3} xs={12} >
