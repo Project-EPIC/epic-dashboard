@@ -23,10 +23,10 @@ class AlertTable extends React.Component {
             columns={[
               
               { title: "Event Type", field: 'event', },
-              { title: "Effective", field: 'effectiveDate', defaultSort:"asc", render: (rowData)=> rowData.effectiveDate.toLocaleString()},
-              { title: "Expires", field: 'expiresDate',render: (rowData)=> rowData.expiresDate.toLocaleString() },
+              { title: "Effective", field: 'effectiveDate', defaultSort:"asc", render: (rowData)=> rowData.effectiveDate.toLocaleString(), type: 'datetime',customFilterAndSearch: (term, rowData) => (term <= rowData.effectiveDate)},
+              { title: "Expires", field: 'expiresDate',render: (rowData)=> rowData.expiresDate.toLocaleString(), type: 'datetime', customFilterAndSearch: (term, rowData) => (term >= rowData.expiresDate) },
               { title: "Severity", field: 'severity', },
-              { title: "Area", field: 'areaDesc', render:(rowData)=> rowData.areaDesc.substring(0,24)+"..."},
+              { title: "Sender", field: 'senderName'},
             ]}
             options={{ search: false, showTitle:false, toolbar:false, detailPanelType:"single", paging: true, filtering:true, actionsColumnIndex: -1, pageSize: 20, pageSizeOptions: [10, 20, 30] }}
             data={mapped}
