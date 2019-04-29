@@ -40,6 +40,10 @@ class TweetAnnotationTable extends React.Component {
     this.tableRef.current.onQueryChange();
   }
 
+  addDefaultSrc(ev){
+    ev.target.src = '/img/default_profile_normal.png'
+  }
+
   render() {
     const { classes } = this.props;    
     const eventId = this.props.eventId;
@@ -61,6 +65,7 @@ class TweetAnnotationTable extends React.Component {
                   render: rowData => (
                     <img
                       style={{ height: 36, borderRadius: '50%' }}
+                      onError={this.addDefaultSrc}
                       src={rowData.user.profile_image_url}
                       alt="Avatar"
                     />

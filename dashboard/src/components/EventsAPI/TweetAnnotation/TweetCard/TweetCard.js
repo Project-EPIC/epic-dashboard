@@ -68,6 +68,9 @@ class TweetCard extends Component {
     }
   }
 
+  addDefaultSrc(ev){
+    ev.target.src = '/img/default_profile_normal.png'
+  }
   
   render() {  
         
@@ -87,7 +90,7 @@ class TweetCard extends Component {
         <CardActionArea>  
           {cardMedia}       
           <CardContent>
-            <Avatar alt="Remy Sharp" src={user.profile_image_url} className={classes.avatar} />
+            <Avatar alt="Avatar"  onError={this.addDefaultSrc} src={user.profile_image_url} className={classes.avatar} />
             <Typography gutterBottom variant="h5" component="h2">
               {user.name}              
             </Typography>
