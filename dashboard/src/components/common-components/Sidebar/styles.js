@@ -6,6 +6,11 @@ export const styles = theme => ({
     categoryHeaderPrimary: {
       color: theme.palette.common.white
     },
+    bottomList: {
+      position: "absolute",
+      width: "100%",
+      bottom:10,
+    },
     item: {
       paddingTop: 4,
       paddingBottom: 4,

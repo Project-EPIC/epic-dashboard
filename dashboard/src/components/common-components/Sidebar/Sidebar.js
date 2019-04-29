@@ -74,7 +74,7 @@ class Sidebar extends Component {
             </React.Fragment>
           ))}
         </List>
-        <List disablePadding>
+        <List disablePadding className={classes.bottomList}>
           <FirebaseAuthConsumer>
             {({ isSignedIn, user }) => {
               
