@@ -13,7 +13,8 @@ class AlertTable extends React.Component {
 
  
   render() {
-    const { title, data } = this.props;    
+    const { title, data } = this.props;  
+    const mapped = data.map((row)=>({effectiveDate: new Date(row.effective), expiresDate: new Date(row.expires),...row}))  
 
     return   (      
 
@@ -22,13 +23,13 @@ class AlertTable extends React.Component {
             columns={[
               
               { title: "Event Type", field: 'event', },
-              { title: "Effective", field: 'effective', defaultSort:"asc"},
-              { title: "Expires", field: 'expires', },
+              { title: "Effective", field: 'effectiveDate', defaultSort:"asc", render: (rowData)=> rowData.effectiveDate.toLocaleString()},
+              { title: "Expires", field: 'expiresDate',render: (rowData)=> rowData.expiresDate.toLocaleString() },
               { title: "Severity", field: 'severity', },
               { title: "Area", field: 'areaDesc', render:(rowData)=> rowData.areaDesc.substring(0,24)+"..."},
             ]}
             options={{ search: false, showTitle:false, toolbar:false, detailPanelType:"single", paging: true, filtering:true, actionsColumnIndex: -1, pageSize: 20, pageSizeOptions: [10, 20, 30] }}
-            data={data}
+            data={mapped}
             title={title}
             detailPanel={[
                 {
