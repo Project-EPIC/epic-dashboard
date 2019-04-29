@@ -11,18 +11,17 @@ const sidebarRoutes = [
       ]
     },
     {
+      id: "National Weather Service",
+      children: [
+        { id: "NWS Active Alerts", icon: <WarningIcon />, targetUrl: "/alerts/" },
+      ]
+    },
+    {
       id: "Users",
       children: [
         { id: "Manage users", icon: <PeopleIcon />, targetUrl: "/users/" },
       ]
     },
-    {
-      id: "National Weather Service",
-      children: [
-        { id: "NWS Active Alerts", icon: <WarningIcon />, targetUrl: "/alerts/" },
-      ]
-    }
-
   ];
 
   export default sidebarRoutes;
