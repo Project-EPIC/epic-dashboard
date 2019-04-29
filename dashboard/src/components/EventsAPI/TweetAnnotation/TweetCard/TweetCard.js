@@ -12,6 +12,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import { fetchTags, updateAnnotation } from "../../../../actions/eventActions"
+import { defaultProfileImage } from "../profileBase64";
 
 const styles = {
   card: {
@@ -69,7 +70,7 @@ class TweetCard extends Component {
   }
 
   addDefaultSrc(ev){
-    ev.target.src = '/img/default_profile_normal.png'
+    ev.target.src = defaultProfileImage
   }
   
   render() {  

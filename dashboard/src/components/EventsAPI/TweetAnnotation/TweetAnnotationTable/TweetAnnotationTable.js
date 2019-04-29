@@ -9,6 +9,7 @@ import TweetCard from "../TweetCard/TweetCard";
 import MaterialTable from 'material-table'
 import firebase from "firebase";
 import TweetsChart from '../../TweetsChart/TweetsChart'
+import { defaultProfileImage } from '../profileBase64';
 
 
 const initialState = {
@@ -41,7 +42,7 @@ class TweetAnnotationTable extends React.Component {
   }
 
   addDefaultSrc(ev){
-    ev.target.src = '/img/default_profile_normal.png'
+    ev.target.src = defaultProfileImage
   }
 
   render() {
