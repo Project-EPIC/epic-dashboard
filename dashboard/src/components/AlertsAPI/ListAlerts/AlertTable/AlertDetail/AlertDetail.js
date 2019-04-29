@@ -18,6 +18,14 @@ class AlertDetail extends React.Component {
 
 
             <Grid container spacing={24} className={classes.container}>
+                <Grid item md={12} xs={12}>
+                    <Typography className={classes.title} color="textSecondary" gutterBottom>
+                        Headline
+                    </Typography>
+                    <Typography variant="body2">
+                        {data.parameters.NWSheadline}
+                    </Typography>
+                </Grid>
                 <Grid item md={6} xs={12}>
                     <Typography className={classes.title} color="textSecondary" gutterBottom>
                         Area
