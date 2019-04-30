@@ -29,7 +29,7 @@ const navigation = (event, eventId) => {
 ]
 if (event && event.status === "NOT_ACTIVE") {
   nav.push({
-    url: `/events/${event.normalized_name}/mentions`,
+    url: `/events/${eventId}/mentions`,
     label: "Mentions",
     component: ListMentions,
   })
@@ -68,7 +68,7 @@ class DetailEventContent extends Component {
     const eventsId = params.eventId;
 
     const renderTabs =  () =>  <Tabs value={value} onChange={this.handleChange} >
-      { event && navigation(event, eventsId).map(
+      {  navigation(event, eventsId).map(
         nav => <Tab key={nav.url} component={NavLink} to={nav.url} value={nav.url} label={nav.label} />
       )}
       </Tabs>
@@ -79,7 +79,7 @@ class DetailEventContent extends Component {
         <Header onDrawerToggle={this.props.onDrawerToggle} title={title} renderTabs={renderTabs} backLink="/events/"/>
 
         <main className={classes.mainContent}>
-        {event && navigation(event,eventsId).map(
+        {navigation(event,eventsId).map(
           nav => <Route exact key={nav.url} path={nav.url} render={() => <nav.component eventId={eventsId}/>} />
         )}
 
