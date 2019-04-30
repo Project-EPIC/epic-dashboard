@@ -18,4 +18,7 @@ export const styles = theme => ({
   iconSmall: {
     fontSize: 20,
   },
+  chip: {
+    margin: theme.spacing.unit * 0.5,
+  },
 });

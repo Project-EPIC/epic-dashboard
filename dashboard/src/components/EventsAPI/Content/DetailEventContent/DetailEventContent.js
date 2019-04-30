@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { styles } from "./styles";
+import { connect } from 'react-redux';
+import { fetchEvent } from "../../../../actions/eventActions";
 import { Route } from "react-router-dom";
 import Header from "../../../common-components/Header/Header";
 import TweetAnnotationTable from "../../TweetAnnotation/TweetAnnotationTable/TweetAnnotationTable";
@@ -11,16 +13,12 @@ import ListMentions from "../../ListMentions/ListMentions";
 import EventDashboard from "../../EventDashboard/EventDashboard";
 
 
-const navigation = (eventId) => [
+const navigation = (event, eventId) => {
+  let nav = [
   {
     url: `/events/${eventId}/`,
     label: "Tweets",
     component: TweetAnnotationTable,
-  },
-  {
-    url: `/events/${eventId}/mentions`,
-    label: "Mentions",
-    component: ListMentions,
   },
   {
     url: `/events/${eventId}/dashboard`,
@@ -29,6 +27,15 @@ const navigation = (eventId) => [
   },
 
 ]
+if (event && event.status === "NOT_ACTIVE") {
+  nav.push({
+    url: `/events/${event.normalized_name}/mentions`,
+    label: "Mentions",
+    component: ListMentions,
+  })
+}
+return nav
+}
 
 class DetailEventContent extends Component {
 
@@ -37,6 +44,10 @@ class DetailEventContent extends Component {
   state = {
     value: window.location.pathname,
   };
+
+  componentDidMount() {
+    this.props.fetchEvent(this.props.match.params.eventId);
+  }
 
 
 
@@ -49,12 +60,15 @@ class DetailEventContent extends Component {
     const { classes, match} = this.props;
     const { params } = match;
     const { value } = this.state;
+    const event = this.props.events.find((o) => {
+      return o.normalized_name === params.eventId;
+    });
 
     const title = `Event detail: ${params.eventId}`
     const eventsId = params.eventId;
 
     const renderTabs =  () =>  <Tabs value={value} onChange={this.handleChange} >
-      { navigation(eventsId).map(
+      { event && navigation(event, eventsId).map(
         nav => <Tab key={nav.url} component={NavLink} to={nav.url} value={nav.url} label={nav.label} />
       )}
       </Tabs>
@@ -65,7 +79,7 @@ class DetailEventContent extends Component {
         <Header onDrawerToggle={this.props.onDrawerToggle} title={title} renderTabs={renderTabs} backLink="/events/"/>
 
         <main className={classes.mainContent}>
-        {navigation(eventsId).map(
+        {event && navigation(event,eventsId).map(
           nav => <Route exact key={nav.url} path={nav.url} render={() => <nav.component eventId={eventsId}/>} />
         )}
 
@@ -82,4 +96,14 @@ DetailEventContent.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(DetailEventContent);
+const mapStateToProps = state => ({
+  events: state.eventsReducer.events,
+});
+
+const mapDispatchToProps = {
+  fetchEvent: fetchEvent,
+  
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DetailEventContent));

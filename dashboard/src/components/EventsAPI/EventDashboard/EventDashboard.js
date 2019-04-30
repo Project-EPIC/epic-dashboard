@@ -6,6 +6,7 @@ import { styles } from "./styles";
 import { connect } from 'react-redux';
 import { fetchEvent, fetchCounts, modifyEvents } from "../../../actions/eventActions";
 import PauseIcon from "@material-ui/icons/Pause"
+import Chip from '@material-ui/core/Chip';
 import OpenInNewIcon from "@material-ui/icons/OpenInNew"
 import PlayArrowIcon from "@material-ui/icons/PlayArrow"
 import CreateIcon from "@material-ui/icons/Create"
@@ -70,48 +71,7 @@ class EventDashboard extends React.Component {
                     <Grid item md={8} xs={12} >
                         <Grid container spacing={24}>
 
-                            <Grid item md={4} xs={12} >
-                                <Card className={classes.card}>
-                                    <CardContent>
-                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                            Event details
-                                </Typography>
-                                        <Typography variant="h5" component="h5">
-                                            {event.name}  (<i>{event.normalized_name}</i>)
-
-                                        </Typography>
-                                        
-                                        <Typography variant="body1">
-                                            {event.description}
-                                        </Typography>
-                                        <Typography variant="caption" gutterBottom color="textSecondary" >
-                                            <i><ReactTimeAgo date={event.created_at}/> by {event.author}</i>
-                                        </Typography>
-
-
-                                    </CardContent>
-
-                                </Card>
-                            </Grid>
-                            <Grid item md={4} xs={12}>
-                                <Card className={classes.card}>
-                                    <CardContent>
-                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                            Keywords for collection
-                                </Typography>
-
-                                        <List dense>
-                                            {event.keywords.map(keyword =>
-                                                <ListItem key={keyword}>
-                                                    <ListItemText primary={keyword} />
-                                                </ListItem>
-                                            )}
-                                        </List>
-                                    </CardContent>
-
-                                </Card>
-                            </Grid>
-                            <Grid item md={4} xs={12}>
+                        <Grid item md={4} xs={12}>
                                 <Card className={classes.card}>
                                     <CardContent>
                                         <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -132,6 +92,22 @@ class EventDashboard extends React.Component {
                                     </CardActions>
                                 </Card>
                             </Grid>
+                            <Grid item md={8} xs={12}>
+                                <Card className={classes.card}>
+                                    <CardContent>
+                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                            Keywords for collection
+                                        </Typography>
+
+                                        
+                                            {event.keywords.map(kw => <Chip key={kw} label={kw} className={classes.chip}/>
+                                            )}
+                                        
+                                                                                                            </CardContent>
+
+                                </Card>
+                            </Grid>
+                            
                             
                             <Grid item xs={12} >
                                 <Paper className={classes.chartPaper}>
@@ -145,6 +121,32 @@ class EventDashboard extends React.Component {
                     </Grid>
                     <Grid item md={4} xs={12} >
                     <Grid container spacing={24}>
+                    <Grid item  xs={12} >
+                                <Card className={classes.card}>
+                                    <CardContent>
+                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                            Event details
+                                </Typography>
+                                        <Typography variant="h5" component="h5">
+                                            {event.name}
+
+                                        </Typography>
+                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                        <i>{event.normalized_name}</i>
+                                </Typography>
+                                        
+                                        <Typography variant="body1">
+                                            {event.description}
+                                        </Typography>
+                                        <Typography variant="caption" gutterBottom color="textSecondary" >
+                                            <i><ReactTimeAgo date={event.created_at}/> by {event.author}</i>
+                                        </Typography>
+
+
+                                    </CardContent>
+
+                                </Card>
+                            </Grid>
                     <Grid item xs={12} >
                                 <Card className={classes.card}>
                                     <CardContent>
