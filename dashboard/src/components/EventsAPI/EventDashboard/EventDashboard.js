@@ -71,7 +71,7 @@ class EventDashboard extends React.Component {
                     <Grid item md={8} xs={12} >
                         <Grid container spacing={24}>
 
-                        <Grid item md={4} xs={12}>
+                            <Grid item md={4} xs={12}>
                                 <Card className={classes.card}>
                                     <CardContent>
                                         <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -91,6 +91,7 @@ class EventDashboard extends React.Component {
 
                                     </CardActions>
                                 </Card>
+                                
                             </Grid>
                             <Grid item md={8} xs={12}>
                                 <Card className={classes.card}>
@@ -107,21 +108,8 @@ class EventDashboard extends React.Component {
 
                                 </Card>
                             </Grid>
-                            
-                            
-                            <Grid item xs={12} >
-                                <Paper className={classes.chartPaper}>
-                                    <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                        Tweets per hour
-                                </Typography>
-                                    <TweetsChart annotateEvent={event.normalized_name} updateTimePeriod={(d) => (d)} />
-                                </Paper>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid item md={4} xs={12} >
-                    <Grid container spacing={24}>
-                    <Grid item  xs={12} >
+   
+                            <Grid item md={8} xs={12} >
                                 <Card className={classes.card}>
                                     <CardContent>
                                         <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -147,7 +135,7 @@ class EventDashboard extends React.Component {
 
                                 </Card>
                             </Grid>
-                    <Grid item xs={12} >
+                            <Grid item md={4} xs={12} >
                                 <Card className={classes.card}>
                                     <CardContent>
                                         <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -179,6 +167,21 @@ class EventDashboard extends React.Component {
                                     </CardActions>
                                 </Card>
                             </Grid>
+                            
+                            <Grid item xs={12} >
+                                <Paper className={classes.chartPaper}>
+                                    <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                        Tweets per hour
+                                </Typography>
+                                    <TweetsChart annotateEvent={event.normalized_name} updateTimePeriod={(d) => (d)} />
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item md={4} xs={12} >
+                    <Grid container spacing={24}>
+                    
+
                             <Grid item  xs={12} >
                         <Card className={classes.card}>
                             <CardContent>
