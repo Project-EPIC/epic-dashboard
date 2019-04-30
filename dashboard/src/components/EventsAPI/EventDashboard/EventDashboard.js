@@ -70,72 +70,7 @@ class EventDashboard extends React.Component {
                 <Grid container spacing={24}>
                     <Grid item md={8} xs={12} >
                         <Grid container spacing={24}>
-
-                            <Grid item md={4} xs={12}>
-                                <Card className={classes.card}>
-                                    <CardContent>
-                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                            Tweets collected
-                                        </Typography>
-                                        <Typography variant="h2" component="h2">
-                                            {totalCount}
-
-                                        </Typography>
-
-                                    </CardContent>
-                                    <CardActions>
-                                        <Button color="default" className={classes.button} target="_blank" component="a" href={event.big_query_table_url}>
-                                            Explore in BigQuery
-                                        <OpenInNewIcon className={classes.rightIcon} />
-                                        </Button>
-
-                                    </CardActions>
-                                </Card>
-                                
-                            </Grid>
-                            <Grid item md={8} xs={12}>
-                                <Card className={classes.card}>
-                                    <CardContent>
-                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                            Keywords for collection
-                                        </Typography>
-
-                                        
-                                            {event.keywords.map(kw => <Chip key={kw} label={kw} className={classes.chip}/>
-                                            )}
-                                        
-                                                                                                            </CardContent>
-
-                                </Card>
-                            </Grid>
-   
-                            <Grid item md={8} xs={12} >
-                                <Card className={classes.card}>
-                                    <CardContent>
-                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                            Event details
-                                </Typography>
-                                        <Typography variant="h5" component="h5">
-                                            {event.name}
-
-                                        </Typography>
-                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                        <i>{event.normalized_name}</i>
-                                </Typography>
-                                        
-                                        <Typography variant="body1">
-                                            {event.description}
-                                        </Typography>
-                                        <Typography variant="caption" gutterBottom color="textSecondary" >
-                                            <i><ReactTimeAgo date={event.created_at}/> by {event.author}</i>
-                                        </Typography>
-
-
-                                    </CardContent>
-
-                                </Card>
-                            </Grid>
-                            <Grid item md={4} xs={12} >
+                        <Grid item md={4} xs={12} >
                                 <Card className={classes.card}>
                                     <CardContent>
                                         <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -167,8 +102,24 @@ class EventDashboard extends React.Component {
                                     </CardActions>
                                 </Card>
                             </Grid>
-                            
-                            <Grid item xs={12} >
+                           
+                            <Grid item md={8} xs={12}>
+                                <Card className={classes.card}>
+                                    <CardContent>
+                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                            Keywords for collection
+                                        </Typography>
+
+                                        
+                                            {event.keywords.map(kw => <Chip key={kw} label={kw} className={classes.chip}/>
+                                            )}
+                                        
+                                                                                                            </CardContent>
+
+                                </Card>
+                            </Grid>
+   
+                            <Grid item md={8}xs={12} >
                                 <Paper className={classes.chartPaper}>
                                     <Typography className={classes.title} color="textSecondary" gutterBottom>
                                         Tweets per hour
@@ -176,12 +127,61 @@ class EventDashboard extends React.Component {
                                     <TweetsChart annotateEvent={event.normalized_name} updateTimePeriod={(d) => (d)} />
                                 </Paper>
                             </Grid>
+                            
+                            <Grid item md={4} xs={12}>
+                                <Card className={classes.card}>
+                                    <CardContent>
+                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                            Tweets collected
+                                        </Typography>
+                                        <Typography variant="h2" component="h2">
+                                            {totalCount}
+
+                                        </Typography>
+
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button color="default" className={classes.button} target="_blank" component="a" href={event.big_query_table_url}>
+                                            Explore in BigQuery
+                                        <OpenInNewIcon className={classes.rightIcon} />
+                                        </Button>
+
+                                    </CardActions>
+                                </Card>
+                                
+                            </Grid>
+                            
                         </Grid>
                     </Grid>
                     <Grid item md={4} xs={12} >
                     <Grid container spacing={24}>
                     
+                    <Grid item xs={12} >
+                                <Card className={classes.card}>
+                                    <CardContent>
+                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                            Event details
+                                </Typography>
+                                        <Typography variant="h5" component="h5">
+                                            {event.name}
 
+                                        </Typography>
+                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                        <i>{event.normalized_name}</i>
+                                </Typography>
+                                        
+                                        <Typography variant="body1">
+                                            {event.description}
+                                        </Typography>
+                                        <Typography variant="caption" gutterBottom color="textSecondary" >
+                                            <i><ReactTimeAgo date={event.created_at}/> by {event.author}</i>
+                                        </Typography>
+
+
+                                    </CardContent>
+
+                                </Card>
+                            </Grid>
                             <Grid item  xs={12} >
                         <Card className={classes.card}>
                             <CardContent>
