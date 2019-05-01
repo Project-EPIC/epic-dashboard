@@ -114,19 +114,26 @@ export const updateAnnotation = (tweet, initialTags ,tags, eventName) => dispatc
         );
 };
 
-export const fetchTags = (tweetId) => dispatch => {    
-        fetch('http://localhost:9001/annotate?id='+tweetId, {
-            headers: {}
+export const fetchTags = (tweetId,eventName) => dispatch => {
+    console.log(`in fetchTags: ${tweetId}, ${eventName}`)
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
+        fetch(`https://epicapi.gerard.space/annotation?tweetID=${tweetId}&eventName=${eventName}`, {
+            headers: {
+                'Authorization': `Bearer ${idToken}`,
+            }
         })
-        .then(res => res.json())             
-        .then(mytags => dispatch({
-            type: FETCH_TAGS,
-            payload: mytags
-        }))
-        .catch(function (error) {
-            console.log('There has been a problem with your fetch operation: ', error.message);
-        });;    
+            .then(res => res.json())
+            .then(myevents => dispatch({
+                type: FETCH_TAGS,
+                payload: myevents
+            }))
+            .catch(function (error) {
+                console.log('There has been a problem with your fetch operation: ', error.message);
+            });;
+    });
 };
+
+
 
 export const fetchCounts=(eventId)=>dispatch => {
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {

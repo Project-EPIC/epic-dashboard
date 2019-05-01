@@ -53,14 +53,14 @@ class TweetCard extends Component {
   }
 
   _submitAnnotation = (e) => {    
-    var { tags, initialTags } = this.state;
-    var { tweet, eventName } = this.props;
+    var { tags } = this.state;
+    var { tweet, eventName, initialTags } = this.props;
     this.props.updateAnnotation(tweet, initialTags, tags, eventName);
     this.props.fetchTags(tweet.id);
   }
 
   componentDidMount() {    
-    this.props.fetchTags(this.props.tweet.id);         
+    this.props.fetchTags(this.props.tweet.id, this.props.eventName);         
   }
   componentDidUpdate(prevProps) {
     console.log(`in Component Did Update: ${this.props.initialTags}`)
@@ -75,8 +75,8 @@ class TweetCard extends Component {
   
   render() {  
         
-    const { classes } = this.props;
-    const { tweet } = this.props;
+    const { classes, initialTags, tweet } = this.props;
+    console.log(`in render::$$:: ${JSON.stringify(initialTags)}`)    
     const { user, text } = tweet; // TODO the text field needs to be changed later on based on what needs to be set
     const media = tweet.extended_entities ? tweet.extended_entities.media : null
     const media_url = media ? media[0].media_url : null;
