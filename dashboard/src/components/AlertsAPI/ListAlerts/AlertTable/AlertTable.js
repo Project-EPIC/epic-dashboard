@@ -4,7 +4,7 @@ import MaterialTable from 'material-table'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
 import AlertDetail from './AlertDetail/AlertDetail';
-// import { modifyEvents } from "../../../../actions/eventActions";
+import ReactTimeAgo from 'react-time-ago'
 
 
 
@@ -23,12 +23,13 @@ class AlertTable extends React.Component {
             columns={[
               
               { title: "Event Type", field: 'event', },
-              { title: "Effective", field: 'effectiveDate', defaultSort:"asc", render: (rowData)=> rowData.effectiveDate.toLocaleString(), type: 'datetime',customFilterAndSearch: (term, rowData) => (term <= rowData.effectiveDate)},
-              { title: "Expires", field: 'expiresDate',render: (rowData)=> rowData.expiresDate.toLocaleString(), type: 'datetime', customFilterAndSearch: (term, rowData) => (term >= rowData.expiresDate) },
+              
+              
               { title: "Severity", field: 'severity', },
               { title: "Sender", field: 'senderName'},
+              { title: "Started", field: 'effectiveDate', defaultSort:"desc", render: (rowData)=> <ReactTimeAgo date={rowData.effectiveDate}/>, filtering: false},
             ]}
-            options={{ search: false, showTitle:false, toolbar:false, detailPanelType:"single", paging: true, filtering:true, actionsColumnIndex: -1, pageSize: 20, pageSizeOptions: [10, 20, 30] }}
+            options={{ search: false, showTitle:false, toolbar:false, grouping:true,detailPanelType:"single", paging: true, filtering:true, actionsColumnIndex: -1, pageSize: 20, pageSizeOptions: [10, 20, 30] }}
             data={mapped}
             title={title}
             detailPanel={[

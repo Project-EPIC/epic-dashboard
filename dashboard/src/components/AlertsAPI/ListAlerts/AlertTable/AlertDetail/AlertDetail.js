@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Grid, Typography } from '@material-ui/core';
 import { styles } from "./styles";
 import { withStyles } from '@material-ui/core/styles';
+import ReactTimeAgo from 'react-time-ago'
 
 
 
@@ -24,6 +25,22 @@ class AlertDetail extends React.Component {
                     </Typography>
                     <Typography variant="body2">
                         {data.parameters.NWSheadline}
+                    </Typography>
+                </Grid>
+                <Grid item md={6} xs={12}>
+                    <Typography className={classes.title} color="textSecondary" gutterBottom>
+                        Effective date
+                    </Typography>
+                    <Typography variant="body2">
+                    {data.effectiveDate.toLocaleString()} (<ReactTimeAgo date={data.effectiveDate}/>)
+                    </Typography>
+                </Grid>
+                <Grid item md={6} xs={12}>
+                    <Typography className={classes.title} color="textSecondary" gutterBottom>
+                        Expire date
+                    </Typography>
+                    <Typography variant="body2">
+                    {data.expiresDate.toLocaleString()} (<ReactTimeAgo date={data.expiresDate}/>)
                     </Typography>
                 </Grid>
                 <Grid item md={6} xs={12}>
