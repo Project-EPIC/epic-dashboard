@@ -33,19 +33,18 @@ class TweetCard extends Component {
       tags: []
     }
   }
-  handleAdd(...chips) {
-    console.log(`in gerards method`)
+  handleAdd(...chips) {    
     this.setState({
       tags: [...this.state.tags, ...chips]
     })
   }
   
-  handleAddChip = (tag) => {
-    console.log(`inside handleAddChip ${tag}`)
+  handleAddChip = (tag) => {       
     let tags = this.state.tags;
     tags.push(tag)
     this.setState({ tags })
-    this.props.addTag(tag, this.props.tweet, this.props.tweet.tweetid, this.props.eventName)
+    console.log(`in handleAddChip: ${this.props.eventName}`)
+    this.props.addTag(tag, this.props.tweet, this.props.eventName)    
   }
   
   handleDeleteChip = (tag, index) => {
@@ -69,7 +68,7 @@ class TweetCard extends Component {
     this.props.fetchTags(this.props.tweet.id, this.props.eventName);         
   }
   componentDidUpdate(prevProps) {    
-    if(this.props.initialTags !== prevProps.initialTags) {
+    if(prevProps.initialTags && this.props.initialTags !== prevProps.initialTags) {            
       this.setState({tags:this.props.initialTags.tags})
     }
   }
@@ -78,11 +77,9 @@ class TweetCard extends Component {
     ev.target.src = defaultProfileImage
   }
   
-  render() {  
-        
-    const { classes, tweet } = this.props;
-    const { tags } = this.state
-    console.log(`in render::$$:: ${JSON.stringify(tags)}`)    
+  render() {      
+    console.log(this.state)
+    const { classes, tweet } = this.props;           
     const { user, text } = tweet; // TODO the text field needs to be changed later on based on what needs to be set
     const media = tweet.extended_entities ? tweet.extended_entities.media : null
     const media_url = media ? media[0].media_url : null;
@@ -90,7 +87,7 @@ class TweetCard extends Component {
     const cardMedia = tweet.extended_entities ?   ( <CardMedia
       className={classes.media}
       image={media_url}
-      title="Contemplative Reptile"
+      title="This is your media"
     /> ) : null;
     return (
       <Card className={classes.card} >
@@ -116,7 +113,7 @@ class TweetCard extends Component {
             placeholder={"Enter annotation followed by an Enter"}
             fullWidth
             newChipKeyCodes={[13, 188]}
-            margin="dense"
+            margin="dense"            
             onPaste={(event) => {
 
               const clipboardText = event.clipboardData.getData('Text')

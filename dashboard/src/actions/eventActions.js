@@ -132,16 +132,25 @@ export const fetchTags = (tweetId,eventName) => dispatch => {
     });
 };
 
-export const addTag = (tag,tweet, tweetId,eventName) => dispatch => {    
-    console.log(`in addTag: ${tag}, ${tweet} ${tweetId}, ${eventName}`)
-    
+export const addTag = (tag, tweet, eventName) => dispatch => {            
+    const tweetId  = tweet.id_str    
+    var myJSONString = JSON.stringify(tweet);
+    // NOTE: This is wrong according to mem this is not how JSONs should be sent but if you send a json it fails 
+    var myEscapedJSONString = myJSONString.replace(/\\n/g, "\\n")
+                                      .replace(/\\'/g, "\\'")
+                                      .replace(/\\"/g, '\\"')
+                                      .replace(/\\&/g, "\\&")
+                                      .replace(/\\r/g, "\\r")
+                                      .replace(/\\t/g, "\\t")
+                                      .replace(/\\b/g, "\\b")
+                                      .replace(/\\f/g, "\\f");
     var mybody = {
         "tag": tag,
-        "tweet": tweet,
+        "tweet": myEscapedJSONString,
         "tweetId": tweetId,
         "eventName": eventName
     }
-
+        
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {        
         fetch(`https://epicapi.gerard.space/annotation/`, {            
             method: 'POST',
@@ -150,8 +159,7 @@ export const addTag = (tag,tweet, tweetId,eventName) => dispatch => {
                 'Authorization': `Bearer ${idToken}`
             },
             body: JSON.stringify(mybody)
-        })
-        .then(res => res.json())
+        })        
         .catch(function (error) {
             console.log('There has been a problem with your fetch operation: ', error.message);
         });;
