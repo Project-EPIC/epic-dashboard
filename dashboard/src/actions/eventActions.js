@@ -158,6 +158,31 @@ export const addTag = (tag,tweet, tweetId,eventName) => dispatch => {
     });
 };
 
+export const deleteTag = (tag, tweetId,eventName) => dispatch => {    
+    console.log(`in deleteTag: ${tag} ${tweetId}, ${eventName}`)
+    
+    var mybody = {
+        "tag": tag,        
+        "tweetId": tweetId,
+        "eventName": eventName
+    }
+
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {        
+        fetch(`https://epicapi.gerard.space/annotation/`, {            
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${idToken}`
+            },
+            body: JSON.stringify(mybody)
+        })
+        .then(res => res.json())
+        .catch(function (error) {
+            console.log('There has been a problem with your fetch operation: ', error.message);
+        });;
+    });
+};
+
 
 
 export const fetchCounts=(eventId)=>dispatch => {

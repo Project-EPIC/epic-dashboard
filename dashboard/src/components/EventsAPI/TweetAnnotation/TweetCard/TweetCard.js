@@ -10,7 +10,7 @@ import ChipInput from 'material-ui-chip-input'
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import { connect } from 'react-redux';
-import { fetchTags, updateAnnotation, addTag } from "../../../../actions/eventActions"
+import { fetchTags, updateAnnotation, addTag, deleteTag } from "../../../../actions/eventActions"
 import { defaultProfileImage } from "../profileBase64";
 
 const styles = {
@@ -53,6 +53,7 @@ class TweetCard extends Component {
     let tags = this.state.tags;
     tags.splice(index, 1);
     this.setState({ tags })
+    this.props.deleteTag(tag, this.props.tweet.tweetid, this.props.eventName)
   }
 
   _submitAnnotation = (e) => {    
@@ -145,7 +146,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   updateAnnotation: updateAnnotation,   
   fetchTags: fetchTags,
-  addTag: addTag
+  addTag: addTag,
+  deleteTag: deleteTag
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TweetCard));
