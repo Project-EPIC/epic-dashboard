@@ -122,9 +122,9 @@ export const fetchTags = (tweetId,eventName) => dispatch => {
             }
         })
             .then(res => res.json())
-            .then(myevents => dispatch({
+            .then(mytags => dispatch({
                 type: FETCH_TAGS,
-                payload: myevents
+                payload: mytags
             }))
             .catch(function (error) {
                 console.log('There has been a problem with your fetch operation: ', error.message);
@@ -156,9 +156,7 @@ export const addTag = (tag, tweet, eventName) => dispatch => {
     });
 };
 
-export const deleteTag = (tag, tweetId,eventName) => dispatch => {    
-    console.log(`in deleteTag: ${tag} ${tweetId}, ${eventName}`)
-    
+export const deleteTag = (tag, tweetId,eventName) => dispatch => {            
     var mybody = {
         "tag": tag,        
         "tweetId": tweetId,
@@ -173,8 +171,7 @@ export const deleteTag = (tag, tweetId,eventName) => dispatch => {
                 'Authorization': `Bearer ${idToken}`
             },
             body: JSON.stringify(mybody)
-        })
-        .then(res => res.json())
+        })        
         .catch(function (error) {
             console.log('There has been a problem with your fetch operation: ', error.message);
         });;

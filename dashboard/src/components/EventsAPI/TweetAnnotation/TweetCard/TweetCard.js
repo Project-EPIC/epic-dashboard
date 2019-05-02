@@ -42,26 +42,28 @@ class TweetCard extends Component {
   handleAddChip = (tag) => {       
     let tags = this.state.tags;
     tags.push(tag)
-    this.setState({ tags })
-    console.log(`in handleAddChip: ${this.props.eventName}`)
+    this.setState({ tags })    
     this.props.addTag(tag, this.props.tweet, this.props.eventName)    
   }
   
-  handleDeleteChip = (tag, index) => {
-    console.log(`in handleDeleteChip`)
+  handleDeleteChip = (tag, index) => {    
     let tags = this.state.tags;
     tags.splice(index, 1);
     this.setState({ tags })
-    this.props.deleteTag(tag, this.props.tweet.tweetid, this.props.eventName)
+    this.props.deleteTag(tag, this.props.tweet.id_str, this.props.eventName)
   }
 
   componentDidMount() {    
-    this.props.fetchTags(this.props.tweet.id, this.props.eventName);         
+    this.props.fetchTags(this.props.tweet.id_str, this.props.eventName);         
   }
   componentDidUpdate(prevProps) {    
     if(prevProps.initialTags && this.props.initialTags !== prevProps.initialTags) {            
-      if(this.props.initialTags.tags)      
-        this.setState({tags:this.props.initialTags.tags})
+      if(this.props.initialTags) {        
+        this.setState({
+          tags:this.props.initialTags
+        })
+      }     
+        
     }
   }
 
@@ -69,8 +71,7 @@ class TweetCard extends Component {
     ev.target.src = defaultProfileImage
   }
   
-  render() {      
-    console.log(this.state)
+  render() {          
     const { classes, tweet } = this.props;           
     const { user, text } = tweet; // TODO the text field needs to be changed later on based on what needs to be set
     const media = tweet.extended_entities ? tweet.extended_entities.media : null
@@ -80,7 +81,7 @@ class TweetCard extends Component {
       className={classes.media}
       image={media_url}
       title="This is your media"
-    /> ) : null;
+    /> ) : null;        
     return (
       <Card className={classes.card} >
         <CardActionArea>  

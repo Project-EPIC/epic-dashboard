@@ -2,7 +2,8 @@ import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, FETCH_TAGS, FETCH_COUNTS } from
 
 const initialState = {
     events: [],
-    counts: {}
+    counts: {},
+    initialTags: []
 };
 
 export default function(state = initialState, action) {
@@ -35,10 +36,14 @@ export default function(state = initialState, action) {
                 ...state,
                 events: events
             }
-        case FETCH_TAGS:        
+        case FETCH_TAGS:                
+        var tags = []
+        for(var i=0; i< action.payload.length; i++) {
+            tags.push(action.payload[i].tag)
+        }
         return {
             ...state,
-            initialTags: action.payload
+            initialTags: tags
         }
         case FETCH_COUNTS:
             return {
