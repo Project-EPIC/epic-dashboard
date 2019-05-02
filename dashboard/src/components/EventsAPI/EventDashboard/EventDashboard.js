@@ -81,11 +81,6 @@ class EventDashboard extends React.Component {
                                         </Typography>
 
 
-                                        {event.status === "ACTIVE" ?
-                                            <LinearProgress />
-                                            :
-                                            null
-                                        }
                                     </CardContent>
                                     <CardActions>
                                         {event.status === "ACTIVE" ?
