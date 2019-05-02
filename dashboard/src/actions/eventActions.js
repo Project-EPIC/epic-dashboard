@@ -133,20 +133,10 @@ export const fetchTags = (tweetId,eventName) => dispatch => {
 };
 
 export const addTag = (tag, tweet, eventName) => dispatch => {            
-    const tweetId  = tweet.id_str    
-    var myJSONString = JSON.stringify(tweet);
-    // NOTE: This is wrong according to mem this is not how JSONs should be sent but if you send a json it fails 
-    var myEscapedJSONString = myJSONString.replace(/\\n/g, "\\n")
-                                      .replace(/\\'/g, "\\'")
-                                      .replace(/\\"/g, '\\"')
-                                      .replace(/\\&/g, "\\&")
-                                      .replace(/\\r/g, "\\r")
-                                      .replace(/\\t/g, "\\t")
-                                      .replace(/\\b/g, "\\b")
-                                      .replace(/\\f/g, "\\f");
+    const tweetId  = tweet.id_str        
     var mybody = {
         "tag": tag,
-        "tweet": myEscapedJSONString,
+        "tweet": JSON.stringify(tweet),
         "tweetId": tweetId,
         "eventName": eventName
     }
