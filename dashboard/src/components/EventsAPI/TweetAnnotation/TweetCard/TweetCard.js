@@ -55,21 +55,13 @@ class TweetCard extends Component {
     this.props.deleteTag(tag, this.props.tweet.tweetid, this.props.eventName)
   }
 
-  // _submitAnnotation = (e) => {
-    // TODO: remove this if we finally decide we're not going to bring back the button
-    //    not used anymore after we removed the button.  
-  //   var { tags } = this.state;
-  //   var { tweet, eventName, initialTags } = this.props;
-  //   this.props.updateAnnotation(tweet, initialTags, tags, eventName);
-  //   this.props.fetchTags(tweet.id);
-  // }
-
   componentDidMount() {    
     this.props.fetchTags(this.props.tweet.id, this.props.eventName);         
   }
   componentDidUpdate(prevProps) {    
     if(prevProps.initialTags && this.props.initialTags !== prevProps.initialTags) {            
-      this.setState({tags:this.props.initialTags.tags})
+      if(this.props.initialTags.tags)      
+        this.setState({tags:this.props.initialTags.tags})
     }
   }
 
