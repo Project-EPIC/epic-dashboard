@@ -114,10 +114,9 @@ export const updateAnnotation = (tweet, initialTags ,tags, eventName) => dispatc
         );
 };
 
-export const fetchTags = (tweetId,eventName) => dispatch => {
-    console.log(`in fetchTags: ${tweetId}, ${eventName}`)
+export const fetchTags = (tweetId,eventName) => dispatch => {    
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch(`https://epicapi.gerard.space/annotation?tweetID=${tweetId}&eventName=${eventName}`, {
+        fetch(`https://epicapi.gerard.space/annotation/?tweetID=${tweetId}&eventName=${eventName}`, {            
             headers: {
                 'Authorization': `Bearer ${idToken}`,
             }
@@ -130,6 +129,32 @@ export const fetchTags = (tweetId,eventName) => dispatch => {
             .catch(function (error) {
                 console.log('There has been a problem with your fetch operation: ', error.message);
             });;
+    });
+};
+
+export const addTag = (tag,tweet, tweetId,eventName) => dispatch => {    
+    console.log(`in addTag: ${tag}, ${tweet} ${tweetId}, ${eventName}`)
+    
+    var mybody = {
+        "tag": tag,
+        "tweet": tweet,
+        "tweetId": tweetId,
+        "eventName": eventName
+    }
+
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {        
+        fetch(`https://epicapi.gerard.space/annotation/`, {            
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${idToken}`
+            },
+            body: JSON.stringify(mybody)
+        })
+        .then(res => res.json())
+        .catch(function (error) {
+            console.log('There has been a problem with your fetch operation: ', error.message);
+        });;
     });
 };
 
@@ -153,6 +178,8 @@ export const fetchCounts=(eventId)=>dispatch => {
         });    
     });
 }
+
+
 
 
 

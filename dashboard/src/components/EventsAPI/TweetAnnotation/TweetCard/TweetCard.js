@@ -9,9 +9,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import ChipInput from 'material-ui-chip-input'
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import { fetchTags, updateAnnotation } from "../../../../actions/eventActions"
+import { fetchTags, updateAnnotation, addTag } from "../../../../actions/eventActions"
 import { defaultProfileImage } from "../profileBase64";
 
 const styles = {
@@ -35,18 +34,22 @@ class TweetCard extends Component {
     }
   }
   handleAdd(...chips) {
+    console.log(`in gerards method`)
     this.setState({
       tags: [...this.state.tags, ...chips]
     })
   }
   
   handleAddChip = (tag) => {
+    console.log(`inside handleAddChip ${tag}`)
     let tags = this.state.tags;
     tags.push(tag)
     this.setState({ tags })
+    this.props.addTag(tag, this.props.tweet, this.props.tweet.tweetid, this.props.eventName)
   }
   
   handleDeleteChip = (tag, index) => {
+    console.log(`in handleDeleteChip`)
     let tags = this.state.tags;
     tags.splice(index, 1);
     this.setState({ tags })
@@ -62,8 +65,7 @@ class TweetCard extends Component {
   componentDidMount() {    
     this.props.fetchTags(this.props.tweet.id, this.props.eventName);         
   }
-  componentDidUpdate(prevProps) {
-    console.log(`in Component Did Update: ${this.props.initialTags}`)
+  componentDidUpdate(prevProps) {    
     if(this.props.initialTags !== prevProps.initialTags) {
       this.setState({tags:this.props.initialTags.tags})
     }
@@ -75,8 +77,9 @@ class TweetCard extends Component {
   
   render() {  
         
-    const { classes, initialTags, tweet } = this.props;
-    console.log(`in render::$$:: ${JSON.stringify(initialTags)}`)    
+    const { classes, tweet } = this.props;
+    const { tags } = this.state
+    console.log(`in render::$$:: ${JSON.stringify(tags)}`)    
     const { user, text } = tweet; // TODO the text field needs to be changed later on based on what needs to be set
     const media = tweet.extended_entities ? tweet.extended_entities.media : null
     const media_url = media ? media[0].media_url : null;
@@ -125,9 +128,6 @@ class TweetCard extends Component {
           }
           }
           />
-          <Button size="small" color="primary" onClick={(e) => {e.preventDefault(); this._submitAnnotation()}}>          
-            Annotate
-          </Button>
         </CardActions>
       </Card>
     );
@@ -144,7 +144,8 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = {
   updateAnnotation: updateAnnotation,   
-  fetchTags: fetchTags
+  fetchTags: fetchTags,
+  addTag: addTag
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TweetCard));
