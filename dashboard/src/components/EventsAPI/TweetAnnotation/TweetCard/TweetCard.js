@@ -9,8 +9,10 @@ import CardMedia from '@material-ui/core/CardMedia';
 import ChipInput from 'material-ui-chip-input'
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip'
+
 import { connect } from 'react-redux';
-import { fetchTags, updateAnnotation, addTag, deleteTag } from "../../../../actions/eventActions"
+import { fetchTags, addAnnotation, deleteTag } from "../../../../actions/annotationActions"
 import { defaultProfileImage } from "../profileBase64";
 
 const styles = {
@@ -24,54 +26,49 @@ const styles = {
 };
 
 
-
-
 class TweetCard extends Component {
-  constructor() {
-    super();
-    this.state = {
-      tags: []
-    }
+  
+  handleAdd(...chips) {  
+    chips.forEach(tag =>  this.props.addAnnotation(tag, this.props.tweet, this.props.eventName))
   }
-  handleAdd(...chips) {    
-    this.setState({
-      tags: [...this.state.tags, ...chips]
-    })
+
+  hashCode(str) { // java String#hashCode
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return hash;
+  } 
+
+  intToRGB(i){
+      var c = (i & 0x00FFFFFF)
+          .toString(16)
+          .toUpperCase();
+          
+      return "00000".substring(0, 6 - c.length) + c;
   }
   
   handleAddChip = (tag) => {       
-    let tags = this.state.tags;
-    tags.push(tag)
-    this.setState({ tags })    
-    this.props.addTag(tag, this.props.tweet, this.props.eventName)    
+    this.props.addAnnotation(tag, this.props.tweet, this.props.eventName)    
   }
   
   handleDeleteChip = (tag, index) => {    
-    let tags = this.state.tags;
-    tags.splice(index, 1);
-    this.setState({ tags })
-    this.props.deleteTag(tag, this.props.tweet.id_str, this.props.eventName)
+    this.props.deleteTag(tag.tag, this.props.tweet.id_str, this.props.eventName)
   }
 
   componentDidMount() {    
     this.props.fetchTags(this.props.tweet.id_str, this.props.eventName);         
   }
-  componentDidUpdate(prevProps) {    
-    if(prevProps.initialTags && this.props.initialTags !== prevProps.initialTags) {            
-      if(this.props.initialTags) {        
-        this.setState({
-          tags:this.props.initialTags
-        })
-      }     
-        
-    }
-  }
+  
 
   addDefaultSrc(ev){
     ev.target.src = defaultProfileImage
   }
   
-  render() {          
+  render() {    
+    const tweet_id = this.props.tweet.id_str;
+    const event_name =this.props.eventName;
+    const annotations = this.props.annotations.filter(item => (item.tweet_id === tweet_id && item.event_name === event_name) );
     const { classes, tweet } = this.props;           
     const { user, text } = tweet; // TODO the text field needs to be changed later on based on what needs to be set
     const media = tweet.extended_entities ? tweet.extended_entities.media : null
@@ -98,13 +95,34 @@ class TweetCard extends Component {
         </CardActionArea>
         <CardActions>
           <ChipInput                  
-            value={this.state.tags}
+            value={annotations}
             onAdd={(chip) => this.handleAddChip(chip)}
             onDelete={(chip, index) => this.handleDeleteChip(chip, index)}                  
-            helperText={this.state.tagsError !== "" ? this.state.tagsError : "annotations to annotate tweets"}
-            error={this.state.tagsError !== ""}
+            helperText={"annotations to annotate tweets"}
             placeholder={"Enter annotation followed by an Enter"}
             fullWidth
+            chipRenderer = {(
+              {
+                value,
+                handleClick,
+                handleDelete,
+                className
+              },
+              key
+            ) => (
+              <Chip
+                key={key}
+                className={className}
+                style={value.auth_user ? {
+                  backgroundColor: "#"+this.intToRGB(this.hashCode(value.auth_user))
+                }: null}
+                onClick={handleClick}
+                onDelete={handleDelete}
+                label={value.tag}
+                
+              />
+            )}
+
             newChipKeyCodes={[13, 188]}
             margin="dense"            
             onPaste={(event) => {
@@ -133,12 +151,11 @@ TweetCard.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  initialTags:  state.eventsReducer.initialTags,
+  annotations:  state.annotationReducer.annotations,
 })
 const mapDispatchToProps = {
-  updateAnnotation: updateAnnotation,   
   fetchTags: fetchTags,
-  addTag: addTag,
+  addAnnotation: addAnnotation,
   deleteTag: deleteTag
 }
 

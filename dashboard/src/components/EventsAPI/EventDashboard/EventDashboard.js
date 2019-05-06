@@ -16,7 +16,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { LinearProgress, List, ListItem, ListItemText, ListItemIcon, Paper,Tooltip } from '@material-ui/core';
+import { List, ListItem, ListItemText, ListItemIcon, Paper,Tooltip } from '@material-ui/core';
 import TweetsChart from '../TweetsChart/TweetsChart';
 
 

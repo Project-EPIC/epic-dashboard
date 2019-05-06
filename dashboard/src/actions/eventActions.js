@@ -1,4 +1,4 @@
-import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, TWEET_ANNOTATION, FETCH_TAGS, FETCH_COUNTS} from './types';
+import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, FETCH_COUNTS} from './types';
 import firebase from "firebase";
 import fetch from 'cross-fetch';
 
@@ -88,94 +88,6 @@ export const fetchEvent = (normalized_name) => dispatch => {
         );
     });
 
-};
-
-export const updateAnnotation = (tweet, initialTags ,tags, eventName) => dispatch => {       
-        var data = {
-            'initialTags': initialTags,
-            'tags' : tags,
-            'tweet' : tweet,
-            'tweetId': tweet.id,
-            'eventName': eventName
-        }
-        fetch(`http://localhost:9001/annotate`, {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-                'content-type': 'application/json',                
-            },
-            body: JSON.stringify(data)
-        })        
-        .then(res => res.json())        
-        .then(res => dispatch({                        
-            type: TWEET_ANNOTATION,
-            payload: res
-        })
-        );
-};
-
-export const fetchTags = (tweetId,eventName) => dispatch => {    
-    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch(`https://epicapi.gerard.space/annotation/?tweetID=${tweetId}&eventName=${eventName}`, {            
-            headers: {
-                'Authorization': `Bearer ${idToken}`,
-            }
-        })
-            .then(res => res.json())
-            .then(mytags => dispatch({
-                type: FETCH_TAGS,
-                payload: mytags
-            }))
-            .catch(function (error) {
-                console.log('There has been a problem with your fetch operation: ', error.message);
-            });;
-    });
-};
-
-export const addTag = (tag, tweet, eventName) => dispatch => {            
-    const tweetId  = tweet.id_str        
-    var mybody = {
-        "tag": tag,
-        "tweet": JSON.stringify(tweet),
-        "tweetId": tweetId,
-        "eventName": eventName
-    }
-        
-    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {        
-        fetch(`https://epicapi.gerard.space/annotation/`, {            
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json',
-                'Authorization': `Bearer ${idToken}`
-            },
-            body: JSON.stringify(mybody)
-        })        
-        .catch(function (error) {
-            console.log('There has been a problem with your fetch operation: ', error.message);
-        });;
-    });
-};
-
-export const deleteTag = (tag, tweetId,eventName) => dispatch => {            
-    var mybody = {
-        "tag": tag,        
-        "tweetId": tweetId,
-        "eventName": eventName
-    }
-
-    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {        
-        fetch(`https://epicapi.gerard.space/annotation/`, {            
-            method: 'DELETE',
-            headers: {
-                'content-type': 'application/json',
-                'Authorization': `Bearer ${idToken}`
-            },
-            body: JSON.stringify(mybody)
-        })        
-        .catch(function (error) {
-            console.log('There has been a problem with your fetch operation: ', error.message);
-        });;
-    });
 };
 
 
