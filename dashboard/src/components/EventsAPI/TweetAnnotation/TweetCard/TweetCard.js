@@ -5,10 +5,11 @@ import { styles } from "./styles";
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { defaultProfileImage } from "../profileBase64";
-import { Grid, GridList, GridListTile, Link } from "@material-ui/core";
+import { Grid, GridList, GridListTile, Link, Tooltip } from "@material-ui/core";
 import ReactTimeAgo from "react-time-ago/commonjs/ReactTimeAgo";
 import LocationCityIcon from "@material-ui/icons/LocationCity"
 import LinkIcon from "@material-ui/icons/Link"
+import DoneAllIcon from "@material-ui/icons/DoneAll"
 
 
 
@@ -82,8 +83,14 @@ class TweetCard extends Component {
                 </a>
           <div className={classes.tableCell}>
           <Link variant="h6" href={`https://twitter.com/${currentTweet.user.screen_name}`} target="_blank">
-            {currentTweet.user.name}
+            {currentTweet.user.name} 
+            
           </Link>
+          {currentTweet.user.verified ? 
+          <Tooltip title="User Verified">
+            <DoneAllIcon style={{paddingTop:8}}/>
+          </Tooltip>
+          :null}
           <Typography color="textSecondary"  variant="caption">
             <i>Account @{currentTweet.user.screen_name} created <ReactTimeAgo date={new Date(Date.parse(currentTweet.user.created_at.replace(/( \+)/, ' UTC$1')))} /> 
             </i>

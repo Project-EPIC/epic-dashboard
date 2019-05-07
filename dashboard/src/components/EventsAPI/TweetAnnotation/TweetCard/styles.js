@@ -1,6 +1,7 @@
 export const styles = theme => ({
    root:{
-       padding:theme.spacing.unit
+       padding:theme.spacing.unit,
+       maxWidth: "100%"
    },
    alignIcon: {
    

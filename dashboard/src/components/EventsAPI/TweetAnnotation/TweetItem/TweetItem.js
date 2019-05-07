@@ -11,6 +11,7 @@ import { Chip, Tooltip } from '@material-ui/core';
 import CloseIcon from "@material-ui/icons/Close"
 import {  deleteTag } from "../../../../actions/annotationActions"
 import {colorFromText,contrastColorForText} from "../colorChip"
+import DoneAllIcon from "@material-ui/icons/DoneAll"
 
 class TweetItem extends Component {
 
@@ -49,6 +50,11 @@ class TweetItem extends Component {
                             <Link paragraph color="inherit" className={classes.profileLink} href={`https://twitter.com/${tweet.user.screen_name}`} target="_blank">
                                 <Typography inline variant="body1"><b>{tweet.user.name}</b></Typography>
                             </Link>
+                            {tweet.user.verified ? 
+                                <Tooltip title="User Verified">
+                                    <DoneAllIcon color="primary" style={{paddingTop:8}}/>
+                                </Tooltip>
+                                :null}
                             <span> </span>
                             <Typography paragraph inline variant="caption" color="textSecondary">
                                 <Link href={`https://twitter.com/${tweet.user.screen_name}`} color="inherit" target="_blank">@{tweet.user.screen_name}</Link> <span className={classes.mediumReady}>- <Link color="inherit" href={`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`} target="_blank"><ReactTimeAgo timeStyle="twitter" date={parseInt(tweet.timestamp_ms, 10)} /></Link></span>
