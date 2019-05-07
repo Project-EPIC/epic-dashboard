@@ -22,11 +22,22 @@ export const styles = theme => ({
         marginRight: theme.spacing.unit,
         marginBottom:theme.spacing.unit,
         borderRadius:"5%",
-        height: 24,
+        height: 20,
       },
-      chipArray:{
-        [theme.breakpoints.up('sm')]: {
-            float: "right",
+      titleChips: {
+        overflow: "auto",
+         width:"100%",
+         height: 20 + theme.spacing.unit,
+      },
+      chipArraySmall:{
+        [theme.breakpoints.up('md')]: {
+            display: "none"
+        }
+      },
+      chipArrayMedium:{
+        float: "right",
+        [theme.breakpoints.down('sm')]: {
+            display: "none"
         }
       },
       smallReady: {

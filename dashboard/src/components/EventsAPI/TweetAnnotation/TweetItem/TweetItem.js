@@ -10,7 +10,7 @@ import ReactTimeAgo from 'react-time-ago'
 import { Chip, Tooltip } from '@material-ui/core';
 import CloseIcon from "@material-ui/icons/Close"
 import {  deleteTag } from "../../../../actions/annotationActions"
-import {colorFromText} from "../colorChip"
+import {colorFromText,contrastColorForText} from "../colorChip"
 
 class TweetItem extends Component {
 
@@ -30,10 +30,10 @@ class TweetItem extends Component {
 
         return (
             <div>
-                <div className={classes.chipArray} >
+                <div className={classes.chipArraySmall} >
                     {currentTags.map(tag =>
-                    <Tooltip title={`Owner ${tag.auth_user}`}>
-                        <Chip key={`${tag.tag} ${tag.tweet_id}`} label={tag.tag} style={{background: colorFromText(tag.tag)}} className={classes.chip} onDelete={(e)=>this.handleDelete(tag.tag)} deleteIcon={<CloseIcon />} />
+                    <Tooltip key={`${tag.tag} ${tag.tweet_id}`}  title={`Owner ${tag.auth_user}`}>
+                        <Chip label={tag.tag} style={{backgroundColor: colorFromText(tag.tag), color: contrastColorForText(tag.tag) }} className={classes.chip} onDelete={(e)=>this.handleDelete(tag.tag)} deleteIcon={<CloseIcon />} />
                     </Tooltip>
                     )}
                 </div>
@@ -44,16 +44,24 @@ class TweetItem extends Component {
                         alt="Avatar" />
                 </Link>
 
-                <div className={classes.tableCell}>
-                    <div>
-                        <Link gutterBottom color="inherit" className={classes.profileLink} href={`https://twitter.com/${tweet.user.screen_name}`} target="_blank">
-                            <Typography inline variant="body1"><b>{tweet.user.name}</b></Typography>
-                        </Link>
-                        <span> </span>
-                        <Typography inline variant="caption" color="textSecondary">
-                            <Link href={`https://twitter.com/${tweet.user.screen_name}`} color="inherit" target="_blank">@{tweet.user.screen_name}</Link> <span className={classes.mediumReady}>- <Link color="inherit" href={`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`} target="_blank"><ReactTimeAgo timeStyle="twitter" date={parseInt(tweet.timestamp_ms, 10)} /></Link></span>
-                        </Typography>
-                    </div>
+                <div className={classes.tableCell} style={{ width:"100%"}}>
+                        <div className={classes.titleChips} >
+                            <Link paragraph color="inherit" className={classes.profileLink} href={`https://twitter.com/${tweet.user.screen_name}`} target="_blank">
+                                <Typography inline variant="body1"><b>{tweet.user.name}</b></Typography>
+                            </Link>
+                            <span> </span>
+                            <Typography paragraph inline variant="caption" color="textSecondary">
+                                <Link href={`https://twitter.com/${tweet.user.screen_name}`} color="inherit" target="_blank">@{tweet.user.screen_name}</Link> <span className={classes.mediumReady}>- <Link color="inherit" href={`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`} target="_blank"><ReactTimeAgo timeStyle="twitter" date={parseInt(tweet.timestamp_ms, 10)} /></Link></span>
+                            </Typography>
+                            <div className={classes.chipArrayMedium} >
+                                {currentTags.map(tag =>
+                                <Tooltip key={`${tag.tag} ${tag.tweet_id}`}  title={`Owner ${tag.auth_user}`}>
+                                    <Chip label={tag.tag} style={{backgroundColor: colorFromText(tag.tag),color: contrastColorForText(tag.tag)}} className={classes.chip} onDelete={(e)=>this.handleDelete(tag.tag)} deleteIcon={<CloseIcon style={{color: contrastColorForText(tag.tag)}} />} />
+                                </Tooltip>
+                                )}
+                            </div>
+                        </div>
+                    
                     <Typography variant="body2" className={classes.mediumReady}>
                         {tweet.text}
                     </Typography>

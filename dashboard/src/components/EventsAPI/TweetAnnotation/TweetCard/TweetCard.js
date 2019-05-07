@@ -45,12 +45,15 @@ class TweetCard extends Component {
             Tweet details
           </Link>
 
-          <Typography color="textSecondary" gutterBottom variant="caption">
+          <Typography color="textSecondary"  variant="caption">
             <i>{tweet.retweeted_status ? "Retweeted " : "Tweeted "}
-              on {new Date(parseInt(tweet.timestamp_ms, 10)).toLocaleString()} - Id: {currentTweet.id_str}
+              on {new Date(parseInt(tweet.timestamp_ms, 10)).toLocaleString()} 
             </i>
           </Typography>
-          <Typography variant="body1" dangerouslySetInnerHTML={{ __html: text }}>
+          <Typography color="textSecondary" gutterBottom variant="caption">
+             <i>Tweet id: {currentTweet.id_str}</i>
+          </Typography>
+          <Typography variant="body2" dangerouslySetInnerHTML={{ __html: text }}>
           </Typography>
           <Typography color="textSecondary" gutterBottom variant="caption" dangerouslySetInnerHTML={{ __html: currentTweet.source }}>
           </Typography>
@@ -81,45 +84,48 @@ class TweetCard extends Component {
           <Link variant="h6" href={`https://twitter.com/${currentTweet.user.screen_name}`} target="_blank">
             {currentTweet.user.name}
           </Link>
-          <Typography color="textSecondary" gutterBottom variant="caption">
-            <i>Account @{currentTweet.user.screen_name} created <ReactTimeAgo date={new Date(Date.parse(currentTweet.user.created_at.replace(/( \+)/, ' UTC$1')))} /> - Id: {currentTweet.user.id_str}
+          <Typography color="textSecondary"  variant="caption">
+            <i>Account @{currentTweet.user.screen_name} created <ReactTimeAgo date={new Date(Date.parse(currentTweet.user.created_at.replace(/( \+)/, ' UTC$1')))} /> 
             </i>
+          </Typography>
+          <Typography color="textSecondary" gutterBottom variant="caption">
+            <i>User id: {currentTweet.user.id_str}</i>
           </Typography>
           </div>
 
-          <Typography variant="body2">
+          <Typography paragraph variant="body2">
             {currentTweet.user.description}
           </Typography>
           <Grid container spacing={24} >
             <Grid item xs={3} md={2}>
-              <Typography color="textSecondary" gutterBottom variant="caption">
+              <Typography color="textSecondary" variant="caption">
                 <i>Tweets</i>
               </Typography>
-              <Typography variant="h6" >
+              <Typography variant="h6" gutterBottom >
                 {currentTweet.user.statuses_count}
               </Typography>
             </Grid>
             <Grid item xs={3} md={2}>
-              <Typography color="textSecondary" gutterBottom variant="caption">
+              <Typography color="textSecondary"  variant="caption">
                 <i>Favourites</i>
               </Typography>
-              <Typography variant="h6" >
+              <Typography variant="h6" gutterBottom >
                 {currentTweet.user.favourites_count}
               </Typography>
             </Grid>
             <Grid item xs={3} md={2}>
-              <Typography color="textSecondary" gutterBottom variant="caption">
+              <Typography color="textSecondary"  variant="caption">
                 <i>Followers</i>
               </Typography>
-              <Typography variant="h6" >
+              <Typography variant="h6" gutterBottom >
                 {currentTweet.user.followers_count}
               </Typography>
             </Grid>
             <Grid item xs={3} md={2}>
-              <Typography color="textSecondary" gutterBottom variant="caption">
+              <Typography color="textSecondary"  variant="caption">
                 <i>Following</i>
               </Typography>
-              <Typography variant="h6" >
+              <Typography variant="h6" gutterBottom >
                 {currentTweet.user.friends_count}
               </Typography>
             </Grid>
