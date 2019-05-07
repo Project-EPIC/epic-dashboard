@@ -1,4 +1,4 @@
-import { ADD_ANNOTATION, DELETE_ANNOTATION, FETCH_ANNOTATIONS } from './types';
+import { ADD_ANNOTATION, DELETE_ANNOTATION, FETCH_ANNOTATIONS_EVENT, FETCH_ANNOTATIONS_TWEET } from './types';
 import firebase from "firebase";
 import fetch from 'cross-fetch';
 
@@ -12,7 +12,7 @@ export const fetchTags = (tweetId, eventName) => dispatch => {
         })
             .then(res => res.json())
             .then(tags => dispatch({
-                type: FETCH_ANNOTATIONS,
+                type: FETCH_ANNOTATIONS_TWEET,
                 payload: tags,
                 tweet_id: tweetId,
                 event_name: eventName
@@ -32,7 +32,7 @@ export const fetchTagsByEvent = (eventName) => dispatch => {
         })
             .then(res => res.json())
             .then(tags => dispatch({
-                type: FETCH_ANNOTATIONS,
+                type: FETCH_ANNOTATIONS_EVENT,
                 payload: tags,
                 event_name: eventName
             }))
