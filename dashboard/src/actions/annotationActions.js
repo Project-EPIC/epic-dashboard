@@ -23,6 +23,26 @@ export const fetchTags = (tweetId, eventName) => dispatch => {
     });
 };
 
+export const fetchTagsByEvent = (eventName) => dispatch => {
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ false).then(idToken => {
+        fetch(`https://epicapi.gerard.space/annotations/${eventName}/`, {
+            headers: {
+                'Authorization': `Bearer ${idToken}`,
+            }
+        })
+            .then(res => res.json())
+            .then(tags => dispatch({
+                type: FETCH_ANNOTATIONS,
+                payload: tags,
+                event_name: eventName
+            }))
+            .catch(function (error) {
+                console.log('There has been a problem with your fetch operation: ', error.message);
+            });;
+    });
+};
+
+
 export const addAnnotation = (tag, tweet, eventName) => dispatch => {
     const tweetId = tweet.id_str
     var annotation = {
