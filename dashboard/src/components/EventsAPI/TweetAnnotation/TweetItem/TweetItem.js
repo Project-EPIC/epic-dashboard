@@ -37,12 +37,12 @@ class TweetItem extends Component {
                     </Tooltip>
                     )}
                 </div>
-                <a href={`https://twitter.com/${tweet.user.screen_name}`} className={classes.tableCell}>
+                <Link href={`https://twitter.com/${tweet.user.screen_name}`} target="_blank" className={classes.tableCell}>
                     <img className={classes.avatar}
                         onError={this.addDefaultSrc}
                         src={tweet.user.profile_image_url_https}
                         alt="Avatar" />
-                </a>
+                </Link>
 
                 <div className={classes.tableCell}>
                     <div>
@@ -51,7 +51,7 @@ class TweetItem extends Component {
                         </Link>
                         <span> </span>
                         <Typography inline variant="caption" color="textSecondary">
-                            @{tweet.user.screen_name} <span className={classes.mediumReady}>- <Link color="inherit" href={`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`} target="_blank"><ReactTimeAgo timeStyle="twitter" date={parseInt(tweet.timestamp_ms, 10)} /></Link></span>
+                            <Link href={`https://twitter.com/${tweet.user.screen_name}`} color="inherit" target="_blank">@{tweet.user.screen_name}</Link> <span className={classes.mediumReady}>- <Link color="inherit" href={`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`} target="_blank"><ReactTimeAgo timeStyle="twitter" date={parseInt(tweet.timestamp_ms, 10)} /></Link></span>
                         </Typography>
                     </div>
                     <Typography variant="body2" className={classes.mediumReady}>

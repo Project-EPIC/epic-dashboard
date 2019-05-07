@@ -65,6 +65,7 @@ class TweetAnnotationTable extends React.Component {
       anchorEl: null,
       tag:'',
     });
+    document.activeElement.blur();
     this.taggedTweet = null;
   };
 
@@ -105,8 +106,8 @@ class TweetAnnotationTable extends React.Component {
           <div className={classes.rootInput}>
             <TextField
 
-              id="standard-name"
-              label="Add annotation"
+              id="tweet-annotation"
+              placeholder="Annotate tweet"
               value={this.state.tag || ''}
               className={classes.input}
               margin="dense"
@@ -119,7 +120,7 @@ class TweetAnnotationTable extends React.Component {
               }}
             />
 
-            <IconButton color="primary" className={classes.iconButton} aria-label="Add annotation" onClick={this.addAnnotation}>
+            <IconButton color="primary" className={classes.iconButton} aria-label="Submit tweet annotation" onClick={this.addAnnotation}>
               <SendIcon />
             </IconButton>
           </div>
@@ -176,7 +177,7 @@ class TweetAnnotationTable extends React.Component {
                 actions={isWidthUp('sm', this.props.width) ? [
                   {
                     icon: 'edit',
-                    tooltip: 'Add annotation',
+                    tooltip: 'Annotate tweet',
                     onClick: (event, rowData) => {
                       this.openPopOver(event,rowData)
                     }
