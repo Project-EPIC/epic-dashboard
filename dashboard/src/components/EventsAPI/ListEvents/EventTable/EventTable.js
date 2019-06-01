@@ -39,13 +39,6 @@ class EventTable extends React.Component {
                   },
               }),
               {
-                icon:"open_in_new",
-                tooltip:"Open in BigQuery",
-                onClick: (event, rowData) => {
-                  window.open(rowData.big_query_table_url, "_blank");
-                },
-              },
-              {
                 icon:"search",
                 tooltip:"Dashboard, tweets, mentions...",
                 onClick: (event, rowData) => {

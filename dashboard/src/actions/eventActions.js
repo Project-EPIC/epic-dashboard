@@ -49,6 +49,30 @@ export const createEvent = (eventData) => dispatch => {
     });
 };
 
+export const createBigQueryTable = (normalized_name) => dispatch => {
+    dispatch({
+        type: UPDATED_EVENT,
+        payload: {normalized_name:normalized_name, big_query_table:"CREATING"}
+    })
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
+        fetch(`https://epicapi.gerard.space/events/big_query/${normalized_name}/`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${idToken}`
+            }
+        }).then(res => res.json())
+            .then(updatedEvent => dispatch({
+                type: UPDATED_EVENT,
+                payload: updatedEvent
+            })
+        ).catch(e => dispatch({
+            type: UPDATED_EVENT,
+            payload: {normalized_name:normalized_name, big_query_table:""}
+        }))
+    });
+}
+
 export const modifyEvents = (status, normalized_name) => dispatch => {
     dispatch({
         type: UPDATED_EVENT,

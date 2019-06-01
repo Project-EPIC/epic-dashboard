@@ -147,12 +147,26 @@ class TweetAnnotationTable extends React.Component {
                             'Authorization': `Bearer ${idToken}`,
                           }
                         })
-                          .then(response => response.json())
-                          .then(result => {
+                        .then(response => {
+                          if (response.status === 200) {
+                            return response.json();
+                          } else {
+                            throw new Error(response.statusText);
+                          }
+                        })  
+                        .then(result => {
                             resolve({
                               data: result.tweets,
                               page: result.meta && result.meta.page - 1,
                               totalCount: result.meta && result.meta.total_count,
+                            })
+                          })
+                        .catch(e => {
+                          
+                            resolve({
+                              data: [],
+                              page: 0,
+                              totalCount: 0
                             })
                           })
                       });
@@ -166,7 +180,12 @@ class TweetAnnotationTable extends React.Component {
                   toolbar: false,
                   detailPanelType:"single",
                   actionsColumnIndex: -1,
-                  pageSizeOptions: [10, 20, 30]
+                  pageSizeOptions: [10, 20, 30],
+                }}
+                localization= {{
+                  body: {
+                    emptyDataSourceMessage: "No tweets collected so far."
+                  }
                 }}
                 onRowClick={(event, rowData, togglePanel) => togglePanel()}
                 detailPanel={rowData => {

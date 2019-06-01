@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { styles } from "./styles";
 import { connect } from 'react-redux';
-import { fetchEvent, fetchCounts, modifyEvents } from "../../../actions/eventActions";
+import { fetchEvent, fetchCounts, modifyEvents, createBigQueryTable } from "../../../actions/eventActions";
 import PauseIcon from "@material-ui/icons/Pause"
 import Chip from '@material-ui/core/Chip';
 import OpenInNewIcon from "@material-ui/icons/OpenInNew"
@@ -51,6 +51,26 @@ class EventDashboard extends React.Component {
                 return "Event created"
             default:
                 return "Activity"
+        }
+    }
+
+    renderBigQuery(event, classes) {
+        
+        if (!event.big_query_table) {
+            return  <Button color="default" className={classes.button} onClick={() => this.props.createBigQueryTable(event.normalized_name)}>
+                        Create BigQuery table
+                        <CreateIcon className={classes.rightIcon} />
+                    </Button>
+           
+        } else if (event.big_query_table === "CREATING") {
+            return  <Button color="default" className={classes.button} disabled>
+                        Creating table...
+                    </Button>
+        } else {
+            return  <Button color="default" className={classes.button} target="_blank" component="a" href={`https://console.cloud.google.com/bigquery?project=crypto-eon-164220&p=crypto-eon-164220&d=tweets&t=${event.big_query_table}&page=table`}>
+                        Explore in BigQuery
+                        <OpenInNewIcon className={classes.rightIcon} />
+                    </Button>
         }
     }
 
@@ -136,10 +156,7 @@ class EventDashboard extends React.Component {
 
                                     </CardContent>
                                     <CardActions>
-                                        <Button color="default" className={classes.button} target="_blank" component="a" href={event.big_query_table_url}>
-                                            Explore in BigQuery
-                                        <OpenInNewIcon className={classes.rightIcon} />
-                                        </Button>
+                                        {totalCount >0 && this.renderBigQuery(event, classes)}
 
                                     </CardActions>
                                 </Card>
@@ -226,6 +243,7 @@ const mapDispatchToProps = {
     fetchEvent: fetchEvent,
     modifyEvents: modifyEvents,
     fetchCounts: fetchCounts,
+    createBigQueryTable: createBigQueryTable,
 }
 
 
