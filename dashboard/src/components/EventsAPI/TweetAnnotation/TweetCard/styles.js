@@ -40,4 +40,7 @@ export const styles = theme => ({
     height: 28,
     margin: 4,
   },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
 });

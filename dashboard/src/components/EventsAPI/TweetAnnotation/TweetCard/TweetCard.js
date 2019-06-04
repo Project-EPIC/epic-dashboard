@@ -10,12 +10,58 @@ import ReactTimeAgo from "react-time-ago/commonjs/ReactTimeAgo";
 import LocationCityIcon from "@material-ui/icons/LocationCity"
 import LinkIcon from "@material-ui/icons/Link"
 import DoneAllIcon from "@material-ui/icons/DoneAll"
+import TranslateIcon from "@material-ui/icons/Translate"
+import Button from '@material-ui/core/Button';
+import firebase from "firebase";
+import fetch from 'cross-fetch';
+
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 
 
+const initialState = {
+  translation: "",
+  processing_translation: false,
+  lighbox: false,
+  photoIndex:0
 
-
+}
 class TweetCard extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = initialState;
+    this.translateTweet = this.translateTweet.bind(this)
+  }
+
+  translateTweet(text, source) {
+    this.setState({
+      processing_translation: true,
+    })
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ false).then(idToken => {
+      fetch(`https://epicapi.gerard.space/tweets/translate`, {
+          method: 'POST',
+          headers: {
+              'Authorization': `Bearer ${idToken}`,
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({text,source})
+      })
+          .then(res => res.json())
+          .then(tweet => {
+            this.setState({
+              translation: tweet.translated,
+              processing_translation: false,
+            })
+          })
+          .catch(function (error) {
+            this.setState({
+              processing_translation: false,
+            })
+              console.log('There has been a problem with your fetch operation: ', error.message);
+          });;
+  });
+  }
 
   addDefaultSrc(ev) {
     ev.target.src = defaultProfileImage
@@ -24,6 +70,7 @@ class TweetCard extends Component {
   render() {
 
     const { classes, tweet } = this.props;
+    const {lightbox, photoIndex} = this.state;
     let currentTweet = tweet;
     if (currentTweet.retweeted_status) {
       currentTweet = currentTweet.retweeted_status;
@@ -58,20 +105,54 @@ class TweetCard extends Component {
           </Typography>
           <Typography color="textSecondary" gutterBottom variant="caption" dangerouslySetInnerHTML={{ __html: currentTweet.source }}>
           </Typography>
+          {(tweet.lang !== "en" && !this.state.translation) ? 
+            <Button variant="contained" color="primary" className={classes.button} onClick={() => this.translateTweet(text,tweet.lang)} disabled={this.state.processing_translation}>
+              {this.state.processing_translation ? "Translating..." :"Translate to English"}
+              <TranslateIcon className={classes.rightIcon} />
+            </Button> 
+            :
+            null}
+            {this.state.translation ? 
+            <div>
+              <Typography className={classes.title} color="textSecondary" gutterBottom>
+                Translated tweet
+              </Typography>
+              <Typography variant="body2" dangerouslySetInnerHTML={{ __html: this.state.translation }}></Typography>
+            </div>
+            :
+            null}
           {media.length > 0 &&
             <Typography className={classes.title} color="textSecondary" gutterBottom>
               Media
             </Typography>
           }
           <GridList cellHeight={160} className={classes.gridList} cols={Math.max(media.length, 3)}>
-            {media.map(tile => (
+            {media.map((tile, index) => (
               <GridListTile key={tile.id_str} cols={1}>
-                <img src={tile.media_url} alt="Media in tweet. No description from Twitter" />
+                <img onClick={()=> this.setState({lightbox: true, photoIndex:index})} src={tile.media_url} alt="Media in tweet. No description from Twitter" />
               </GridListTile>
             ))}
           </GridList>
 
-            
+          {lightbox && (
+            <Lightbox
+              reactModalStyle={{overlay:{"zIndex":2000}}}
+              mainSrc={media[photoIndex].media_url}
+              onCloseRequest={() => this.setState({ lightbox: false })}
+              nextSrc={media.length >1 && media[(photoIndex + 1) % media.length].media_url}
+              prevSrc={media.length >1 && media[(photoIndex + media.length -1 ) % media.length].media_url}
+              onMovePrevRequest={() =>
+                this.setState({
+                  photoIndex: (photoIndex + media.length -1 ) % media.length,
+                })
+              }
+              onMoveNextRequest={() =>
+                this.setState({
+                  photoIndex: (photoIndex +1) % media.length,
+                })
+              }
+          />
+          )}
           
         </Grid>
         <Grid item xs={12} md={6}>
