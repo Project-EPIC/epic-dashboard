@@ -138,7 +138,7 @@ class ListMedia extends Component {
                     title={"@" + media.user}
                     titlePosition="top"
                     actionIcon={
-                      <IconButton aria-label={`account ${media.tweet_url}`} style={{color: 'white'}}>
+                      <IconButton href={media.tweet_url} rel="noopener noreferrer" target="_blank" aria-label={`account ${media.tweet_url}`} style={{color: 'white'}}>
                         <AccountCircleIcon />
                       </IconButton>
                     }
