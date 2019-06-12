@@ -28,6 +28,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.2.1",
+    "superagent": "^5.0.6",
     "typeface-roboto": "^0.0.54"
   },
   "scripts": {

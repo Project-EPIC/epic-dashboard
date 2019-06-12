@@ -10,6 +10,7 @@ import TweetAnnotationTable from "../../TweetAnnotation/TweetAnnotationTable/Twe
 import { Tabs, Tab } from "@material-ui/core";
 import { NavLink } from 'react-router-dom'
 import ListMentions from "../../ListMentions/ListMentions";
+import ListMedia from "../../ListMedia/ListMedia";
 import EventDashboard from "../../EventDashboard/EventDashboard";
 
 
@@ -32,6 +33,11 @@ if (event && event.status === "NOT_ACTIVE") {
     url: `/events/${eventId}/mentions`,
     label: "Mentions",
     component: ListMentions,
+  },
+  {
+    url: `/events/${eventId}/media`,
+    label: "Media",
+    component: ListMedia,
   })
 }
 return nav
