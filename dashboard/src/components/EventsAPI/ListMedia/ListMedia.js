@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { styles } from "./styles";
 import { connect } from 'react-redux';
@@ -43,9 +42,16 @@ class ListMedia extends Component {
     const { eventId } = this.props;
     pageCounter = 1;
 
-    fetch(`http://localhost:8080/media/${eventId}/?page=1&count=51`)
-      .then(response => response.json())
-      .then(data => this.setState({ media: data.media }));
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ false).then(idToken => {
+      fetch(`https://epicapi.gerard.space/media/${eventId}/?page=1&count=51`,{
+        headers: {
+          'content-type': 'application/json',
+          'Authorization': `Bearer ${idToken}`
+        },
+      })
+        .then(response => response.json())
+        .then(data => this.setState({ media: data.media }));
+    });
   }
 
   handleScroll = () => {
@@ -85,7 +91,13 @@ class ListMedia extends Component {
     console.log("PAGE COUNTER: " + pageCounter +"\n");
 
     this.setState({ isLoading: true }, () => {
-        fetch(`http://localhost:8080/media/${eventId}/?page=${pageCounter}&count=51`)
+      firebase.auth().currentUser.getIdToken(/* forceRefresh */ false).then(idToken => {
+        fetch(`https://epicapi.gerard.space/media/${eventId}/?page=${pageCounter}&count=51`,{
+          headers: {
+            'content-type': 'application/json',
+            'Authorization': `Bearer ${idToken}`
+          },
+        })
         .then(response => response.json())
         .then(
             data => {
@@ -102,6 +114,7 @@ class ListMedia extends Component {
                 isLoading: false,
             });
             })
+          });
     });
   }
 
@@ -110,8 +123,8 @@ class ListMedia extends Component {
   }
 
   render() {
-    const { eventId } = this.props;
-    const { error, hasMore, isLoading, media, lightbox, photoIndex, isOpen } = this.state;
+    
+    const { error, hasMore, isLoading, media, lightbox, photoIndex } = this.state;
 
     return (
       <Grid container spacing={24}>
@@ -120,7 +133,7 @@ class ListMedia extends Component {
             {media.map((media, index) => (
               <GridListTile key={media.image_link} cols={1}>
                 <img onError={this.addDefaultSrc} style={{width: '100%'}} onClick={()=> this.setState({lightbox: true, photoIndex:index})} src={media.image_link} alt={media.tweet_url} />
-                <a href={"https://www.twitter.com/" + media.user} target="_blank">
+                <a href={"https://www.twitter.com/" + media.user} rel="noopener noreferrer" target="_blank">
                   <GridListTileBar
                     title={"@" + media.user}
                     titlePosition="top"
@@ -130,7 +143,7 @@ class ListMedia extends Component {
                       </IconButton>
                     }
                     actionPosition="left"
-                    style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' + 'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',}}
+                    style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',}}
                   />
                 </a>
               </GridListTile>
