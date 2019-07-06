@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import ChipInput from 'material-ui-chip-input'
 import { connect } from 'react-redux';
-import { createEvent } from "../../../actions/eventActions";
+import { createEvent,clearErrors } from "../../../actions/eventActions";
 import Fab from '@material-ui/core/Fab';
 import { styles } from "./styles";
 import { withStyles } from '@material-ui/core/styles';
@@ -26,11 +26,20 @@ class CreateEvent extends Component {
       tags: [],
       name: "",
       open: false,
+      waiting: false,
       description: "",
       nameError: "",
       descriptionError: "",
-      tagsError: ""
+      tagsError: "",
+      numEvents: -1,
     }
+    this.resetFields = this.resetFields.bind(this)
+  }
+
+  componentDidMount() {   
+
+    this.props.clearErrors();
+    
   }
 
   toggleOpen = (state) => () => {
@@ -82,13 +91,56 @@ class CreateEvent extends Component {
       keywords: keywords,
       description: this.state.description
     }
-    
+
     this.props.createEvent(newEvent)
-    this.toggleOpen(false);
+    this.setState({
+      waiting:true,
+    })
+  }
+
+  resetFields() {
+    const currentNumEvents = this.props.events.filter(e => e.status==="ACTIVE").length;
+    this.setState({
+      numEvents: currentNumEvents,
+      tags: [],
+      name: "",
+      waiting:false,
+      open: false,
+      description: "",
+      nameError: "",
+      descriptionError: "",
+      tagsError: "",
+    })
+    this.props.clearErrors();
+  }
+
+  wideError() {
+    this.setState({
+      waiting:false,
+    })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    
+    const currentNumEvents =nextProps.events.filter(e => e.status==="ACTIVE").length;
+    if (currentNumEvents > this.state.numEvents) {
+      // If there's a new event, close modal.
+      this.resetFields();
+    }
+    this.setState({
+      numEvents: currentNumEvents,
+    });
+    const creationError = nextProps.error;
+
+    if (creationError!==""){
+      this.wideError();
+    }
   }
 
   render() {
     const { classes } = this.props;
+    const creationError = this.props.error;
+
     return (
 
       <div>
@@ -96,13 +148,15 @@ class CreateEvent extends Component {
         <Fab onClick={this.toggleOpen(true)} variant="round" color="secondary" aria-label="Add" className={classes.fab}>
           <AddIcon />
         </Fab>
-        {/* <Drawer className={classes.DrawerNewEvent} anchor="bottom" open={this.state.drawer} onClose={this.toggleDrawer(false)}> */}        
-        <Dialog open={this.state.open} onClose={this.toggleOpen(false)} aria-labelledby="form-dialog-title">        
+        <Dialog open={this.state.open} onClose={this.resetFields} aria-labelledby="form-dialog-title">        
         <form onSubmit={this.createEvent}>
           <DialogTitle id="form-dialog-title">Create event</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Create a new event to start collecting data. Introduce keywords to be collected below.
+              Create a new event to start collecting data. Introduce keywords to be collected below. There are currently {this.state.numEvents} active collections.
+            </DialogContentText>
+            <DialogContentText color={"error"}>
+              {creationError&& `Error: ${creationError}`}
             </DialogContentText>
             <Grid container spacing={24}>
               <Grid item  xs={12} md={12}>
@@ -115,8 +169,9 @@ class CreateEvent extends Component {
                   helperText={this.state.nameError !== "" ? this.state.nameError : "Enter Event name. Must be unique."}
                   className={classes.TextField}
                   onChange={this.onChange("name")}
+                  disabled={this.state.waiting}
                   value={this.state.name}
-                  error={this.state.nameError !== ""}
+                  error={this.state.nameError !== ""||creationError!== ""}
                   fullWidth
                   margin="dense"
                 />
@@ -126,10 +181,11 @@ class CreateEvent extends Component {
                   required
                   id="description"
                   label="Description"
+                  disabled={this.state.waiting}
                   helperText={this.state.descriptionError !== "" ? this.state.descriptionError : "Enter Event description."}
                   className={classes.TextField}
                   multiline
-                  error={this.state.descriptionError !== ""}
+                  error={this.state.descriptionError !== ""||creationError!== ""}
                   onChange={this.onChange("description")}
                   value={this.state.description}
                   fullWidth
@@ -142,8 +198,9 @@ class CreateEvent extends Component {
                   onAdd={(chip) => this.handleAddChip(chip)}
                   onDelete={(chip, index) => this.handleDeleteChip(chip, index)}
                   label="Search keywords"
+                  disabled={this.state.waiting}
                   helperText={this.state.tagsError !== "" ? this.state.tagsError : "Keywords to use to collect tweets."}
-                  error={this.state.tagsError !== ""}
+                  error={this.state.tagsError !== ""||creationError!== ""}
                   placeholder={"Enter hashtags followed by an Enter"}
                   fullWidth
                   newChipKeyCodes={[13, 188]}
@@ -163,14 +220,15 @@ class CreateEvent extends Component {
                 />
               </Grid>
             </Grid>
+           
           </DialogContent>
           
           <DialogActions>
 
-            <Button onClick={this.toggleOpen(false)} color="default">Cancel</Button>
+            <Button disabled={this.state.waiting} onClick={this.resetFields} color="default">Cancel</Button>
 
-            <Button type="submit"  variant="contained" color="primary">
-              Collect Tweets
+            <Button disabled={this.state.waiting} type="submit"  variant="contained" color="primary">
+              {this.state.waiting ? "Creating event..." : "Collect Tweets"}
           </Button>
 
 
@@ -185,8 +243,8 @@ class CreateEvent extends Component {
 }
 
 const mapStateToProps = state => ({
-  myevents: state.eventsReducer.myevents,
-  newEvent: state.eventsReducer.newEvent
+  error: state.eventsReducer.error,
+  events: state.eventsReducer.events
 });
 
-export default connect(mapStateToProps, { createEvent: createEvent })(withStyles(styles)(CreateEvent));
+export default connect(mapStateToProps, { createEvent: createEvent, clearErrors:clearErrors })(withStyles(styles)(CreateEvent));

@@ -1,4 +1,4 @@
-import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, FETCH_COUNTS} from './types';
+import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, FETCH_COUNTS, EVENT_CREATION_ERROR } from './types';
 import firebase from "firebase";
 import fetch from 'cross-fetch';
 
@@ -22,7 +22,10 @@ export const fetchEvents = () => dispatch => {
 
 export const createEvent = (eventData) => dispatch => {
     if (firebase.auth().currentUser == null) {
-        throw Error("Not authed")
+        dispatch({
+            type: EVENT_CREATION_ERROR,
+            payload: "Authorization error. Log out and log back in please."
+        })
     }
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
         fetch('https://epicapi.gerard.space/events/', {
@@ -37,17 +40,37 @@ export const createEvent = (eventData) => dispatch => {
                 if (res.ok) {
                     return res.json()
                 } else {
-                    console.log("We need to handle this error");
+                    if (res.status === 409) {
+                        dispatch({
+                            type: EVENT_CREATION_ERROR,
+                            payload: "Event name already in use, please change event name"
+                        })
+                    } else {
+                        dispatch({
+                            type: EVENT_CREATION_ERROR,
+                            payload: "Backend error, please wait a minute and retry again."
+                        })
+                    }
                 }
 
+            }).then(event => {
+                
+                if (event !== undefined){
+                    dispatch({
+                        type:NEW_EVENT,
+                        payload: event,
+                    })
+                }
             })
-            .then(myevent => dispatch({
-                type: NEW_EVENT,
-                payload: myevent
-            })
-            );
     });
 };
+
+export const clearErrors = () => dispatch => {
+    dispatch({
+        type: EVENT_CREATION_ERROR,
+        payload: ""
+    })
+}
 
 export const createBigQueryTable = (normalized_name) => dispatch => {
     dispatch({

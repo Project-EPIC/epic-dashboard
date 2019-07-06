@@ -1,12 +1,18 @@
-import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, FETCH_COUNTS } from '../actions/types';
+import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, FETCH_COUNTS, EVENT_CREATION_ERROR } from '../actions/types';
 
 const initialState = {
     events: [],
     counts: {},
+    error: "",
 };
 
 export default function(state = initialState, action) {
-    switch(action.type) {        
+    switch(action.type) {  
+        case EVENT_CREATION_ERROR:     
+            return {
+                ...state,
+                error: action.payload
+            } 
         case NEW_EVENT:
             return {
                 ...state,
