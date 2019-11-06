@@ -76,6 +76,7 @@ class EventDashboard extends React.Component {
 
     render() {
         const rows = this.props.events;
+        console.log(rows)
         const classes = this.props.classes;
         const eventId = this.props.eventId;
         const event = rows.find((o) => {
