@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-// import Grid from '@material-ui/core/Grid';
+import Grid from '@material-ui/core/Grid';
 import { styles } from "./styles";
 import { connect } from 'react-redux';
 import { fetchEvent, fetchCounts, modifyEvents, createBigQueryTable } from "../../../actions/eventActions";
@@ -31,11 +31,17 @@ class TweetFilterContent extends React.Component {
     render() {
         const { classes } = this.props;
         return (
-            <div>
-                <FilterForm eventId={this.props.eventId}></FilterForm>  
-                <FilterdTweetsTable></FilterdTweetsTable>
-            </div>
-        )       
+          <div>
+            <Grid container spacing={24}>
+              <Grid item xs={12} md={12}>
+                <FilterForm eventId={this.props.eventId}></FilterForm>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <FilterdTweetsTable/>
+              </Grid>
+            </Grid>
+          </div>
+        );
     }
 }
 
