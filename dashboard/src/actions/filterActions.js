@@ -9,8 +9,7 @@ export const fetchFilteredTweets = (newFilter) => dispatch => {
     }
     console.log(newFilter)
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        // fetch(`https://epicapi.gerard.space/tweets/${newFilter.eventName}/?page=1&count=15`, {
-        fetch(`http://localhost:8080/filtering/${newFilter.eventName}?keywords=${newFilter.keyword}&dateStart=${newFilter.dateStart}&dateEnd=${newFilter.dateEnd}&page=1&count=15`,
+        fetch(`https://epicapi.gerard.space/filtering/${newFilter.eventName}?keywords=${newFilter.keyword}&page=1&count=15`,
           {
             headers: {
               "content-type": "application/json",
