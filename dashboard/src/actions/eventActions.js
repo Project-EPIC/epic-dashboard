@@ -10,10 +10,12 @@ export const fetchEvents = () => dispatch => {
             }
         })
             .then(res => res.json())
-            .then(myevents => dispatch({
+            .then(myevents => {
+                console.log(myevents)
+                dispatch({
                 type: FETCH_EVENTS,
                 payload: myevents
-            }))
+            })})
             .catch(function (error) {
                 console.log('There has been a problem with your fetch operation: ', error.message);
             });;
@@ -54,7 +56,7 @@ export const createEvent = (eventData) => dispatch => {
                 }
 
             }).then(event => {
-                
+
                 if (event !== undefined){
                     dispatch({
                         type:NEW_EVENT,
@@ -119,7 +121,7 @@ export const modifyEvents = (status, normalized_name) => dispatch => {
 };
 
 export const fetchEvent = (normalized_name) => dispatch => {
-    
+
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
         fetch(`https://epicapi.gerard.space/events/${normalized_name}/`, {
             method: 'GET',
@@ -147,14 +149,14 @@ export const fetchCounts=(eventId)=>dispatch => {
             'Authorization': `Bearer ${idToken}`
         }
         })
-        .then(res => res.json())  
+        .then(res => res.json())
         .then(counts => dispatch({
             type: FETCH_COUNTS,
             payload: counts
         }))
         .catch(function (error) {
             console.log('There has been a problem with your fetch operation: ', error.message);
-        });    
+        });
     });
 }
 

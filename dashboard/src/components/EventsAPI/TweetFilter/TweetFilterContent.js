@@ -21,7 +21,6 @@ import { List, ListItem, ListItemText, ListItemIcon, Paper,Tooltip } from '@mate
 import FilterForm from './FilterForm';
 import FilterdTweetsTable from './FilteredTweetsTable';
 
-
 class TweetFilterContent extends React.Component {
 
     componentDidMount() {
@@ -30,11 +29,17 @@ class TweetFilterContent extends React.Component {
 
     render() {
         const { classes } = this.props;
+
+        // Grab the start and end times of from the event
+        const { activity } = this.props.events[0]
+        const startTimestamp = activity ? activity[0].time : Date.now()
+        const endTimestamp = activity ? activity[activity.length - 1].time : Date.now()
+
         return (
           <div>
             <Grid container spacing={24}>
               <Grid item xs={12} md={12}>
-                <FilterForm eventId={this.props.eventId}></FilterForm>
+                <FilterForm eventId={this.props.eventId} startTimestamp={startTimestamp} endTimestamp={endTimestamp}></FilterForm>
               </Grid>
               <Grid item xs={12} md={12}>
                 <FilterdTweetsTable/>
