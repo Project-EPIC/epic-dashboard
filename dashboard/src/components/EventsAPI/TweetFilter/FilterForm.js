@@ -1,3 +1,5 @@
+// TODO: Check to see if cache is working
+// TODO: Check this out https://cloud.google.com/bigquery/docs/best-practices-performance-overview
 import React, { Component } from 'react'
 // import AddIcon from '@material-ui/icons/Add';
 import Grid from "@material-ui/core/Grid";
@@ -6,12 +8,9 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import { InlineDatePicker } from "material-ui-pickers";
 import { connect } from 'react-redux';
-// import Fab from '@material-ui/core/Fab';
 import { styles } from "./styles";
 import { withStyles } from '@material-ui/core/styles';
-// import { Paper } from '@material-ui/core';
 import { fetchFilteredTweets, clearFilterErrors } from "../../../actions/filterActions";
 import DateRangePicker from "../../common-components/DateRangePicker/DateRangePicker";
 import moment from 'moment';
@@ -22,10 +21,10 @@ class FilterForm extends Component {
     this.state = {
       dateRangeStart: moment(props.startTimestamp).startOf("day"),
       dateRangeEnd: moment(props.endTimestamp).startOf("day"),
-      andKeywords: "",
-      orKeywords: "",
-      exactPhrase: "",
-      excludeKeywords: "",
+      allWords: "",
+      anyWords: "",
+      phrase: "",
+      notWords: "",
       waiting: false
     }
     this.onChange = this.onChange.bind(this);
@@ -34,13 +33,20 @@ class FilterForm extends Component {
   componentDidMount() {
     this.props.clearFilterErrors();
     this.setState(
-      { keyword: this.props.keyword }
+      {
+        dateRangeStart: this.props.dateRangeStart || moment(this.props.startTimestamp).startOf("day"),
+        dateRangeEnd: this.props.dateRangeEnd || moment(this.props.endTimestamp).startOf("day"),
+        allWords: this.props.allWords,
+        anyWords: this.props.anyWords,
+        phrase: this.props.phrase,
+        notWords: this.props.notWords
+      }
     );
   }
 
-  onChange = keyword => event => {
+  onChange = stateName => event => {
     this.setState(
-      { [keyword]: event.target.value }
+      { [stateName]: event.target.value }
     );
   }
 
@@ -48,15 +54,15 @@ class FilterForm extends Component {
     e.preventDefault()
 
     // Check if any filter has been applied. If not then do nothing.
-    const {andKeywords, orKeywords, exactPhrase, excludeKeywords, dateRangeStart, dateRangeEnd} = this.state;
+    const {allWords, anyWords, phrase, notWords, dateRangeStart, dateRangeEnd} = this.state;
     const isDateRangeChange = !dateRangeStart.isSame(moment(this.props.startTimestamp).startOf("day")) || !dateRangeEnd.isSame(moment(this.props.endTimestamp).startOf("day"))
-    if (andKeywords || orKeywords || exactPhrase || excludeKeywords || isDateRangeChange) {
+    if (allWords || anyWords || phrase || notWords || isDateRangeChange) {
         const newFilter = {
           eventName: this.props.eventId,
-          andKeywords,
-          orKeywords,
-          exactPhrase,
-          excludeKeywords,
+          allWords,
+          anyWords,
+          phrase,
+          notWords,
         }
 
         if (isDateRangeChange) {
@@ -65,14 +71,15 @@ class FilterForm extends Component {
         }
         console.log(newFilter)
 
-        // this.props.fetchFilteredTweets(newFilter)
-        // this.setState({
-        //   waiting:true,
-        // })
+        this.props.fetchFilteredTweets(newFilter)
+        this.setState({
+          waiting:true,
+        })
     }
   }
 
   resetFields = () => {
+    // TODO: Update this
     this.setState({
       keyword: "",
       keywordError: "",
@@ -104,8 +111,8 @@ class FilterForm extends Component {
                     label="All of these words"
                     helperText={'Example: storm,surge → contains both "storm" and "surge"'}
                     className={classes.TextField}
-                    onChange={this.onChange("andKeywords")}
-                    value={this.state.andKeywords}
+                    onChange={this.onChange("allWords")}
+                    value={this.state.allWords}
                     fullWidth
                     margin="dense"
                   />
@@ -117,8 +124,8 @@ class FilterForm extends Component {
                     label="This exact phrase"
                     helperText={'Example: funnel cloud → contains the exact phrase "funnel cloud"'}
                     className={classes.TextField}
-                    onChange={this.onChange("exactPhrase")}
-                    value={this.state.exactPhrase}
+                    onChange={this.onChange("phrase")}
+                    value={this.state.phrase}
                     fullWidth
                     margin="dense"
                   />
@@ -130,8 +137,8 @@ class FilterForm extends Component {
                     label="Any of these words"
                     helperText={'Example: hurricane,flood → contains either "hurricane" or "flood" (or both)'}
                     className={classes.TextField}
-                    onChange={this.onChange("orKeywords")}
-                    value={this.state.orKeywords}
+                    onChange={this.onChange("anyWords")}
+                    value={this.state.anyWords}
                     fullWidth
                     margin="dense"
                   />
@@ -143,8 +150,8 @@ class FilterForm extends Component {
                     label="None of these words"
                     helperText={'Example: cats,dogs → does not contain "cats" and does not contain "dogs"'}
                     className={classes.TextField}
-                    onChange={this.onChange("excludeKeywords")}
-                    value={this.state.excludeKeywords}
+                    onChange={this.onChange("notWords")}
+                    value={this.state.notWords}
                     fullWidth
                     margin="dense"
                   />
@@ -190,7 +197,12 @@ class FilterForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  keyword: state.filterReducer.keyword,
+  dateRangeStart: state.filterReducer.dateRangeStart,
+  dateRangeEnd: state.filterReducer.dateRangeEnd,
+  allWords: state.filterReducer.allWords,
+  anyWords: state.filterReducer.anyWords,
+  phrase: state.filterReducer.phrase,
+  notWords: state.filterReducer.notWords,
   error: state.filterReducer.error,
 });
 

@@ -1,15 +1,27 @@
 import { FETCH_FILTERED_TWEETS, FILTER_KEYWORD, FILTER_ERROR } from './types';
 import firebase from "firebase";
 import fetch from 'cross-fetch';
-// import axios from 'axios';
 
 export const fetchFilteredTweets = (newFilter) => dispatch => {
     if (firebase.auth().currentUser == null) {
         throw Error("Not authed")
     }
-    console.log(newFilter)
+
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch(`https://epicapi.gerard.space/filtering/${newFilter.eventName}?keywords=${newFilter.keyword}&page=1&count=15`,
+      const queryParams = Object.keys(newFilter).reduce((acc, key) => {
+        if (!newFilter[key] || key === "eventName") {
+          return acc;
+        }
+
+        if (acc.length > 0) {
+          return `${acc}&${key}=${newFilter[key].replace(' ', '+')}`;
+        }
+        else {
+          return `${key}=${newFilter[key].replace(' ', '+')}`;
+        }
+      }, "");
+
+      fetch(`http://localhost:8080/filtering/${newFilter.eventName}?${queryParams}&page=1&count=10`, // TODO: Are page and count configurable?
           {
             headers: {
               "content-type": "application/json",
@@ -19,28 +31,14 @@ export const fetchFilteredTweets = (newFilter) => dispatch => {
         )
           .then(res => res.json())
           .then(result =>
-            dispatch({
+            {
+              console.log("DONE")
+              return dispatch({
               type: FETCH_FILTERED_TWEETS,
               payload: { keyword: newFilter.keyword, tweets: result.tweets }
-            })
+            })}
           );
     });
-
-    // axios({
-    //         method: 'get',
-    //         url: `http://localhost:8080/filtering/${newFilter.eventName}/${newFilter.keyword}/?page=1&count=15`,
-    //         withCredentials: true,
-    //         crossdomain: true,
-    //     headers: {
-    //         "Content-Type": 'application/json',
-    //         "Cache-Control": "no-cache",
-    //     }
-    //     }).then(function (response) {
-    //     console.log("Header With Authentication :" + response);
-    //     })
-    //     .catch(function (error) {
-    //     console.log(error);
-    //     });
 }
 
 // export const fetchFilterKeyword = (keyword = "") => ({

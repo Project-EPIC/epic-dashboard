@@ -1,32 +1,37 @@
 import { FETCH_FILTERED_TWEETS, FILTER_KEYWORD, FILTER_ERROR } from '../actions/types';
 
-const initialState = {    
-    keyword: "",
+const initialState = {
+    dateRangeStart: null,
+    dateRangeEnd: null,
+    allWords: "",
+    anyWords: "",
+    phrase: "",
+    notWords: "",
     filteredTweets: [],
     error: "",
 };
 
 export default function(state = initialState, action) {
-    switch(action.type) {  
+    switch(action.type) {
 
-        case FETCH_FILTERED_TWEETS:        
+        case FETCH_FILTERED_TWEETS:
             return {
                 ...state,
                 keyword: action.payload.keyword,
-                filteredTweets: action.payload.tweets,               
+                filteredTweets: action.payload.tweets,
             }
 
-        // case FILTER_KEYWORD:     
+        // case FILTER_KEYWORD:
         //     return {
         //         ...state,
         //         error: action.payload
-        //     } 
+        //     }
 
-        case FILTER_ERROR:     
+        case FILTER_ERROR:
             return {
                 ...state,
                 error: action.payload
-            } 
+            }
         default:
             return state
     }

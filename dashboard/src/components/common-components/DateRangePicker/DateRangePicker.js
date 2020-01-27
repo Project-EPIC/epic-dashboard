@@ -4,7 +4,6 @@ import { InlineDatePicker } from "material-ui-pickers";
 // import { styles } from "./styles";
 import { IconButton } from "@material-ui/core";
 import { withStyles } from '@material-ui/core/styles';
-import moment from 'moment';
 
 class DateRangePicker extends Component {
 	handleDateStartChange = (newDate) => {
