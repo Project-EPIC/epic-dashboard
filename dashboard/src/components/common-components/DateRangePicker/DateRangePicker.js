@@ -8,42 +8,45 @@ import { withStyles } from '@material-ui/core/styles';
 class DateRangePicker extends Component {
 	handleDateStartChange = (newDate) => {
 		if (newDate.isSameOrBefore(this.props.dateRangeEnd)) {
-			this.props.setDateRangeStart(newDate);
+			this.props.setStartDate(newDate);
 		}
 	}
 
 	handleDateEndChange = (newDate) => {
 		if (newDate.isSameOrAfter(this.props.dateRangeStart)) {
-			this.props.setDateRangeEnd(newDate);
+			this.props.setEndDate(newDate);
 		}
 	}
 
 	renderWrappedRange = (date, selectedDate, dayInCurrentMonth) => {
-		const {classes} = this.props
-		const isWithin = date.isBetween(this.props.dateRangeStart, this.props.dateRangeEnd, null, "()")
-		const isStart = date.isSame(this.props.dateRangeStart)
-		const isEnd = date.isSame(this.props.dateRangeEnd)
+		const { classes } = this.props;
+		const isWithin = date.isBetween(this.props.dateRangeStart, this.props.dateRangeEnd, null, "()");
+		const isStart = date.isSame(this.props.dateRangeStart.startOf("day"));
+		const isEnd = date.isSame(this.props.dateRangeEnd.startOf("day"));
 
 		var wrapperClassName = "";
 		if (dayInCurrentMonth) {
 			if (isWithin) {
-				wrapperClassName = classes.highlight
+				wrapperClassName = classes.highlight;
+			}
+			else if (isStart && isEnd) {
+				wrapperClassName = `${classes.highlight} ${classes.bothHighlight}`;
 			}
 			else if (isStart) {
-				wrapperClassName = `${classes.highlight} ${classes.firstHighlight}`
+				wrapperClassName = `${classes.highlight} ${classes.firstHighlight}`;
 			}
 			else if (isEnd) {
-				wrapperClassName = `${classes.highlight} ${classes.endHighlight}`
+				wrapperClassName = `${classes.highlight} ${classes.endHighlight}`;
 			}
 		}
 
-		const outOfMinMaxBounds = !date.isBetween(this.props.dateStart.startOf("day"), this.props.dateEnd.startOf("day"), null, "[]")
+		const outOfMinMaxBounds = !date.isBetween(this.props.dateStart.startOf("day"), this.props.dateEnd.startOf("day"), null, "[]");
 		var dayClassName = "";
 		if (outOfMinMaxBounds) {
-			dayClassName = classes.nonCurrentMonthDay
+			dayClassName = classes.nonCurrentMonthDay;
 		}
 		else if (!dayInCurrentMonth && isWithin) {
-			dayClassName = classes.highlightNonCurrentMonthDay
+			dayClassName = classes.highlightNonCurrentMonthDay;
 		}
 
 		return (
@@ -69,7 +72,7 @@ class DateRangePicker extends Component {
 					onChange={this.handleDateStartChange}
 					renderDay={this.renderWrappedRange}
 					format={"MM/DD/YYYY"}
-					mask={[/\d/,/\d/,"/",/\d/,/\d/,"/",/\d/,/\d/,/\d/,/\d/]}
+					mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
 				/>
 				<InlineDatePicker
 					variant="outlined"
@@ -82,7 +85,7 @@ class DateRangePicker extends Component {
 					onChange={this.handleDateEndChange}
 					renderDay={this.renderWrappedRange}
 					format={"MM/DD/YYYY"}
-					mask={[/\d/,/\d/,"/",/\d/,/\d/,"/",/\d/,/\d/,/\d/,/\d/]}
+					mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
 				/>
 			</React.Fragment>
 		)
@@ -90,35 +93,38 @@ class DateRangePicker extends Component {
 }
 
 const styles = theme => ({
-  day: {
-    width: 36,
-    height: 36,
-    fontSize: theme.typography.caption.fontSize,
-    margin: "0 2px",
-    color: "inherit",
-  },
-  nonCurrentMonthDay: {
-    color: theme.palette.text.disabled,
-  },
-  highlightNonCurrentMonthDay: {
-    color: "#676767",
-  },
-  highlight: {
-    background: theme.palette.primary.main,
-    color: theme.palette.common.white,
-  },
-  firstHighlight: {
-    borderTopLeftRadius: "50%",
-    borderBottomLeftRadius: "50%",
-  },
-  endHighlight: {
-    borderTopRightRadius: "50%",
-    borderBottomRightRadius: "50%",
-  },
+	day: {
+		width: 36,
+		height: 36,
+		fontSize: theme.typography.caption.fontSize,
+		margin: "0 2px",
+		color: "inherit",
+	},
+	nonCurrentMonthDay: {
+		color: theme.palette.text.disabled,
+	},
+	highlightNonCurrentMonthDay: {
+		color: "#676767",
+	},
+	highlight: {
+		background: theme.palette.primary.main,
+		color: theme.palette.common.white,
+	},
+	firstHighlight: {
+		borderTopLeftRadius: "50%",
+		borderBottomLeftRadius: "50%",
+	},
+	endHighlight: {
+		borderTopRightRadius: "50%",
+		borderBottomRightRadius: "50%",
+	},
+	bothHighlight: {
+		borderRadius: "50%"
+	}
 });
 
 DateRangePicker.propTypes = {
-  classes: PropTypes.object.isRequired,
+	classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(DateRangePicker);
