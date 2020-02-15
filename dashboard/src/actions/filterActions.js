@@ -9,7 +9,7 @@ export const setFilter = (newFilter) => dispatch => {
     }
     return acc;
   }, {})
-  console.log(cleanedFilter)
+
   // Check if any filter has been applied. If not then do nothing.
   if (Object.keys(cleanedFilter).length > 0) {
     // There is a filter to set

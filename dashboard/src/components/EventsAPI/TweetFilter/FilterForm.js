@@ -25,7 +25,6 @@ class FilterForm extends Component {
       anyWords: "",
       phrase: "",
       notWords: "",
-      waiting: false
     }
   }
 
@@ -92,7 +91,7 @@ class FilterForm extends Component {
                   variant="filled"
                   id="keyword"
                   label="All of these words"
-                  helperText={'Example: "storm surge" → tweets that contain both "storm" and "surge"'}
+                  helperText={'Example: "storm,surge" → tweets that contain both "storm" and "surge"'}
                   className={classes.TextField}
                   onChange={this.onChange("allWords")}
                   value={this.state.allWords}
@@ -118,7 +117,7 @@ class FilterForm extends Component {
                   variant="filled"
                   id="keyword"
                   label="Any of these words"
-                  helperText={'Example: "hurricane flood" → tweets that contain either "hurricane" or "flood" (or both)'}
+                  helperText={'Example: "hurricane,flood" → tweets that contain either "hurricane" or "flood" (or both)'}
                   className={classes.TextField}
                   onChange={this.onChange("anyWords")}
                   value={this.state.anyWords}
@@ -131,7 +130,7 @@ class FilterForm extends Component {
                   variant="filled"
                   id="keyword"
                   label="None of these words"
-                  helperText={'Example: "cats dogs" → tweets that do not contain "cats" and do not contain "dogs"'}
+                  helperText={'Example: "cats,dogs" → tweets that do not contain "cats" and do not contain "dogs"'}
                   className={classes.TextField}
                   onChange={this.onChange("notWords")}
                   value={this.state.notWords}
@@ -158,16 +157,7 @@ class FilterForm extends Component {
               </Grid>
 
               <Grid item xs={12} md={12}>
-                <Grid container spacing={24} justify="space-between">
-                  <Grid item>
-                    <Button
-                      disabled={!this.state.waiting}
-                      onClick={this.resetFields}
-                      color="default"
-                    >
-                      Cancel Job
-                    </Button>
-                  </Grid>
+                <Grid container spacing={24} justify="flex-end">
                   <Grid item>
                     <Button
                       onClick={this.resetFields}
@@ -176,7 +166,6 @@ class FilterForm extends Component {
                       Reset
                     </Button>
                     <Button
-                      disabled={this.state.waiting}
                       type="submit"
                       variant="contained"
                       color="primary"

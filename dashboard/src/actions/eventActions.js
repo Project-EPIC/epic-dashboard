@@ -11,11 +11,11 @@ export const fetchEvents = () => dispatch => {
         })
             .then(res => res.json())
             .then(myevents => {
-                console.log(myevents)
                 dispatch({
-                type: FETCH_EVENTS,
-                payload: myevents
-            })})
+                    type: FETCH_EVENTS,
+                    payload: myevents
+                })
+            })
             .catch(function (error) {
                 console.log('There has been a problem with your fetch operation: ', error.message);
             });;
@@ -57,9 +57,9 @@ export const createEvent = (eventData) => dispatch => {
 
             }).then(event => {
 
-                if (event !== undefined){
+                if (event !== undefined) {
                     dispatch({
-                        type:NEW_EVENT,
+                        type: NEW_EVENT,
                         payload: event,
                     })
                 }
@@ -77,7 +77,7 @@ export const clearErrors = () => dispatch => {
 export const createBigQueryTable = (normalized_name) => dispatch => {
     dispatch({
         type: UPDATED_EVENT,
-        payload: {normalized_name:normalized_name, big_query_table:"CREATING"}
+        payload: { normalized_name: normalized_name, big_query_table: "CREATING" }
     })
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
         fetch(`https://epicapi.gerard.space/events/big_query/${normalized_name}/`, {
@@ -91,17 +91,17 @@ export const createBigQueryTable = (normalized_name) => dispatch => {
                 type: UPDATED_EVENT,
                 payload: updatedEvent
             })
-        ).catch(e => dispatch({
-            type: UPDATED_EVENT,
-            payload: {normalized_name:normalized_name, big_query_table:""}
-        }))
+            ).catch(e => dispatch({
+                type: UPDATED_EVENT,
+                payload: { normalized_name: normalized_name, big_query_table: "" }
+            }))
     });
 }
 
 export const modifyEvents = (status, normalized_name) => dispatch => {
     dispatch({
         type: UPDATED_EVENT,
-        payload: {status:status,normalized_name:normalized_name}
+        payload: { status: status, normalized_name: normalized_name }
     });
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
         fetch(`https://epicapi.gerard.space/events/${normalized_name}/${status}`, {
@@ -115,7 +115,7 @@ export const modifyEvents = (status, normalized_name) => dispatch => {
                 type: UPDATED_EVENT,
                 payload: updatedEvent
             })
-        );
+            );
     });
 
 };
@@ -134,29 +134,29 @@ export const fetchEvent = (normalized_name) => dispatch => {
                 type: UPDATED_EVENT,
                 payload: updatedEvent
             })
-        );
+            );
     });
 
 };
 
 
 
-export const fetchCounts=(eventId)=>dispatch => {
+export const fetchCounts = (eventId) => dispatch => {
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-    fetch(`https://epicapi.gerard.space/tweets/${eventId}/counts`, {
-        headers: {
-            'content-type': 'application/json',
-            'Authorization': `Bearer ${idToken}`
-        }
+        fetch(`https://epicapi.gerard.space/tweets/${eventId}/counts`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${idToken}`
+            }
         })
-        .then(res => res.json())
-        .then(counts => dispatch({
-            type: FETCH_COUNTS,
-            payload: counts
-        }))
-        .catch(function (error) {
-            console.log('There has been a problem with your fetch operation: ', error.message);
-        });
+            .then(res => res.json())
+            .then(counts => dispatch({
+                type: FETCH_COUNTS,
+                payload: counts
+            }))
+            .catch(function (error) {
+                console.log('There has been a problem with your fetch operation: ', error.message);
+            });
     });
 }
 

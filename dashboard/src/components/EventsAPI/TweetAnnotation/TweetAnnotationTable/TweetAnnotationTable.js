@@ -1,24 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import firebase from "firebase";
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, Popover, TextField, IconButton } from '@material-ui/core';
 import { styles } from "./styles";
+import { Paper, Popover, TextField, IconButton, Grid, Button, Modal, Snackbar } from '@material-ui/core';
 import { connect } from 'react-redux';
-import Grid from "@material-ui/core/Grid";
 import TweetCard from "../TweetCard/TweetCard";
 import MaterialTable, { MTableToolbar } from 'material-table'
-import firebase from "firebase";
 import TweetsChart from '../../TweetsChart/TweetsChart'
 import TweetItem from '../TweetItem/TweetItem';
 import { fetchTagsByEvent, addAnnotation } from '../../../../actions/annotationActions';
-import SendIcon from "@material-ui/icons/Send"
-import SearchIcon from "@material-ui/icons/Search"
+import { Send as SendIcon, Search as SearchIcon, Close as CloseIcon, Error as ErrorIcon } from "@material-ui/icons"
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth'
-import Button from "@material-ui/core/Button"
-import Modal from "@material-ui/core/Modal";
 import FilterForm from "../../TweetFilter/FilterForm";
 import moment from "moment";
 import { setFilter } from "../../../../actions/filterActions";
+
+const fetchErrorText = "Something went wrong with your request"
 
 const initialState = {
   since: null,
@@ -26,19 +24,21 @@ const initialState = {
   anchorEl: null,
   tag: '',
   searchModalShow: false,
+  currentData: {}, // To maintain the current view, if the new request fails
+  fetchErrorMsg: "",
 }
 
 
 class TweetAnnotationTable extends React.Component {
 
   tableRef = React.createRef();
-  startTimestamp = null;
-  endTimestamp = null;
 
   constructor(props) {
     super(props);
     this.state = initialState;
     this.taggedTweet = null;
+    this.startTimestamp = Date.now();
+    this.endTimestamp = Date.now();
   }
 
   updateTimePeriod = (area) => {
@@ -49,7 +49,6 @@ class TweetAnnotationTable extends React.Component {
 
     // Update filter to use `since` and `until` as the start and end timestamps respectively
     if (this.props.filterSet) {
-      console.log("FILTERING")
       this.props.setFilter({
         ...this.props.filter,
         startDate: area ? (area && area.left).valueOf() : this.startTimestamp,
@@ -57,7 +56,6 @@ class TweetAnnotationTable extends React.Component {
       });
     }
     else {
-      console.log("TWEETS")
       this.tableRef.current.state.page = 0;
       this.tableRef.current.state.query.page = 0;
       this.tableRef.current.onQueryChange();
@@ -80,9 +78,9 @@ class TweetAnnotationTable extends React.Component {
     const filterChanged = Object.keys(this.props.filter).reduce((acc, key) => {
       return acc || this.props.filter[key] !== prevProps.filter[key]
     }, false)
-    console.log(this.props)
-    console.log(filterChanged)
+
     if (filterChanged) {
+      // Update the table data
       this.tableRef.current.state.page = 0;
       this.tableRef.current.state.query.page = 0;
       this.tableRef.current.onQueryChange();
@@ -133,10 +131,13 @@ class TweetAnnotationTable extends React.Component {
             }
           })
           .then(result => {
-            resolve({ data: result.tweets, page: result.meta && result.meta.page - 1, totalCount: result.meta && result.meta.total_count })
+            const currentData = { data: result.tweets, page: result.meta && result.meta.page - 1, totalCount: result.meta && result.meta.total_count };
+            this.setState({ currentData });
+            resolve(currentData);
           })
           .catch(e => {
-            resolve({ tweets: [], page: 0, totalCount: 0 })
+            this.setState({ fetchErrorMsg: fetchErrorText });
+            resolve(this.state.currentData);
           });
       })
     })
@@ -145,7 +146,6 @@ class TweetAnnotationTable extends React.Component {
   tweetFilteredFetch = (query) => {
     return new Promise((resolve, _) => {
       firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        console.log(this.props.filter)
         const queryParams = Object.keys(this.props.filter).reduce((acc, key) => {
           if (!this.props.filter[key] || key === "eventName") {
             // Don't include the eventName key value pair and any keys with null values
@@ -176,10 +176,13 @@ class TweetAnnotationTable extends React.Component {
             throw new Error(response.statusText)
           })
           .then(result => {
-            resolve({ data: result.tweets, page: result.meta && result.meta.page - 1, totalCount: result.meta && result.meta.total_count });
+            const currentData = { data: result.tweets, page: result.meta && result.meta.page - 1, totalCount: result.meta && result.meta.total_count };
+            this.setState({ currentData });
+            resolve(currentData);
           }
           ).catch(e => {
-            resolve({ data: [], page: 0, totalCount: 0 });
+            this.setState({ fetchErrorMsg: fetchErrorText });
+            resolve(this.state.currentData);
           });
       });
     })
@@ -192,9 +195,23 @@ class TweetAnnotationTable extends React.Component {
     const open = Boolean(anchorEl);
 
     // Grab the start and end times of from the event
-    const { events } = this.props;
-    this.startTimestamp = events.length > 0 ? events[0].created_at : Date.now();
-    this.endTimestamp = events.length > 0 ? events[0].activity[events[0].activity.length - 1].time : Date.now();
+    const eventInfo = this.props.events.reduce((event, curEvent) => {
+      if (curEvent.normalized_name === eventId) {
+        return curEvent
+      }
+      return event;
+    }, null);
+
+    if (eventInfo && eventInfo.activity) {
+      this.startTimestamp = eventInfo.created_at;
+
+      if (eventInfo.activity[eventInfo.activity.length - 1].type == "PAUSE_EVENT") {
+        this.endTimestamp = eventInfo.activity[eventInfo.activity.length - 1].time;
+      }
+      else {
+        this.endTimestamp = Date.now();
+      }
+    }
 
     return (
       <div className={classes.contentWrapper}>
@@ -247,7 +264,6 @@ class TweetAnnotationTable extends React.Component {
                   { title: 'Tweet', field: 'text', render: rowData => <TweetItem tweet={rowData} eventId={eventId} /> },
                 ]}
                 data={(query) => {
-                  console.log(this.props)
                   if (this.props.filterSet) {
                     return this.tweetFilteredFetch(query);
                   }
@@ -255,7 +271,6 @@ class TweetAnnotationTable extends React.Component {
                     return this.tweetFetch(query);
                   }
                 }}
-                onChangePage={(page) => console.log("hi")}
                 options={{
                   pageSize: 10,
                   search: false,
@@ -291,7 +306,7 @@ class TweetAnnotationTable extends React.Component {
                     (
                       <div className={classes.MTableToolbarContainer}>
                         <MTableToolbar {...props} />
-                        <Button variant="contained" color="default" className={classes.noFloatButton} onClick={() => this.setState({ searchModalShow: true })}>
+                        <Button variant="contained" color="default" className={classes.noFloatButton} onClick={() => this.setState({ searchModalShow: true, fetchErrorMsg: "" })}>
                           <SearchIcon />
                           Search
                         </Button>
@@ -313,6 +328,27 @@ class TweetAnnotationTable extends React.Component {
             />
           </div>
         </Modal>
+
+        <Snackbar
+          open={this.state.fetchErrorMsg.length > 0}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          // autoHideDuration={6000}
+          onClose={(event, reason) => {
+            if (reason === "clickaway") return
+            this.setState({ fetchErrorMsg: "" })
+          }}
+          message={
+            <div>
+              <ErrorIcon className={classes.fetchMessage} />
+              <span className={classes.fetchMessage}>{this.state.fetchErrorMsg}</span>
+            </div>
+          }
+          action={[
+            <IconButton key="close" aria-label="Close" color="inherit" onClick={() => this.setState({ fetchErrorMsg: "" })}>
+              <CloseIcon />
+            </IconButton>
+          ]}
+        />
       </div >
     );
   }

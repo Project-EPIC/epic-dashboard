@@ -64,9 +64,9 @@ class DateRangePicker extends Component {
 				<InlineDatePicker
 					variant="outlined"
 					label="Start Date"
-					minDate={this.props.dateStart}
+					minDate={this.props.dateStart.startOf("day")}
 					minDateMessage={"There is no event data before this date."}
-					maxDate={this.props.dateEnd}
+					maxDate={this.props.dateEnd.endOf("day")}
 					maxDateMessage={"There is no event data after this date."}
 					value={this.props.dateRangeStart}
 					onChange={this.handleDateStartChange}
@@ -77,9 +77,9 @@ class DateRangePicker extends Component {
 				<InlineDatePicker
 					variant="outlined"
 					label="End Date"
-					minDate={this.props.dateStart}
+					minDate={this.props.dateStart.startOf("day")}
 					minDateMessage={"There is no event data before this date."}
-					maxDate={this.props.dateEnd}
+					maxDate={this.props.dateEnd.endOf("day")}
 					maxDateMessage={"There is no event data after this date."}
 					value={this.props.dateRangeEnd}
 					onChange={this.handleDateEndChange}

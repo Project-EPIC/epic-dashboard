@@ -8,8 +8,6 @@ const initialState = {
     anyWords: "",
     phrase: "",
     notWords: "",
-    waiting: false,
-    error: "",
 };
 
 export default function (state = initialState, action) {
@@ -18,8 +16,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 ...action.payload,
-                filterSet: true,
-                error: ""
+                filterSet: true
             }
 
         case FILTER_RESET:
