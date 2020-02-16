@@ -375,6 +375,8 @@ const mapStateToProps = state => ({
     anyWords: state.filterReducer.anyWords,
     phrase: state.filterReducer.phrase,
     notWords: state.filterReducer.notWords,
+    hashtags: state.filterReducer.hashtags,
+    language: state.filterReducer.language,
   }
 })
 const mapDispatchToProps = {

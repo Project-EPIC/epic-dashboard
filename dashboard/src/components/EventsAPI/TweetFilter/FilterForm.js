@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+import { Grid, Button, TextField, Typography, Card, CardContent, Select, FormControl, MenuItem } from "@material-ui/core";
 import { connect } from 'react-redux';
 import { styles } from "./styles";
 import { withStyles } from '@material-ui/core/styles';
 import { setFilter } from "../../../actions/filterActions";
+import { languages } from "./twitterLanguages";
 import DateRangePicker from "../../common-components/DateRangePicker/DateRangePicker";
 import moment from 'moment';
 
@@ -22,6 +18,8 @@ class FilterForm extends Component {
       anyWords: "",
       phrase: "",
       notWords: "",
+      hashtags: "",
+      language: ""
     }
   }
 
@@ -33,7 +31,8 @@ class FilterForm extends Component {
         allWords: this.props.allWords,
         anyWords: this.props.anyWords,
         phrase: this.props.phrase,
-        notWords: this.props.notWords
+        notWords: this.props.notWords,
+        hashtags: this.props.hashtags
       }
     );
   }
@@ -63,8 +62,14 @@ class FilterForm extends Component {
       allWords: "",
       anyWords: "",
       phrase: "",
-      notWords: ""
+      notWords: "",
+      hashtags: "",
+      language: ""
     })
+  }
+
+  handleSelect = (e) => {
+    this.setState({ language: e.target.value });
   }
 
   render() {
@@ -131,6 +136,43 @@ class FilterForm extends Component {
                   fullWidth
                   margin="dense"
                 />
+
+                {/* 'Any of these hashtags' filter */}
+                <TextField
+                  variant="filled"
+                  id="any of these hashtags"
+                  label="Any of these hashtags"
+                  helperText={'Example: "rain,snow" → tweets that do contain either "#rain" or "#snow" (or both)'}
+                  className={classes.TextField}
+                  onChange={this.onChange("hashtags")}
+                  value={this.state.hashtags}
+                  fullWidth
+                  margin="dense"
+                />
+              </Grid>
+
+              {/* Language selector */}
+              <Grid item xs={12} md={12}>
+                <Typography variant="subtitle1" color="textPrimary" gutterBottom>
+                  Language
+                  </Typography>
+                <FormControl className={classes.languageContainer}>
+                  <Select
+                    value={this.state.language}
+                    onChange={this.handleSelect}
+                    displayEmpty
+                    inputProps={{
+                      name: "language",
+                      id: "language-select"
+                    }}
+                  >
+                    {/* https://developer.twitter.com/en/docs/twitter-for-websites/twitter-for-websites-supported-languages/overview */}
+                    <MenuItem value="">Any language</MenuItem>
+                    {Object.keys(languages).map((key) => {
+                      return <MenuItem key={key} value={languages[key]}>{key}</MenuItem>
+                    })}
+                  </Select>
+                </FormControl>
               </Grid>
 
               {/* Date range picker */}
@@ -185,7 +227,8 @@ const mapStateToProps = state => ({
   anyWords: state.filterReducer.anyWords,
   phrase: state.filterReducer.phrase,
   notWords: state.filterReducer.notWords,
-  error: state.filterReducer.error,
+  hashtags: state.filterReducer.hashtags,
+  error: state.filterReducer.error
 });
 
 const mapDispatchToProps = { setFilter }

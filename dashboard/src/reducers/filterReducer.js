@@ -10,6 +10,8 @@ const initialState = {
     anyWords: "",
     phrase: "",
     notWords: "",
+    hashtags: "",
+    language: ""
 };
 
 export default function (state = initialState, action) {
@@ -25,6 +27,8 @@ export default function (state = initialState, action) {
                     anyWords: state.anyWords,
                     phrase: state.phrase,
                     notWords: state.notWords,
+                    hashtags: state.hashtags,
+                    language: state.language
                 },
                 submit: true,
                 filterSet: true
