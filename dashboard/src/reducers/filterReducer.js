@@ -37,6 +37,7 @@ export default function (state = initialState, action) {
         case FILTER_RESET:
             return {
                 ...initialState,
+                submit: true,
             }
 
         case FILTER_CLEAR_SUBMIT:

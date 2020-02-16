@@ -13,7 +13,7 @@ class FilterForm extends Component {
     super(props);
     this.state = {
       startDate: moment(props.startTimestamp),
-      dateRangeEnd: moment(props.endTimestamp),
+      endDate: moment(props.endTimestamp),
       allWords: "",
       anyWords: "",
       phrase: "",
