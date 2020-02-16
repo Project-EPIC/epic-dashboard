@@ -224,7 +224,7 @@ class TweetAnnotationTable extends React.Component {
     if (eventInfo && eventInfo.activity && eventInfo.big_query_table) {
       this.startTimestamp = eventInfo.created_at;
 
-      if (eventInfo.activity[eventInfo.activity.length - 1].type == "PAUSE_EVENT") {
+      if (eventInfo.activity[eventInfo.activity.length - 1].type === "PAUSE_EVENT") {
         this.endTimestamp = eventInfo.activity[eventInfo.activity.length - 1].time;
       }
       else {

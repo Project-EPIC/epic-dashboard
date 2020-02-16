@@ -1,5 +1,4 @@
 import { FILTER_SET, FILTER_RESET, FILTER_CLEAR_SUBMIT, FILTER_RESTORE_PREV_FILTER } from './types';
-import moment from "moment";
 
 export const setFilter = (newFilter) => dispatch => {
   const cleanedFilter = Object.keys(newFilter).reduce((acc, key) => {

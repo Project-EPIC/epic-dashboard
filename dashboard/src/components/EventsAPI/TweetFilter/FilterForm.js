@@ -1,7 +1,4 @@
-// TODO: Check to see if cache is working
-// TODO: Check this out https://cloud.google.com/bigquery/docs/best-practices-performance-overview
 import React, { Component } from 'react'
-// import AddIcon from '@material-ui/icons/Add';
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -43,7 +40,7 @@ class FilterForm extends Component {
 
   onChange = stateName => event => {
     this.setState(
-      { [stateName]: stateName == "phrase" ? event.target.value : event.target.value.replace(" ", ",") }
+      { [stateName]: stateName === "phrase" ? event.target.value : event.target.value.replace(" ", ",") }
     );
   }
 
@@ -86,7 +83,7 @@ class FilterForm extends Component {
                 {/* 'All of these words' filter */}
                 <TextField
                   variant="filled"
-                  id="keyword"
+                  id="all of these words"
                   label="All of these words"
                   helperText={'Example: "storm,surge" → tweets that contain both "storm" and "surge"'}
                   className={classes.TextField}
@@ -99,7 +96,7 @@ class FilterForm extends Component {
                 {/* 'This exact phrase' filter */}
                 <TextField
                   variant="filled"
-                  id="keyword"
+                  id="exact phrase"
                   label="This exact phrase"
                   helperText={'Example: "funnel cloud" → tweets that contain this exact phrase "funnel cloud"'}
                   className={classes.TextField}
@@ -112,7 +109,7 @@ class FilterForm extends Component {
                 {/* 'Any of these words' filter */}
                 <TextField
                   variant="filled"
-                  id="keyword"
+                  id="any of these words"
                   label="Any of these words"
                   helperText={'Example: "hurricane,flood" → tweets that contain either "hurricane" or "flood" (or both)'}
                   className={classes.TextField}
@@ -125,7 +122,7 @@ class FilterForm extends Component {
                 {/* 'None of these words' filter */}
                 <TextField
                   variant="filled"
-                  id="keyword"
+                  id="none of these words"
                   label="None of these words"
                   helperText={'Example: "cats,dogs" → tweets that do not contain "cats" and do not contain "dogs"'}
                   className={classes.TextField}
