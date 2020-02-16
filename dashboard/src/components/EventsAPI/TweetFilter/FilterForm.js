@@ -11,7 +11,7 @@ import CardContent from "@material-ui/core/CardContent";
 import { connect } from 'react-redux';
 import { styles } from "./styles";
 import { withStyles } from '@material-ui/core/styles';
-import { setFilter, clearFilterErrors } from "../../../actions/filterActions";
+import { setFilter } from "../../../actions/filterActions";
 import DateRangePicker from "../../common-components/DateRangePicker/DateRangePicker";
 import moment from 'moment';
 
@@ -29,7 +29,6 @@ class FilterForm extends Component {
   }
 
   componentDidMount() {
-    this.props.clearFilterErrors();
     this.setState(
       {
         startDate: this.props.startDate || moment(this.props.startTimestamp),
@@ -60,8 +59,7 @@ class FilterForm extends Component {
     this.props.closeForm();
   }
 
-  resetFields = () => {
-    // TODO: Update this
+  clearFields = () => {
     this.setState({
       startDate: moment(this.props.startTimestamp),
       endDate: moment(this.props.endTimestamp),
@@ -70,7 +68,6 @@ class FilterForm extends Component {
       phrase: "",
       notWords: ""
     })
-    this.props.clearFilterErrors();
   }
 
   render() {
@@ -160,10 +157,10 @@ class FilterForm extends Component {
                 <Grid container spacing={24} justify="flex-end">
                   <Grid item>
                     <Button
-                      onClick={this.resetFields}
+                      onClick={this.clearFields}
                       color="default"
                     >
-                      Reset
+                      Clear
                     </Button>
                     <Button
                       type="submit"
@@ -194,5 +191,5 @@ const mapStateToProps = state => ({
   error: state.filterReducer.error,
 });
 
-const mapDispatchToProps = { setFilter, clearFilterErrors }
+const mapDispatchToProps = { setFilter }
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(FilterForm));

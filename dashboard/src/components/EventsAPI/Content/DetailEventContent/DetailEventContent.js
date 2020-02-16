@@ -12,41 +12,35 @@ import { NavLink } from 'react-router-dom'
 import ListMentions from "../../ListMentions/ListMentions";
 import ListMedia from "../../ListMedia/ListMedia";
 import EventDashboard from "../../EventDashboard/EventDashboard";
-import TweetFilterContent from "../../TweetFilter/TweetFilterContent"
 
 
 const navigation = (event, eventId) => {
   let nav = [
-  {
-    url: `/events/${eventId}/`,
-    label: "Tweets",
-    component: TweetAnnotationTable,
-  },
-  {
-    url: `/events/${eventId}/dashboard`,
-    label: "Dashboard",
-    component: EventDashboard,
-  },
+    {
+      url: `/events/${eventId}/`,
+      label: "Tweets",
+      component: TweetAnnotationTable,
+    },
+    {
+      url: `/events/${eventId}/dashboard`,
+      label: "Dashboard",
+      component: EventDashboard,
+    },
 
-]
-if (event && event.status === "NOT_ACTIVE") {
-  nav.push({
-    url: `/events/${eventId}/mentions`,
-    label: "Mentions",
-    component: ListMentions,
-  },
-  {
-    url: `/events/${eventId}/media`,
-    label: "Media",
-    component: ListMedia,
-  },
-  {
-    url: `/events/${eventId}/filter`,
-    label: "Filter",
-    component: TweetFilterContent,
-  })
-}
-return nav
+  ]
+  if (event && event.status === "NOT_ACTIVE") {
+    nav.push({
+      url: `/events/${eventId}/mentions`,
+      label: "Mentions",
+      component: ListMentions,
+    },
+      {
+        url: `/events/${eventId}/media`,
+        label: "Media",
+        component: ListMedia,
+      })
+  }
+  return nav
 }
 
 class DetailEventContent extends Component {
@@ -69,7 +63,7 @@ class DetailEventContent extends Component {
 
 
   render() {
-    const { classes, match} = this.props;
+    const { classes, match } = this.props;
     const { params } = match;
     const { value } = this.state;
     const event = this.props.events.find((o) => {
@@ -79,23 +73,23 @@ class DetailEventContent extends Component {
     const title = `Event detail: ${params.eventId}`
     const eventsId = params.eventId;
 
-    const renderTabs =  () =>  <Tabs value={value} onChange={this.handleChange} >
-      {  navigation(event, eventsId).map(
+    const renderTabs = () => <Tabs value={value} onChange={this.handleChange} >
+      {navigation(event, eventsId).map(
         nav => <Tab key={nav.url} component={NavLink} to={nav.url} value={nav.url} label={nav.label} />
       )}
-      </Tabs>
-    
+    </Tabs>
+
 
     return (
       <div className={classes.Main}>
-        <Header onDrawerToggle={this.props.onDrawerToggle} title={title} renderTabs={renderTabs} backLink="/events/"/>
+        <Header onDrawerToggle={this.props.onDrawerToggle} title={title} renderTabs={renderTabs} backLink="/events/" />
 
         <main className={classes.mainContent}>
-        {navigation(event,eventsId).map(
-          nav => <Route exact key={nav.url} path={nav.url} render={() => <nav.component eventId={eventsId}/>} />
-        )}
+          {navigation(event, eventsId).map(
+            nav => <Route exact key={nav.url} path={nav.url} render={() => <nav.component eventId={eventsId} />} />
+          )}
 
-      
+
 
         </main>
       </div>
@@ -115,7 +109,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   fetchEvent: fetchEvent,
-  
+
 }
 
 

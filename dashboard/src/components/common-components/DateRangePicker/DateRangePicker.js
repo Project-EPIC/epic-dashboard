@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { InlineDatePicker } from "material-ui-pickers";
-// import { styles } from "./styles";
+import { styles } from "./styles";
 import { IconButton } from "@material-ui/core";
 import { withStyles } from '@material-ui/core/styles';
 
@@ -91,37 +91,6 @@ class DateRangePicker extends Component {
 		)
 	}
 }
-
-const styles = theme => ({
-	day: {
-		width: 36,
-		height: 36,
-		fontSize: theme.typography.caption.fontSize,
-		margin: "0 2px",
-		color: "inherit",
-	},
-	nonCurrentMonthDay: {
-		color: theme.palette.text.disabled,
-	},
-	highlightNonCurrentMonthDay: {
-		color: "#676767",
-	},
-	highlight: {
-		background: theme.palette.primary.main,
-		color: theme.palette.common.white,
-	},
-	firstHighlight: {
-		borderTopLeftRadius: "50%",
-		borderBottomLeftRadius: "50%",
-	},
-	endHighlight: {
-		borderTopRightRadius: "50%",
-		borderBottomRightRadius: "50%",
-	},
-	bothHighlight: {
-		borderRadius: "50%"
-	}
-});
 
 DateRangePicker.propTypes = {
 	classes: PropTypes.object.isRequired,

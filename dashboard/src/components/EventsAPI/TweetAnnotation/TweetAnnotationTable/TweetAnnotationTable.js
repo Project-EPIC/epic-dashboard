@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import firebase from "firebase";
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from "./styles";
-import { Paper, Popover, TextField, IconButton, Grid, Button, Modal, Snackbar } from '@material-ui/core';
+import { Paper, Popover, TextField, IconButton, Grid, Button, Modal, Snackbar, Tooltip } from '@material-ui/core';
 import { connect } from 'react-redux';
 import TweetCard from "../TweetCard/TweetCard";
 import MaterialTable, { MTableToolbar } from 'material-table'
@@ -14,7 +14,7 @@ import { Send as SendIcon, Search as SearchIcon, Close as CloseIcon, Error as Er
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth'
 import FilterForm from "../../TweetFilter/FilterForm";
 import moment from "moment";
-import { setFilter } from "../../../../actions/filterActions";
+import { setFilter, clearFilterSubmit, restorePrevFilter } from "../../../../actions/filterActions";
 
 const fetchErrorText = "Something went wrong with your request"
 
@@ -69,17 +69,15 @@ class TweetAnnotationTable extends React.Component {
   }
 
   componentDidMount() {
+    this.props.setFilter({}); // Reset to a clean filter for a new event
     this.props.fetchTagsByEvent(this.props.eventId);
   }
 
   componentDidUpdate(prevProps) {
-    // When props update, check if the filter has changed
-    // If so update the tweets table
-    const filterChanged = Object.keys(this.props.filter).reduce((acc, key) => {
-      return acc || this.props.filter[key] !== prevProps.filter[key]
-    }, false)
+    // When props update, check if there was a filter submit
+    // if so, get the remote data for this filter
 
-    if (filterChanged) {
+    if (this.props.submit) {
       // Update the table data
       this.tableRef.current.state.page = 0;
       this.tableRef.current.state.query.page = 0;
@@ -109,83 +107,104 @@ class TweetAnnotationTable extends React.Component {
     });
   };
 
-  tweetFetch = (query) => {
-    return new Promise((resolve, _) => {
-      let url = `https://epicapi.gerard.space/tweets/${this.props.eventId}/?page=${query.page + 1}&count=${query.pageSize}`
+  renderToolbar = (matTableProps, eventInfo) => {
+    const { classes } = this.props;
+    const disabled = eventInfo ? eventInfo.big_query_table === null : true;
 
-      if (this.state.since !== null && this.state.until !== null) {
-        url = url + `&since=${this.state.since.toISOString()}&until=${this.state.until.toISOString()}`
-      }
-      firebase.auth().currentUser.getIdToken(/* forceRefresh */ false).then(idToken => {
-        fetch(url, {
-          headers: {
-            "content-type": "application/json",
-            "Authorization": `Bearer ${idToken}`,
-          }
-        })
-          .then(response => {
-            if (response.status === 200) {
-              return response.json();
-            } else {
-              throw new Error(response.statusText);
-            }
-          })
-          .then(result => {
-            const currentData = { data: result.tweets, page: result.meta && result.meta.page - 1, totalCount: result.meta && result.meta.total_count };
-            this.setState({ currentData });
-            resolve(currentData);
-          })
-          .catch(e => {
-            this.setState({ fetchErrorMsg: fetchErrorText });
-            resolve(this.state.currentData);
-          });
+    return (
+      <div className={classes.MTableToolbarContainer}>
+        <MTableToolbar {...matTableProps} />
+        <Tooltip title={disabled ? "Create a BigQuery table to enable search" : ""}>
+          <span>
+            <Button
+              disabled={disabled}
+              variant="contained"
+              color="default"
+              className={classes.noFloatButton}
+              onClick={() => this.setState({ searchModalShow: true, fetchErrorMsg: "" })}
+            >
+              <SearchIcon />
+              Search
+          </Button>
+          </span>
+        </Tooltip>
+      </div>
+    );
+  }
+
+  fetchRemoteData = (query) => {
+    this.props.clearFilterSubmit();
+
+    let request;
+    if (this.props.filterSet) {
+      request = this.tweetFilteredFetch(query);
+    }
+    else {
+      request = this.tweetFetch(query);
+    }
+    return new Promise((resolve, _) => {
+      request.then(response => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error(response.statusText);
+        }
       })
+        .then(result => {
+          const currentData = { data: result.tweets, page: result.meta && result.meta.page - 1, totalCount: result.meta && result.meta.total_count };
+          this.setState({ currentData });
+          resolve(currentData);
+        })
+        .catch(e => {
+          this.setState({ fetchErrorMsg: fetchErrorText });
+          this.props.restorePrevFilter();
+          resolve(this.state.currentData);
+        });
+    })
+  }
+
+  tweetFetch = (query) => {
+    let url = `https://epicapi.gerard.space/tweets/${this.props.eventId}/?page=${query.page + 1}&count=${query.pageSize}`
+
+    if (this.state.since !== null && this.state.until !== null) {
+      url = url + `&since=${this.state.since.toISOString()}&until=${this.state.until.toISOString()}`
+    }
+    return firebase.auth().currentUser.getIdToken(/* forceRefresh */ false).then(idToken => {
+      return fetch(url, {
+        headers: {
+          "content-type": "application/json",
+          "Authorization": `Bearer ${idToken}`,
+        }
+      });
     })
   }
 
   tweetFilteredFetch = (query) => {
-    return new Promise((resolve, _) => {
-      firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        const queryParams = Object.keys(this.props.filter).reduce((acc, key) => {
-          if (!this.props.filter[key] || key === "eventName") {
-            // Don't include the eventName key value pair and any keys with null values
-            return acc;
-          }
+    return firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
+      const queryParams = Object.keys(this.props.filter).reduce((acc, key) => {
+        if (!this.props.filter[key] || key === "eventName") {
+          // Don't include the eventName key value pair and any keys with null values
+          return acc;
+        }
 
-          // Generate query params string
-          if (acc.length > 0) {
-            return `${acc}&${key}=${this.props.filter[key].toString().replace(' ', '+')}`;
-          }
-          else {
-            return `${key}=${this.props.filter[key].toString().replace(' ', '+')}`;
-          }
-        }, "");
+        // Generate query params string
+        if (acc.length > 0) {
+          return `${acc}&${key}=${this.props.filter[key].toString().replace(' ', '+')}`;
+        }
+        else {
+          return `${key}=${this.props.filter[key].toString().replace(' ', '+')}`;
+        }
+      }, "");
 
-        fetch(`http://localhost:8080/filtering/${this.props.eventId}?${queryParams}&page=${query.page + 1}&count=${query.pageSize}`, // TODO: Are page and count configurable?
-          {
-            headers: {
-              "content-type": "application/json",
-              Authorization: `Bearer ${idToken}`
-            }
+      return fetch(`http://localhost:8080/filtering/${this.props.eventId}?${queryParams}&page=${query.page + 1}&count=${query.pageSize}`, // TODO: Are page and count configurable?
+        {
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${idToken}`
           }
-        )
-          .then(response => {
-            if (response.status === 200) {
-              return response.json()
-            }
-            throw new Error(response.statusText)
-          })
-          .then(result => {
-            const currentData = { data: result.tweets, page: result.meta && result.meta.page - 1, totalCount: result.meta && result.meta.total_count };
-            this.setState({ currentData });
-            resolve(currentData);
-          }
-          ).catch(e => {
-            this.setState({ fetchErrorMsg: fetchErrorText });
-            resolve(this.state.currentData);
-          });
-      });
-    })
+        }
+      )
+    });
   }
 
   render() {
@@ -202,7 +221,7 @@ class TweetAnnotationTable extends React.Component {
       return event;
     }, null);
 
-    if (eventInfo && eventInfo.activity) {
+    if (eventInfo && eventInfo.activity && eventInfo.big_query_table) {
       this.startTimestamp = eventInfo.created_at;
 
       if (eventInfo.activity[eventInfo.activity.length - 1].type == "PAUSE_EVENT") {
@@ -263,14 +282,7 @@ class TweetAnnotationTable extends React.Component {
                 columns={[
                   { title: 'Tweet', field: 'text', render: rowData => <TweetItem tweet={rowData} eventId={eventId} /> },
                 ]}
-                data={(query) => {
-                  if (this.props.filterSet) {
-                    return this.tweetFilteredFetch(query);
-                  }
-                  else {
-                    return this.tweetFetch(query);
-                  }
-                }}
+                data={this.fetchRemoteData}
                 options={{
                   pageSize: 10,
                   search: false,
@@ -302,16 +314,7 @@ class TweetAnnotationTable extends React.Component {
                 ] : []
                 }
                 components={{
-                  Toolbar: props =>
-                    (
-                      <div className={classes.MTableToolbarContainer}>
-                        <MTableToolbar {...props} />
-                        <Button variant="contained" color="default" className={classes.noFloatButton} onClick={() => this.setState({ searchModalShow: true, fetchErrorMsg: "" })}>
-                          <SearchIcon />
-                          Search
-                        </Button>
-                      </div>
-                    ),
+                  Toolbar: (props) => this.renderToolbar(props, eventInfo),
                 }}
                 onChangePage={() => { console.log('called 2') }}
               />
@@ -332,7 +335,6 @@ class TweetAnnotationTable extends React.Component {
         <Snackbar
           open={this.state.fetchErrorMsg.length > 0}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          // autoHideDuration={6000}
           onClose={(event, reason) => {
             if (reason === "clickaway") return
             this.setState({ fetchErrorMsg: "" })
@@ -364,6 +366,7 @@ const mapStateToProps = state => ({
   tweets: state.filterReducer.tweets,
   page: state.filterReducer.page,
   totalCount: state.filterReducer.totalCount,
+  submit: state.filterReducer.submit,
   filterSet: state.filterReducer.filterSet,
   filter: {
     startDate: state.filterReducer.startDate,
@@ -377,7 +380,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   fetchTagsByEvent,
   addAnnotation,
-  setFilter
+  setFilter,
+  clearFilterSubmit,
+  restorePrevFilter
 }
 
 

@@ -44,6 +44,7 @@ export const styles = theme => ({
   },
   noFloatButton: {
     boxShadow: "none",
+    height: "100%",
   },
   modalContainer: {
     display: "flex",

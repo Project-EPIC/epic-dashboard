@@ -1,5 +1,5 @@
 export const styles = theme => ({
-    chart: {
-      height:200,
-    }
-  });
+  chart: {
+    height: 200,
+  },
+});

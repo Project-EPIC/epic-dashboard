@@ -16,55 +16,55 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { List, ListItem, ListItemText, ListItemIcon, Paper,Tooltip } from '@material-ui/core';
+import { List, ListItem, ListItemText, ListItemIcon, Paper, Tooltip } from '@material-ui/core';
 // import TweetsChart from '../TweetsChart/TweetsChart';
 import FilterForm from './FilterForm';
-import FilterdTweetsTable from './FilteredTweetsTable';
+import FilteredTweetsTable from './FilteredTweetsTable';
 
 class TweetFilterContent extends React.Component {
 
-    componentDidMount() {
-    }
+  componentDidMount() {
+  }
 
 
-    render() {
-        const { classes } = this.props;
+  render() {
+    const { classes } = this.props;
 
-        // Grab the start and end times of from the event
-        const { activity } = this.props.events[0]
-        const startTimestamp = activity ? activity[0].time : Date.now()
-        const endTimestamp = activity ? activity[activity.length - 1].time : Date.now()
+    // Grab the start and end times of from the event
+    const { events } = this.props;
+    const startTimestamp = events.length > 0 ? events[0].created_at : Date.now();
+    const endTimestamp = events.length > 0 ? events[0].activity[events[0].activity.length - 1].time : Date.now();
 
-        return (
-          <div>
-            <Grid container spacing={24}>
-              <Grid item xs={12} md={12}>
-                <FilterForm eventId={this.props.eventId} startTimestamp={startTimestamp} endTimestamp={endTimestamp}></FilterForm>
-              </Grid>
-              <Grid item xs={12} md={12}>
-                <FilterdTweetsTable/>
-              </Grid>
-            </Grid>
-          </div>
-        );
-    }
+    return (
+      <div>
+        <Grid container spacing={24}>
+          <Grid item xs={12} md={12}>
+            <FilterForm eventId={this.props.eventId} startTimestamp={startTimestamp} endTimestamp={endTimestamp}></FilterForm>
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <FilteredTweetsTable />
+          </Grid>
+        </Grid>
+      </div>
+    );
+  }
 }
 
 TweetFilterContent.propTypes = {
-    classes: PropTypes.object.isRequired,
-    eventId: PropTypes.string.isRequired,
+  classes: PropTypes.object.isRequired,
+  eventId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
-    events: state.eventsReducer.events,
-    counts: state.eventsReducer.counts,
+  events: state.eventsReducer.events,
+  counts: state.eventsReducer.counts,
 });
 
 const mapDispatchToProps = {
-    fetchEvent: fetchEvent,
-    modifyEvents: modifyEvents,
-    fetchCounts: fetchCounts,
-    createBigQueryTable: createBigQueryTable,
+  fetchEvent: fetchEvent,
+  modifyEvents: modifyEvents,
+  fetchCounts: fetchCounts,
+  createBigQueryTable: createBigQueryTable,
 }
 
 

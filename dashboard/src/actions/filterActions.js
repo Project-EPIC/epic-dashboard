@@ -1,4 +1,4 @@
-import { FILTER_SET, FILTER_RESET, FILTER_ERROR } from './types';
+import { FILTER_SET, FILTER_RESET, FILTER_CLEAR_SUBMIT, FILTER_RESTORE_PREV_FILTER } from './types';
 import moment from "moment";
 
 export const setFilter = (newFilter) => dispatch => {
@@ -25,9 +25,14 @@ export const setFilter = (newFilter) => dispatch => {
   }
 }
 
-export const clearFilterErrors = () => dispatch => {
+export const clearFilterSubmit = () => dispatch => {
   dispatch({
-    type: FILTER_ERROR,
-    payload: ""
-  })
+    type: FILTER_CLEAR_SUBMIT
+  });
+}
+
+export const restorePrevFilter = () => dispatch => {
+  dispatch({
+    type: FILTER_RESTORE_PREV_FILTER
+  });
 }
