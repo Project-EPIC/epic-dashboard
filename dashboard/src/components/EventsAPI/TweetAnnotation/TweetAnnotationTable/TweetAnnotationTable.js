@@ -23,7 +23,7 @@ const initialState = {
   until: null,
   anchorEl: null,
   tag: '',
-  searchModalShow: false,
+  searchModalShow: true, //false,
   currentData: {}, // To maintain the current view, if the new request fails
   fetchErrorMsg: "",
 }

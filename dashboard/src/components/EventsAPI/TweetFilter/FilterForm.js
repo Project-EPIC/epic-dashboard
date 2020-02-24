@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { setFilter } from "../../../actions/filterActions";
 import { languages } from "./twitterLanguages";
 import DateRangePicker from "../../common-components/DateRangePicker/DateRangePicker";
+import TweetQueryBuilder from "../TweetQueryBuilder/TweetQueryBuilder";
 import moment from 'moment';
 
 class FilterForm extends Component {
@@ -32,7 +33,8 @@ class FilterForm extends Component {
         anyWords: this.props.anyWords,
         phrase: this.props.phrase,
         notWords: this.props.notWords,
-        hashtags: this.props.hashtags
+        hashtags: this.props.hashtags,
+        language: this.props.langauge || "",
       }
     );
   }
@@ -83,59 +85,12 @@ class FilterForm extends Component {
               Search for tweets with
               </Typography>
             <Grid container spacing={24}>
+              <Grid item xs={12} md={12}>
+                <TweetQueryBuilder />
+              </Grid>
+
 
               <Grid item xs={12} md={12}>
-                {/* 'All of these words' filter */}
-                <TextField
-                  variant="filled"
-                  id="all of these words"
-                  label="All of these words"
-                  helperText={'Example: "storm,surge" → tweets that contain both "storm" and "surge"'}
-                  className={classes.TextField}
-                  onChange={this.onChange("allWords")}
-                  value={this.state.allWords}
-                  fullWidth
-                  margin="dense"
-                />
-
-                {/* 'This exact phrase' filter */}
-                <TextField
-                  variant="filled"
-                  id="exact phrase"
-                  label="This exact phrase"
-                  helperText={'Example: "funnel cloud" → tweets that contain this exact phrase "funnel cloud"'}
-                  className={classes.TextField}
-                  onChange={this.onChange("phrase")}
-                  value={this.state.phrase}
-                  fullWidth
-                  margin="dense"
-                />
-
-                {/* 'Any of these words' filter */}
-                <TextField
-                  variant="filled"
-                  id="any of these words"
-                  label="Any of these words"
-                  helperText={'Example: "hurricane,flood" → tweets that contain either "hurricane" or "flood" (or both)'}
-                  className={classes.TextField}
-                  onChange={this.onChange("anyWords")}
-                  value={this.state.anyWords}
-                  fullWidth
-                  margin="dense"
-                />
-
-                {/* 'None of these words' filter */}
-                <TextField
-                  variant="filled"
-                  id="none of these words"
-                  label="None of these words"
-                  helperText={'Example: "cats,dogs" → tweets that do not contain "cats" and do not contain "dogs"'}
-                  className={classes.TextField}
-                  onChange={this.onChange("notWords")}
-                  value={this.state.notWords}
-                  fullWidth
-                  margin="dense"
-                />
 
                 {/* 'Any of these hashtags' filter */}
                 <TextField
@@ -149,6 +104,7 @@ class FilterForm extends Component {
                   fullWidth
                   margin="dense"
                 />
+
               </Grid>
 
               {/* Language selector */}
@@ -228,6 +184,7 @@ const mapStateToProps = state => ({
   phrase: state.filterReducer.phrase,
   notWords: state.filterReducer.notWords,
   hashtags: state.filterReducer.hashtags,
+  language: state.filterReducer.language,
   error: state.filterReducer.error
 });
 

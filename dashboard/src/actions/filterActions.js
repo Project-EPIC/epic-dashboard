@@ -1,4 +1,4 @@
-import { FILTER_SET, FILTER_RESET, FILTER_CLEAR_SUBMIT, FILTER_RESTORE_PREV_FILTER } from './types';
+import { FILTER_SET, FILTER_RESET, FILTER_CLEAR_SUBMIT, FILTER_RESTORE_PREV_FILTER, FILTER_CONSTRAINT_PREDICATE_SET, FILTER_CONSTRAINT_EXPRESSION_SET } from './types';
 
 export const setFilter = (newFilter) => dispatch => {
   const cleanedFilter = Object.keys(newFilter).reduce((acc, key) => {
@@ -22,6 +22,21 @@ export const setFilter = (newFilter) => dispatch => {
       type: FILTER_RESET
     })
   }
+}
+
+export const setPredicates = (predicateList) => (dispatch) => {
+  dispatch({
+    type: FILTER_CONSTRAINT_PREDICATE_SET,
+    payload: predicateList,
+  })
+}
+
+export const setExpressions = (expressionList, predicateParentIdx) => (dispatch) => {
+  dispatch({
+    type: FILTER_CONSTRAINT_EXPRESSION_SET,
+    payload: expressionList,
+    predicateParentIdx
+  })
 }
 
 export const clearFilterSubmit = () => dispatch => {
