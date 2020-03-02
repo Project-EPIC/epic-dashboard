@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography, Card, Button, IconButton } from "@material-ui/core";
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography, Card, Button, IconButton, Chip } from "@material-ui/core";
 import { Grid, Switch } from "@material-ui/core"
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -72,6 +72,7 @@ class PredicateBuilder extends Component {
                     AND
                     <Switch
                         checked={checked}
+                        color="default"
                         value={`checked${i}`}
                     />
                     OR
@@ -83,14 +84,16 @@ class PredicateBuilder extends Component {
     renderExpressionText = (expressions, isExpanded, index) => {
         if (expressions && expressions.length > 0) {
             return (
-                <Grid container className={this.props.classes.expressionTextContainer}>
+                <Grid container className={this.props.classes.expressionTextContainer} spacing={8}>
                     {expressions.map(({ checked, selectValue, text }, i) => {
                         return (
                             <React.Fragment key={`expressiontext-${i}`}>
                                 <Grid item xs={1}>
-                                    {i > 0 ? (checked ? "OR" : "AND") : ""}
+                                    {i > 0 ? <Chip label={(checked ? "OR" : "AND")} /> : ""}
                                 </Grid>
-                                <Grid item xs={11}>{`${selectValue}: ${text}`}</Grid>
+                                <Grid item xs={11}>
+                                    <Chip label={`${selectValue}: ${text}`} />
+                                </Grid>
                             </React.Fragment>
                         )
                     })}

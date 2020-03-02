@@ -78,94 +78,95 @@ class FilterForm extends Component {
     const { classes } = this.props;
 
     return (
-      <Card className={classes.card}>
-        <CardContent>
-          <form onSubmit={this.fetchFilteredTweets}>
-            <Typography variant="subtitle1" color="textPrimary" gutterBottom>
-              Search for tweets with
+      <Card>
+        <CardContent className={classes.cardContainer}>
+          <form onSubmit={this.fetchFilteredTweets} className={classes.cardContainer}>
+            <div className={classes.card}>
+              <Typography variant="subtitle1" color="textPrimary" gutterBottom>
+                Search for tweets with
               </Typography>
-            <Grid container spacing={24}>
-              <Grid item xs={12} md={12}>
-                <TweetQueryBuilder />
-              </Grid>
+              <Grid container spacing={24}>
+                <Grid item xs={12} md={12}>
+                  <TweetQueryBuilder />
+                </Grid>
 
 
-              <Grid item xs={12} md={12}>
+                <Grid item xs={12} md={12}>
 
-                {/* 'Any of these hashtags' filter */}
-                <TextField
-                  variant="filled"
-                  id="any of these hashtags"
-                  label="Any of these hashtags"
-                  helperText={'Example: "rain,snow" → tweets that do contain either "#rain" or "#snow" (or both)'}
-                  className={classes.TextField}
-                  onChange={this.onChange("hashtags")}
-                  value={this.state.hashtags}
-                  fullWidth
-                  margin="dense"
-                />
-
-              </Grid>
-
-              {/* Language selector */}
-              <Grid item xs={12} md={12}>
-                <Typography variant="subtitle1" color="textPrimary" gutterBottom>
-                  Language
-                  </Typography>
-                <FormControl className={classes.languageContainer}>
-                  <Select
-                    value={this.state.language}
-                    onChange={this.handleSelect}
-                    displayEmpty
-                    inputProps={{
-                      name: "language",
-                      id: "language-select"
-                    }}
-                  >
-                    {/* https://developer.twitter.com/en/docs/twitter-for-websites/twitter-for-websites-supported-languages/overview */}
-                    <MenuItem value="">Any language</MenuItem>
-                    {Object.keys(languages).map((key) => {
-                      return <MenuItem key={key} value={languages[key]}>{key}</MenuItem>
-                    })}
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              {/* Date range picker */}
-              <Grid item xs={12} md={12}>
-                <Typography variant="subtitle1" color="textPrimary" gutterBottom>
-                  Created between
-                  </Typography>
-                <div className={classes.dateContainer}>
-                  <DateRangePicker
-                    dateStart={moment(this.props.startTimestamp)}
-                    dateEnd={moment(this.props.endTimestamp)}
-                    dateRangeStart={this.state.startDate}
-                    dateRangeEnd={this.state.endDate}
-                    setStartDate={(startDate) => this.setState({ startDate })}
-                    setEndDate={(endDate) => this.setState({ endDate })}
+                  {/* 'Any of these hashtags' filter */}
+                  <TextField
+                    variant="filled"
+                    id="any of these hashtags"
+                    label="Any of these hashtags"
+                    helperText={'Example: "rain,snow" → tweets that do contain either "#rain" or "#snow" (or both)'}
+                    className={classes.TextField}
+                    onChange={this.onChange("hashtags")}
+                    value={this.state.hashtags}
+                    fullWidth
+                    margin="dense"
                   />
-                </div>
-              </Grid>
 
-              <Grid item xs={12} md={12}>
-                <Grid container spacing={24} justify="flex-end">
-                  <Grid item>
-                    <Button
-                      onClick={this.clearFields}
-                      color="default"
+                </Grid>
+
+                {/* Language selector */}
+                <Grid item xs={12} md={12}>
+                  <Typography variant="subtitle1" color="textPrimary" gutterBottom>
+                    Language
+                  </Typography>
+                  <FormControl className={classes.languageContainer}>
+                    <Select
+                      value={this.state.language}
+                      onChange={this.handleSelect}
+                      displayEmpty
+                      inputProps={{
+                        name: "language",
+                        id: "language-select"
+                      }}
                     >
-                      Clear
+                      {/* https://developer.twitter.com/en/docs/twitter-for-websites/twitter-for-websites-supported-languages/overview */}
+                      <MenuItem value="">Any language</MenuItem>
+                      {Object.keys(languages).map((key) => {
+                        return <MenuItem key={key} value={languages[key]}>{key}</MenuItem>
+                      })}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                {/* Date range picker */}
+                <Grid item xs={12} md={12}>
+                  <Typography variant="subtitle1" color="textPrimary" gutterBottom>
+                    Created between
+                  </Typography>
+                  <div className={classes.dateContainer}>
+                    <DateRangePicker
+                      dateStart={moment(this.props.startTimestamp)}
+                      dateEnd={moment(this.props.endTimestamp)}
+                      dateRangeStart={this.state.startDate}
+                      dateRangeEnd={this.state.endDate}
+                      setStartDate={(startDate) => this.setState({ startDate })}
+                      setEndDate={(endDate) => this.setState({ endDate })}
+                    />
+                  </div>
+                </Grid>
+              </Grid>
+            </div>
+            <Grid item xs={12} md={12} className={classes.buttonContainer}>
+              <Grid container justify="flex-end">
+                <Grid item>
+                  <Button
+                    onClick={this.clearFields}
+                    color="default"
+                  >
+                    Clear
                     </Button>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      style={{ margin: "0 0 0 7px" }}
-                    >
-                      Apply Filter
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    style={{ margin: "0 0 0 7px" }}
+                  >
+                    Apply Filter
                     </Button>
-                  </Grid>
                 </Grid>
               </Grid>
             </Grid>

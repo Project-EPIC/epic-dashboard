@@ -2,6 +2,8 @@
 TODO: 
     Things to consider:
         What happens when you delete all expressions? Should the predicate disappear too? Should it delete when the macro is unselected?
+    Bug:
+        When we delete it seems to flip between expanded and closed...
 */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
@@ -77,6 +79,7 @@ class ExpressionBuilder extends Component {
                     AND
                     <Switch
                         checked={checked}
+                        color="default"
                         value={`checked${index}`}
                         onClick={(e) => {
                             const newExpressions = this.props.expressionData.map((data, i) => {
@@ -111,7 +114,6 @@ class ExpressionBuilder extends Component {
                                 <Grid container alignItems="center" spacing={16} >
                                     <Grid item xs={3}>
                                         <Select
-                                            className={classes.textFilterSelect}
                                             value={data.selectValue}
                                             onChange={this.handleSelect(i)}
                                             inputProps={{
