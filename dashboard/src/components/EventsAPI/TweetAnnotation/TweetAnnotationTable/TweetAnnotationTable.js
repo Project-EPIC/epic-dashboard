@@ -14,7 +14,8 @@ import { Send as SendIcon, Search as SearchIcon, Close as CloseIcon, Error as Er
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth'
 import FilterForm from "../../TweetFilter/FilterForm";
 import moment from "moment";
-import { setFilter, clearFilterSubmit, restorePrevFilter } from "../../../../actions/filterActions";
+import { setFilter, clearFilter, clearFilterSubmit, restorePrevFilter } from "../../../../actions/filterActions";
+import fetch from 'cross-fetch';
 
 const fetchErrorText = "Something went wrong with your request"
 
@@ -23,7 +24,7 @@ const initialState = {
   until: null,
   anchorEl: null,
   tag: '',
-  searchModalShow: true, //false,
+  searchModalShow: false,
   currentData: {}, // To maintain the current view, if the new request fails
   fetchErrorMsg: "",
 }
@@ -53,7 +54,7 @@ class TweetAnnotationTable extends React.Component {
         ...this.props.filter,
         startDate: area ? (area && area.left).valueOf() : this.startTimestamp,
         endDate: area ? (area && area.right).valueOf() : this.endTimestamp
-      });
+      }, true);
     }
     else {
       this.tableRef.current.state.page = 0;
@@ -69,7 +70,7 @@ class TweetAnnotationTable extends React.Component {
   }
 
   componentDidMount() {
-    this.props.setFilter({}); // Reset to a clean filter for a new event
+    this.props.clearFilter(); // Reset to a clean filter for a new event
     this.props.fetchTagsByEvent(this.props.eventId);
   }
 
@@ -181,27 +182,34 @@ class TweetAnnotationTable extends React.Component {
 
   tweetFilteredFetch = (query) => {
     return firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-      const queryParams = Object.keys(this.props.filter).reduce((acc, key) => {
-        if (!this.props.filter[key] || key === "eventName") {
-          // Don't include the eventName key value pair and any keys with null values
-          return acc;
-        }
+      const predicates = this.props.filter.tweetConstraints;
 
-        // Generate query params string
-        if (acc.length > 0) {
-          return `${acc}&${key}=${this.props.filter[key].toString().replace(' ', '+')}`;
-        }
-        else {
-          return `${key}=${this.props.filter[key].toString().replace(' ', '+')}`;
-        }
-      }, "");
+      // Create POST request body
+      const reqBody = {}
+      if (predicates.length > 0) {
+        reqBody["predicates"] = predicates;
+      }
+      if (this.props.filter.startDate) {
+        reqBody["startDate"] = this.props.filter.startDate;
+      }
+      if (this.props.filter.endDate) {
+        reqBody["endDate"] = this.props.filter.endDate;
+      }
+      if (this.props.filter.hashtags) {
+        reqBody["hashtags"] = this.props.filter.hashtags;
+      }
+      if (this.props.filter.language) {
+        reqBody["language"] = this.props.filter.language;
+      }
 
-      return fetch(`http://localhost:8080/filtering/${this.props.eventId}?${queryParams}&page=${query.page + 1}&count=${query.pageSize}`, // TODO: Are page and count configurable?
+      return fetch(`http://localhost:8080/filtering/${this.props.eventId}?page=${query.page + 1}&count=${query.pageSize}`,
         {
+          method: 'POST',
           headers: {
             "content-type": "application/json",
-            Authorization: `Bearer ${idToken}`
-          }
+            "Authorization": `Bearer ${idToken}`
+          },
+          body: JSON.stringify(reqBody)
         }
       )
     });
@@ -212,7 +220,6 @@ class TweetAnnotationTable extends React.Component {
     const eventId = this.props.eventId;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
-
     // Grab the start and end times of from the event
     const eventInfo = this.props.events.reduce((event, curEvent) => {
       if (curEvent.normalized_name === eventId) {
@@ -360,29 +367,55 @@ TweetAnnotationTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  events: state.eventsReducer.events,
-  annotations: state.annotationReducer.annotations,
-  tweets: state.filterReducer.tweets,
-  page: state.filterReducer.page,
-  totalCount: state.filterReducer.totalCount,
-  submit: state.filterReducer.submit,
-  filterSet: state.filterReducer.filterSet,
-  filter: {
-    startDate: state.filterReducer.startDate,
-    endDate: state.filterReducer.endDate,
-    allWords: state.filterReducer.allWords,
-    anyWords: state.filterReducer.anyWords,
-    phrase: state.filterReducer.phrase,
-    notWords: state.filterReducer.notWords,
-    hashtags: state.filterReducer.hashtags,
-    language: state.filterReducer.language,
+const mapStateToProps = state => {
+  const { predicates, expressions } = state.filterReducer
+
+  // Make into array of predicates with expression objects loaded in (removing list of ids that are only needed within redux state)
+  // And remove any predicates with empty expression objects
+  const tweetConstraints = predicates.allIds.reduce((acc, predicateId) => {
+    if (predicates.byId[predicateId].expressions.length == 0) {
+      return acc
+    }
+
+    const predicate = { ...predicates.byId[predicateId] }
+    delete predicate.id
+
+    const expressionsCleaned = predicates.byId[predicateId].expressions.map((expressionId) => {
+      const expression = { ...expressions.byId[expressionId] }
+      delete expression.id
+      return expression
+    })
+
+    acc.push({
+      ...predicate,
+      expressions: expressionsCleaned
+    })
+
+    return acc
+  }, [])
+
+  return {
+    events: state.eventsReducer.events,
+    annotations: state.annotationReducer.annotations,
+    tweets: state.filterReducer.tweets,
+    page: state.filterReducer.page,
+    totalCount: state.filterReducer.totalCount,
+    submit: state.filterReducer.submit,
+    filterSet: state.filterReducer.filterSet,
+    filter: {
+      tweetConstraints,
+      startDate: state.filterReducer.startDate,
+      endDate: state.filterReducer.endDate,
+      hashtags: state.filterReducer.hashtags,
+      language: state.filterReducer.language
+    }
   }
-})
+}
 const mapDispatchToProps = {
   fetchTagsByEvent,
   addAnnotation,
   setFilter,
+  clearFilter,
   clearFilterSubmit,
   restorePrevFilter
 }

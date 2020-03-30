@@ -9,10 +9,10 @@ import { connect } from 'react-redux';
 import { styles } from "./styles";
 import { withStyles } from '@material-ui/core/styles';
 import ExpressionBuilder from "../ExpressionBuilder/ExpressionBuilder"
-import { setPredicates } from "../../../../actions/filterActions";
+import { addPredicate, deletePredicate, toggleIsOrPredicate } from "../../../../actions/filterActions";
 
 const defaultPredicate = {
-    checked: false,
+    isOr: false,
     expressions: []
 }
 
@@ -24,56 +24,38 @@ class PredicateBuilder extends Component {
         }
     }
 
-    addNewPredicate = () => {
-        this.props.setPredicates([...this.props.panelData, Object.assign({}, defaultPredicate)]);
-    }
-
-    deletePredicate = (index) => () => {
-        this.props.setPredicates(this.props.panelData.reduce((acc, cur, i) => {
-            if (i !== index) {
-                acc.push(cur);
-            }
-            return acc;
-        }, []));
-    }
-
-    handlePanelClick = index => (e, expanded) => {
+    handlePanelClick = id => (e, expanded) => {
         if (e.target.tagName === "INPUT") {
             // Clicked on AND/OR toggle
-            this.props.setPredicates(this.props.panelData.map((data, i) => {
-                if (i === index) {
-                    data.checked = e.target.checked
-                }
-                return data;
-            }));
+            this.props.toggleIsOrPredicate(id);
         }
         else {
             this.setState({
-                expanded: expanded ? `panel${index}` : false
+                expanded: expanded ? `panel${id}` : false
             })
         }
 
     }
 
-    renderDeleteIcon = (i) => {
+    renderDeleteIcon = (id) => {
         return (
             <Grid item xs={1} className={this.props.classes.predicateDeleteContainer}>
-                <IconButton onClick={this.deletePredicate(i)}>
+                <IconButton onClick={() => this.props.deletePredicate(id)}>
                     <DeleteIcon />
                 </IconButton>
             </Grid>
         )
     }
 
-    renderSwitch = (i, checked) => {
-        if (i > 0) {
+    renderSwitch = (index, checked) => {
+        if (index > 0) {
             return (
                 <Grid item xs={11}>
                     AND
                     <Switch
                         checked={checked}
                         color="default"
-                        value={`checked${i}`}
+                        value={`checked${index}`}
                     />
                     OR
                 </Grid>
@@ -85,14 +67,14 @@ class PredicateBuilder extends Component {
         if (expressions && expressions.length > 0) {
             return (
                 <Grid container className={this.props.classes.expressionTextContainer} spacing={8}>
-                    {expressions.map(({ checked, selectValue, text }, i) => {
+                    {expressions.map(({ isOr, selectValue, text }, i) => {
                         return (
                             <React.Fragment key={`expressiontext-${i}`}>
                                 <Grid item xs={1}>
-                                    {i > 0 ? <Chip label={(checked ? "OR" : "AND")} /> : ""}
+                                    {i > 0 ? <Chip label={(isOr ? "OR" : "AND")} /> : ""}
                                 </Grid>
                                 <Grid item xs={11}>
-                                    <Chip label={`${selectValue}: ${text}`} />
+                                    <Chip className={this.props.classes.expressionTextChip} label={`${this.props.textFilter[selectValue][0]}: ${text}`} />
                                 </Grid>
                             </React.Fragment>
                         )
@@ -108,25 +90,25 @@ class PredicateBuilder extends Component {
     }
 
     renderPanels = () => {
-        return this.props.panelData.map((data, i) => (
-            <Grid item xs={12} key={`panelData${i}`}>
-                <ExpansionPanel expanded={this.state.expanded === `panel${i}`} onChange={this.handlePanelClick(i)}>
+        return this.props.panelData.map(({ id, isOr, expressions }, index) => (
+            <Grid item xs={12} key={`panelData${id}`}>
+                <ExpansionPanel expanded={this.state.expanded === `panel${id}`} onChange={this.handlePanelClick(id)}>
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                         <Grid container>
-                            {this.renderSwitch(i, data.checked)}
+                            {this.renderSwitch(index, isOr)}
 
-                            {i > 0 ? this.renderDeleteIcon(i) : <React.Fragment />}
+                            {index > 0 ? this.renderDeleteIcon(id) : <React.Fragment />}
                             <Grid item xs={11}>
-                                {this.renderExpressionText(data.expressions, this.state.expanded === `panel${i}`, i)}
+                                {this.renderExpressionText(expressions, this.state.expanded === `panel${id}`, id)}
                             </Grid>
-                            {i === 0 ? this.renderDeleteIcon(i) : <React.Fragment />}
+                            {index === 0 ? this.renderDeleteIcon(id) : <React.Fragment />}
 
                         </Grid>
 
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
 
-                        <ExpressionBuilder expressionData={this.props.panelData[i].expressions} predicateParentIdx={i} />
+                        <ExpressionBuilder expressionData={expressions} predicateParentId={id} textFilter={this.props.textFilter} />
 
                     </ExpansionPanelDetails>
                 </ExpansionPanel >
@@ -138,7 +120,7 @@ class PredicateBuilder extends Component {
         return (
             <Grid item xs={12}>
                 <Card>
-                    <Button variant="contained" fullWidth onClick={this.addNewPredicate}>
+                    <Button variant="contained" fullWidth onClick={() => this.props.addPredicate()}>
                         <AddIcon />
                     </Button>
                 </Card>
@@ -160,13 +142,26 @@ class PredicateBuilder extends Component {
 
 PredicateBuilder.propTypes = {
     classes: PropTypes.object.isRequired,
+    textFilter: PropTypes.object.isRequired,
 }
 
-const mapStateToProps = state => ({
-    panelData: state.filterReducer.tweetConstraints
-});
+const mapStateToProps = state => {
+    const { predicates, expressions } = state.filterReducer
+    const panelData = predicates.allIds.map((predicateId) => {
+        return {
+            ...predicates.byId[predicateId],
+            expressions: predicates.byId[predicateId].expressions.map((expressionId) => expressions.byId[expressionId])
+        };
+    })
+
+    return {
+        panelData
+    }
+}
 
 const mapDispatchToProps = {
-    setPredicates,
+    addPredicate,
+    toggleIsOrPredicate,
+    deletePredicate,
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PredicateBuilder));

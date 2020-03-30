@@ -13,30 +13,16 @@ class FilterForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startDate: moment(props.startTimestamp),
-      endDate: moment(props.endTimestamp),
-      allWords: "",
-      anyWords: "",
-      phrase: "",
-      notWords: "",
-      hashtags: "",
-      language: ""
+      startDate: props.startDate ? moment(props.startDate) : moment(props.startTimestamp),
+      endDate: props.endDate ? moment(props.endDate) : moment(props.endTimestamp),
+      hashtags: props.hashtags,
+      language: props.language || "",
     }
   }
 
-  componentDidMount() {
-    this.setState(
-      {
-        startDate: this.props.startDate || moment(this.props.startTimestamp),
-        endDate: this.props.endDate || moment(this.props.endTimestamp),
-        allWords: this.props.allWords,
-        anyWords: this.props.anyWords,
-        phrase: this.props.phrase,
-        notWords: this.props.notWords,
-        hashtags: this.props.hashtags,
-        language: this.props.langauge || "",
-      }
-    );
+  componentWillUnmount() {
+    // User clicked out of the modal so we need to flush this state to redux
+    this.fetchFilteredTweets(false);
   }
 
   onChange = stateName => event => {
@@ -45,15 +31,19 @@ class FilterForm extends Component {
     );
   }
 
-  fetchFilteredTweets = (e) => {
-    e.preventDefault()
+  onFormSubmit = e => {
+    e.preventDefault();
+    this.fetchFilteredTweets(true);
+  }
 
+  fetchFilteredTweets = (submit) => {
     const newFilter = {
-      ...this.state,
       startDate: this.state.startDate.startOf("day").isSame(moment(this.props.startTimestamp).startOf("day")) ? null : this.state.startDate.valueOf(),
       endDate: this.state.endDate.startOf("day").isSame(moment(this.props.endTimestamp).startOf("day")) ? null : this.state.endDate.valueOf(),
+      hashtags: this.state.hashtags,
+      language: this.state.language
     }
-    this.props.setFilter(newFilter);
+    this.props.setFilter(newFilter, submit);
     this.props.closeForm();
   }
 
@@ -61,10 +51,6 @@ class FilterForm extends Component {
     this.setState({
       startDate: moment(this.props.startTimestamp),
       endDate: moment(this.props.endTimestamp),
-      allWords: "",
-      anyWords: "",
-      phrase: "",
-      notWords: "",
       hashtags: "",
       language: ""
     })
@@ -80,7 +66,7 @@ class FilterForm extends Component {
     return (
       <Card>
         <CardContent className={classes.cardContainer}>
-          <form onSubmit={this.fetchFilteredTweets} className={classes.cardContainer}>
+          <form onSubmit={this.onFormSubmit} className={classes.cardContainer}>
             <div className={classes.card}>
               <Typography variant="subtitle1" color="textPrimary" gutterBottom>
                 Search for tweets with
@@ -101,7 +87,7 @@ class FilterForm extends Component {
                     helperText={'Example: "rain,snow" → tweets that do contain either "#rain" or "#snow" (or both)'}
                     className={classes.TextField}
                     onChange={this.onChange("hashtags")}
-                    value={this.state.hashtags}
+                    value={this.state.hashtags || ""}
                     fullWidth
                     margin="dense"
                   />
@@ -180,10 +166,6 @@ class FilterForm extends Component {
 const mapStateToProps = state => ({
   startDate: state.filterReducer.startDate,
   endDate: state.filterReducer.endDate,
-  allWords: state.filterReducer.allWords,
-  anyWords: state.filterReducer.anyWords,
-  phrase: state.filterReducer.phrase,
-  notWords: state.filterReducer.notWords,
   hashtags: state.filterReducer.hashtags,
   language: state.filterReducer.language,
   error: state.filterReducer.error

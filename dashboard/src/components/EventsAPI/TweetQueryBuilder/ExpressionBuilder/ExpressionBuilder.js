@@ -1,10 +1,3 @@
-/*
-TODO: 
-    Things to consider:
-        What happens when you delete all expressions? Should the predicate disappear too? Should it delete when the macro is unselected?
-    Bug:
-        When we delete it seems to flip between expanded and closed...
-*/
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { Grid, Switch, Select, Card, CardContent, Button, MenuItem, TextField, IconButton } from "@material-ui/core";
@@ -13,66 +6,19 @@ import AddIcon from '@material-ui/icons/Add';
 import { connect } from 'react-redux';
 import { styles } from "./styles";
 import { withStyles } from '@material-ui/core/styles';
-import { setExpressions } from "../../../../actions/filterActions";
-
-const TextFilterToHelpText = {
-    "All of these words": 'Example: "storm,surge" → tweets that contain both "storm" and "surge"',
-    "Any of these words": 'Example: "hurricane,flood" → tweets that contain either "hurricane" or "flood" (or both)',
-    "This exact phrase": 'Example: "funnel cloud" → tweets that contain this exact phrase "funnel cloud"',
-    "None of these words": 'Example: "cats,dogs" → tweets that do not contain "cats" and do not contain "dogs"',
-}
-
-const defaultExpression = {
-    checked: true,
-    selectValue: "All of these words",
-    text: ""
-}
+import { addExpression, toggleIsOrExpression, setExpression, deleteExpression } from "../../../../actions/filterActions";
 
 class ExpressionBuilder extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            expressionData: [Object.assign({}, defaultExpression)]
-        }
+    handleTextFieldChange = (expression, isPhrase) => (e) => {
+        const newText = isPhrase ? e.target.value : e.target.value.replace(" ", ",");
+        this.props.setExpression(expression.id, { ...expression, text: newText })
     }
 
-    addNewExpression = () => {
-        const newExpressions = [...this.props.expressionData, Object.assign({}, defaultExpression)]
-        this.props.setExpressions(newExpressions, this.props.predicateParentIdx);
+    handleSelect = (expression) => (e) => {
+        this.props.setExpression(expression.id, { ...expression, selectValue: e.target.value, text: "" })
     }
 
-    deleteExpression = (index) => () => {
-        const newExpressions = this.props.expressionData.reduce((acc, cur, i) => {
-            if (i !== index) {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-        this.props.setExpressions(newExpressions, this.props.predicateParentIdx);
-    }
-
-    handleTextFieldChange = (index, isPhrase) => (e) => {
-        const newExpressions = this.props.expressionData.map((data, i) => {
-            if (i === index) {
-                data.text = isPhrase ? e.target.value : e.target.value.replace(" ", ",");
-            }
-            return data
-        });
-        this.props.setExpressions(newExpressions, this.props.predicateParentIdx);
-    }
-
-    handleSelect = (index) => (e) => {
-        const newExpressions = this.props.expressionData.map((data, i) => {
-            if (i === index) {
-                data.selectValue = e.target.value;
-                data.text = "";
-            }
-            return data
-        });
-        this.props.setExpressions(newExpressions, this.props.predicateParentIdx);
-    }
-
-    renderSwitch = (index, checked) => {
+    renderSwitch = (index, id, checked) => {
         if (index > 0) {
             return (
                 <Grid item xs={12}>
@@ -81,15 +27,7 @@ class ExpressionBuilder extends Component {
                         checked={checked}
                         color="default"
                         value={`checked${index}`}
-                        onClick={(e) => {
-                            const newExpressions = this.props.expressionData.map((data, i) => {
-                                if (i === index) {
-                                    data.checked = e.target.checked;
-                                }
-                                return data
-                            });
-                            this.props.setExpressions(newExpressions, this.props.predicateParentIdx);
-                        }}
+                        onClick={() => this.props.toggleIsOrExpression(id)}
                     />
                     OR
                 </Grid>
@@ -106,7 +44,7 @@ class ExpressionBuilder extends Component {
                     {/* Can do something fancy to show that this is building a predicate... */}
                 </Grid>
                 <Grid item xs={11}>
-                    {this.renderSwitch(i, data.checked)}
+                    {this.renderSwitch(i, data.id, data.isOr)}
 
                     <Grid item xs={12}>
                         <Card>
@@ -115,15 +53,15 @@ class ExpressionBuilder extends Component {
                                     <Grid item xs={3}>
                                         <Select
                                             value={data.selectValue}
-                                            onChange={this.handleSelect(i)}
+                                            onChange={this.handleSelect(data)}
                                             inputProps={{
                                                 name: "expression",
                                                 id: `expression-select${i}`
                                             }}
                                             fullWidth
                                         >
-                                            {Object.keys(TextFilterToHelpText).map((key) => {
-                                                return <MenuItem key={`${key}-${this.props.predicateParentIdx}-${i}`} value={key}>{key}</MenuItem>
+                                            {Object.keys(this.props.textFilter).map((key) => {
+                                                return <MenuItem key={`${key}-${this.props.predicateParentIdx}-${i}`} value={key}>{this.props.textFilter[key][0]}</MenuItem>
                                             })}
                                         </Select>
                                     </Grid>
@@ -132,8 +70,8 @@ class ExpressionBuilder extends Component {
                                         <TextField
                                             variant="filled"
                                             id={`${data.selectValue}${i}`}
-                                            helperText={TextFilterToHelpText[data.selectValue]}
-                                            onChange={this.handleTextFieldChange(i, data.selectValue === "This exact phrase")}
+                                            helperText={this.props.textFilter[data.selectValue][1]}
+                                            onChange={this.handleTextFieldChange(data, data.selectValue === "PHRASE")}
                                             value={data.text}
                                             fullWidth
                                             margin="dense"
@@ -141,7 +79,7 @@ class ExpressionBuilder extends Component {
                                     </Grid>
 
                                     <Grid item xs={1}>
-                                        <IconButton key="TESTING" onClick={this.deleteExpression(i)}>
+                                        <IconButton key={`expression-delete-${i}`} onClick={() => this.props.deleteExpression(this.props.predicateParentId, data.id)}>
                                             <DeleteIcon />
                                         </IconButton>
                                     </Grid>
@@ -161,7 +99,7 @@ class ExpressionBuilder extends Component {
                 <Grid item xs={1} />
                 <Grid item xs={11}>
                     <Card>
-                        <Button variant="contained" fullWidth onClick={this.addNewExpression}>
+                        <Button variant="contained" fullWidth onClick={() => this.props.addExpression(this.props.predicateParentId)}>
                             <AddIcon />
                         </Button>
                     </Card>
@@ -172,7 +110,6 @@ class ExpressionBuilder extends Component {
 
     render() {
         const { classes } = this.props;
-
         return (
             <Grid container justify="center" spacing={16}>
                 {this.renderExpressionList()}
@@ -184,12 +121,16 @@ class ExpressionBuilder extends Component {
 
 ExpressionBuilder.propTypes = {
     classes: PropTypes.object.isRequired,
+    textFilter: PropTypes.object.isRequired,
 }
 
 
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = {
-    setExpressions
+    addExpression,
+    toggleIsOrExpression,
+    setExpression,
+    deleteExpression
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ExpressionBuilder));

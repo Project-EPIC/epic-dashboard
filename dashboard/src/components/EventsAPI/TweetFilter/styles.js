@@ -1,6 +1,7 @@
 export const styles = theme => ({
   cardContainer: {
     height: "100%",
+    padding: "10px 5px 10px 10px",
     width: "100%",
     minWidth: 600,
   },
