@@ -202,7 +202,7 @@ class TweetAnnotationTable extends React.Component {
         reqBody["language"] = this.props.filter.language;
       }
 
-      return fetch(`http://localhost:8080/filtering/${this.props.eventId}?page=${query.page + 1}&count=${query.pageSize}`,
+      return fetch(`https://epicapi.gerard.space/filtering/${this.props.eventId}?page=${query.page + 1}&count=${query.pageSize}`,
         {
           method: 'POST',
           headers: {

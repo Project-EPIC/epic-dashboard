@@ -60,7 +60,7 @@ export default function (state = initialState, action) {
                     hashtags: state.hashtags,
                     language: state.language
                 },
-                filterSet: (Object.keys(filter).length && ("hashtags" in filter || "language" in filter)) || (state.predicates.allIds.length > 0 && state.expressions.allIds.length)
+                filterSet: (Object.keys(filter).length && ("hashtags" in filter || "language" in filter)) || (state.predicates.allIds.length > 0 && state.expressions.allIds.length) || state.startDate || state.endDate
             }
         }
 
@@ -202,7 +202,7 @@ export default function (state = initialState, action) {
         case FILTER_RESET: {
             return {
                 ...initialState,
-                submit: true,
+                submit: action.payload,
             }
         }
 

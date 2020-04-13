@@ -8,6 +8,7 @@ export const setFilter = (newFilter, submit) => dispatch => {
       // Remove any keys with values that are empty strings or null
       return { ...acc, [key]: newFilter[key] }
     }
+    
     return acc;
   }, {})
 
@@ -73,9 +74,10 @@ export const deleteExpression = (parentId, id) => dispatch => {
   })
 }
 
-export const clearFilter = () => dispatch => {
+export const clearFilter = (submit=true) => dispatch => {
   dispatch({
-    type: FILTER_RESET
+    type: FILTER_RESET,
+    payload: submit
   })
 }
 

@@ -3,7 +3,7 @@ import { Grid, Button, TextField, Typography, Card, CardContent, Select, FormCon
 import { connect } from 'react-redux';
 import { styles } from "./styles";
 import { withStyles } from '@material-ui/core/styles';
-import { setFilter } from "../../../actions/filterActions";
+import { setFilter, clearFilter } from "../../../actions/filterActions";
 import { languages } from "./twitterLanguages";
 import DateRangePicker from "../../common-components/DateRangePicker/DateRangePicker";
 import TweetQueryBuilder from "../TweetQueryBuilder/TweetQueryBuilder";
@@ -53,7 +53,8 @@ class FilterForm extends Component {
       endDate: moment(this.props.endTimestamp),
       hashtags: "",
       language: ""
-    })
+    });
+    this.props.clearFilter(false);
   }
 
   handleSelect = (e) => {
@@ -171,5 +172,5 @@ const mapStateToProps = state => ({
   error: state.filterReducer.error
 });
 
-const mapDispatchToProps = { setFilter }
+const mapDispatchToProps = { setFilter, clearFilter }
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(FilterForm));
