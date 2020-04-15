@@ -23,9 +23,8 @@ import TweetsChart from '../TweetsChart/TweetsChart';
 class EventDashboard extends React.Component {
 
     componentDidMount() {
-        this.props.fetchEvent(this.props.eventId);
+        this.props.fetchEvent(this.props.eventId, this.props.eventType);
         this.props.fetchCounts(this.props.eventId);
-
     }
 
     renderIconStatus(status) {

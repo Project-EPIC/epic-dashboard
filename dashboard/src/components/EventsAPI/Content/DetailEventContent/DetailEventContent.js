@@ -58,13 +58,7 @@ class DetailEventContent extends Component {
   componentDidMount() {
     this.props.fetchEvent(this.props.match.params.eventId, this.props.eventType);
   }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.eventType !== this.props.eventType) {
-      this.props.fetchEvents(this.props.eventType);
-    }
-  }
-
+  
   handleChange = (event, value) => {
     this.setState({ value });
   };
@@ -90,7 +84,7 @@ class DetailEventContent extends Component {
 
     return (
       <div className={classes.Main}>
-        <Header onDrawerToggle={this.props.onDrawerToggle} title={title} renderTabs={renderTabs} backLink="/events/"/>
+        <Header onDrawerToggle={this.props.onDrawerToggle} title={title} renderTabs={renderTabs} backLink={`/events/${eventType}`}/>
 
         <main className={classes.mainContent}>
         {navigation(event, eventType, eventsId).map(

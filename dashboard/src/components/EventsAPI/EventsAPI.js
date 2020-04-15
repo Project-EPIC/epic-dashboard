@@ -15,6 +15,12 @@ export const styles = theme => ({
 
 
 class EventsAPI extends Component {
+  async componentDidMount() {
+    if (!this.props.eventType) {
+      await this.props.setEventType(this.props.match.params.eventType)
+    }
+  }
+
   render() {
     const title = "Events Collection";
     const { classes, onDrawerToggle, eventType } = this.props;

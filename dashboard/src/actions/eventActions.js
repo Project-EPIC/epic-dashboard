@@ -130,10 +130,7 @@ export const fetchEvent = (normalized_name, eventType="keywords") => dispatch =>
         }).then(res => res.json())
             .then(updatedEvent => dispatch({
                 type: UPDATED_EVENT,
-                payload: {
-                    eventType,
-                    event: updatedEvent,
-                }
+                payload: updatedEvent
             })
         );
     });

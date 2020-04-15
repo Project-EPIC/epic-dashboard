@@ -2,7 +2,7 @@ import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, FETCH_COUNTS, EVENT_CREATION_ER
 
 const initialState = {
     events: [],
-    eventType: "keywords",
+    eventType: "",
     counts: {},
     error: "",
 };
