@@ -1,10 +1,10 @@
-import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, FETCH_COUNTS, EVENT_CREATION_ERROR } from './types';
+import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, FETCH_COUNTS, EVENT_CREATION_ERROR, SET_EVENT_TYPE } from './types';
 import firebase from "firebase";
 import fetch from 'cross-fetch';
 
-export const fetchEvents = () => dispatch => {
+export const fetchEvents = (eventType="keywords") => dispatch => {
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch('https://epicapi.gerard.space/events/', {
+        fetch(`https://epicapi.gerard.space/events/?eventType=${eventType}`, {
             headers: {
                 'Authorization': `Bearer ${idToken}`,
             }
@@ -72,13 +72,13 @@ export const clearErrors = () => dispatch => {
     })
 }
 
-export const createBigQueryTable = (normalized_name) => dispatch => {
+export const createBigQueryTable = (normalized_name, eventType="keywords") => dispatch => {
     dispatch({
         type: UPDATED_EVENT,
         payload: {normalized_name:normalized_name, big_query_table:"CREATING"}
     })
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch(`https://epicapi.gerard.space/events/big_query/${normalized_name}/`, {
+        fetch(`https://epicapi.gerard.space/events/big_query/${normalized_name}/?eventType=${eventType}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json',
@@ -96,13 +96,13 @@ export const createBigQueryTable = (normalized_name) => dispatch => {
     });
 }
 
-export const modifyEvents = (status, normalized_name) => dispatch => {
+export const modifyEvents = (status, normalized_name, eventType="keywords") => dispatch => {
     dispatch({
         type: UPDATED_EVENT,
         payload: {status:status,normalized_name:normalized_name}
     });
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch(`https://epicapi.gerard.space/events/${normalized_name}/${status}`, {
+        fetch(`https://epicapi.gerard.space/events/${normalized_name}/${status}?eventType=${eventType}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json',
@@ -118,10 +118,10 @@ export const modifyEvents = (status, normalized_name) => dispatch => {
 
 };
 
-export const fetchEvent = (normalized_name) => dispatch => {
+export const fetchEvent = (normalized_name, eventType="keywords") => dispatch => {
     
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch(`https://epicapi.gerard.space/events/${normalized_name}/`, {
+        fetch(`https://epicapi.gerard.space/events/${normalized_name}/?eventType=${eventType}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -130,7 +130,10 @@ export const fetchEvent = (normalized_name) => dispatch => {
         }).then(res => res.json())
             .then(updatedEvent => dispatch({
                 type: UPDATED_EVENT,
-                payload: updatedEvent
+                payload: {
+                    eventType,
+                    event: updatedEvent,
+                }
             })
         );
     });
@@ -156,6 +159,14 @@ export const fetchCounts=(eventId)=>dispatch => {
             console.log('There has been a problem with your fetch operation: ', error.message);
         });    
     });
+}
+
+
+export const setEventType = (eventType) => dispatch => {
+    dispatch({
+        type: SET_EVENT_TYPE,
+        payload: eventType
+    })
 }
 
 

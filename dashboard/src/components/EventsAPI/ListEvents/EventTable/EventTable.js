@@ -12,7 +12,7 @@ class EventTable extends React.Component {
 
  
   render() {
-    const { history, title, data } = this.props;    
+    const { history, title, data, eventType } = this.props;    
 
     return   (      
 
@@ -28,21 +28,21 @@ class EventTable extends React.Component {
             data={data}
             title={title}
             onRowClick = {(event, rowData) => {
-              history.push(`/events/${rowData.normalized_name}/`)
+              history.push(`/events/${eventType}/${rowData.normalized_name}/`)
             }}
             actions={[
               rowData=>({
                   icon: rowData.status === "ACTIVE"? 'pause':'play_arrow',
                   tooltip: rowData.status === "ACTIVE"? 'Stop collection':'Restart collection',
                   onClick: (event, rowData) => {
-                    this.props.modifyEvents(rowData.status === "ACTIVE" ? "NOT_ACTIVE" : "ACTIVE",rowData.normalized_name)
+                    this.props.modifyEvents(rowData.status === "ACTIVE" ? "NOT_ACTIVE" : "ACTIVE", rowData.normalized_name, this.props.eventType)
                   },
               }),
               {
                 icon:"search",
                 tooltip:"Dashboard, tweets, mentions...",
                 onClick: (event, rowData) => {
-                  history.push(`/events/${rowData.normalized_name}/`)
+                  history.push(`/events/${eventType}/${rowData.normalized_name}/`)
                 },
               }
             ]
@@ -58,9 +58,14 @@ EventTable.propTypes = {
   data: PropTypes.array.isRequired,
 };
 
+const mapStateToProps = state => ({
+  eventType: state.eventsReducer.eventType,
+});
+
+
 const mapDispatchToProps = {
   modifyEvents: modifyEvents,
 }
 
 
-export default connect(null, mapDispatchToProps)(withRouter(EventTable));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EventTable));
