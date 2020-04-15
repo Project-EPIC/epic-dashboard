@@ -19,11 +19,9 @@ class EventsAPI extends Component {
     const title = "Events Collection";
     const { classes, onDrawerToggle, eventType } = this.props;
     return (
-      // eventType === "keywords" ? // Only render the page once the redux state has updated to match this page
         <div>
           <Route exact path={`/events/${eventType}`} render={(props) => (<ListEventsContent {...props} title={title} classes={classes} onDrawerToggle={onDrawerToggle} />)} />
           <Route path="/events/:eventType/:eventId/" render={(props) => (<DetailEventContent {...props} title={title} classes={classes} onDrawerToggle={onDrawerToggle} />)} />
-        {/* </div> : */}
         </div>
     );
   }
