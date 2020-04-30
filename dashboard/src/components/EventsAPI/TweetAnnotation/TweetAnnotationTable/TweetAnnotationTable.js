@@ -148,19 +148,25 @@ class TweetAnnotationTable extends React.Component {
         if (response.status === 200) {
           return response.json();
         } else {
-          throw new Error(response.statusText);
+          throw new Error({status: response.status});
         }
       })
-        .then(result => {
-          const currentData = { data: result.tweets, page: result.meta && result.meta.page - 1, totalCount: result.meta && result.meta.total_count };
-          this.setState({ currentData });
-          resolve(currentData);
-        })
-        .catch(e => {
+      .then(result => {
+        const currentData = { data: result.tweets, page: result.meta && result.meta.page - 1, totalCount: result.meta && result.meta.total_count };
+        this.setState({ currentData });
+        resolve(currentData);
+      })
+      .catch(e => {
+        if (e.status) {
           this.setState({ fetchErrorMsg: fetchErrorText });
           this.props.restorePrevFilter();
-          resolve(this.state.currentData);
-        });
+        }
+        else {
+          this.setState({ fetchErrorMsg: "Query is taking too long to finish. Either try again in a few minutes to see if the query finished and the results were cached or run the query in BigQuery." });
+          this.props.restorePrevFilter();
+        }
+        resolve(this.state.currentData);
+      });
     })
   }
 
@@ -202,16 +208,22 @@ class TweetAnnotationTable extends React.Component {
         reqBody["language"] = this.props.filter.language;
       }
 
-      return fetch(`https://epicapi.gerard.space/filtering/${this.props.eventId}?page=${query.page + 1}&count=${query.pageSize}`,
-        {
-          method: 'POST',
-          headers: {
-            "content-type": "application/json",
-            "Authorization": `Bearer ${idToken}`
-          },
-          body: JSON.stringify(reqBody)
-        }
-      )
+      const req = {
+        method: 'POST',
+        headers: {
+          "content-type": "application/json",
+          "Authorization": `Bearer ${idToken}`
+        },
+        body: JSON.stringify(reqBody)
+      };
+
+      const endpoint = `https://epicapi.gerard.space/filtering/${this.props.eventId}?page=${query.page + 1}&count=${query.pageSize}`;
+
+      return fetch(endpoint, req)
+        .catch(_ => {
+          // If any error occurs, retry request one more time
+          return fetch(endpoint, req);
+        })
     });
   }
 
