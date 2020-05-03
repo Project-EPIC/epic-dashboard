@@ -7,7 +7,8 @@ const sidebarRoutes = [
     {
       id: "Epic Collect APIs",
       children: [
-        { id: "Events", icon: <CollectionsBookmarkIcon />, targetUrl: "/events/"}, 
+        { id: "Keyword Events", icon: <CollectionsBookmarkIcon />, targetUrl: "/events/keywords/"},
+        { id: "Follow Events", icon: <CollectionsBookmarkIcon />, targetUrl: "/events/follows/"} 
       ]
     },
     {

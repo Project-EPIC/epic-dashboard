@@ -10,11 +10,17 @@ import EventTable from './EventTable/EventTable';
 
 
 class ListEvents extends React.Component {
+  
 
   componentDidMount() {    
-    this.props.fetchEvents();    
+    this.props.fetchEvents(this.props.eventType);    
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.eventType !== this.props.eventType) {
+      this.props.fetchEvents(this.props.eventType);
+    }
+  }
  
   render() {
     const rows = this.props.events;
@@ -49,10 +55,12 @@ class ListEvents extends React.Component {
 
 ListEvents.propTypes = {
   classes: PropTypes.object.isRequired,
+  eventType: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({
   events: state.eventsReducer.events,
+  eventType: state.eventsReducer.eventType
 });
 
 const mapDispatchToProps = {

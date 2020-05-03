@@ -11,6 +11,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import sidebarRoutes from "../../../routes/sidebar_routes";
 import { styles } from "./styles";
 import { NavLink } from 'react-router-dom'
+import { setEventType } from "../../../actions/eventActions";
+import { connect } from 'react-redux';
 
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import {
@@ -20,7 +22,7 @@ import firebase from "firebase";
 
 class Sidebar extends Component {
   render() {
-    const { classes, ...other } = this.props;
+    const { classes, setEventType, ...other } = this.props;
 
     return (
       <SwipeableDrawer {...other}>
@@ -56,7 +58,11 @@ class Sidebar extends Component {
                     classes.item,
                     classes.itemActionable,
                   )}
-                  onClick={()=>other.onClose()}
+                  onClick={async ()=> {
+                    const eventType = childId.includes("Follow") ? "follows" : "keywords"
+                    await setEventType(eventType)
+                    return other.onClose()
+                  }}
                   activeClassName={classes.itemActiveItem}
                 >
                   <ListItemIcon>{icon}</ListItemIcon>
@@ -114,4 +120,8 @@ Sidebar.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Sidebar);
+const mapDispatchToProps = {
+  setEventType: setEventType,
+}
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(Sidebar));

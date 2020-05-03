@@ -15,9 +15,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-
-
-
+const SearchHelperText = {
+  keywords: ["keywords", "Keywords"],
+  follows: ["users", "User Ids"]
+}
 
 class CreateEvent extends Component {
   constructor() {
@@ -88,6 +89,7 @@ class CreateEvent extends Component {
     var keywords = this.state.tags
     const newEvent = {
       name: this.state.name,
+      match_key: this.props.eventType,
       keywords: keywords,
       description: this.state.description
     }
@@ -138,8 +140,9 @@ class CreateEvent extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, eventType } = this.props;
     const creationError = this.props.error;
+    const [searchHelper, searchDesc] = eventType in SearchHelperText ? SearchHelperText[eventType] : (undefined, undefined)
 
     return (
 
@@ -197,11 +200,11 @@ class CreateEvent extends Component {
                   value={this.state.tags}
                   onAdd={(chip) => this.handleAddChip(chip)}
                   onDelete={(chip, index) => this.handleDeleteChip(chip, index)}
-                  label="Search keywords"
+                  label={`Search ${searchHelper}`}
                   disabled={this.state.waiting}
-                  helperText={this.state.tagsError !== "" ? this.state.tagsError : "Keywords to use to collect tweets."}
+                  helperText={this.state.tagsError !== "" ? this.state.tagsError : `${searchDesc} to use to collect tweets.`}
                   error={this.state.tagsError !== ""||creationError!== ""}
-                  placeholder={"Enter hashtags followed by an Enter"}
+                  placeholder={"Enter values followed by an Enter"}
                   fullWidth
                   newChipKeyCodes={[13, 188]}
                   margin="dense"
@@ -244,7 +247,8 @@ class CreateEvent extends Component {
 
 const mapStateToProps = state => ({
   error: state.eventsReducer.error,
-  events: state.eventsReducer.events
+  events: state.eventsReducer.events,
+  eventType: state.eventsReducer.eventType
 });
 
 export default connect(mapStateToProps, { createEvent: createEvent, clearErrors:clearErrors })(withStyles(styles)(CreateEvent));
