@@ -1,7 +1,8 @@
-import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, FETCH_COUNTS, EVENT_CREATION_ERROR } from '../actions/types';
+import { NEW_EVENT, FETCH_EVENTS, UPDATED_EVENT, FETCH_COUNTS, EVENT_CREATION_ERROR, SET_EVENT_TYPE } from '../actions/types';
 
 const initialState = {
     events: [],
+    eventType: "",
     counts: {},
     error: "",
 };
@@ -48,6 +49,11 @@ export default function(state = initialState, action) {
                     ...state.counts,
                     [action.payload.meta.event_name] :action.payload.tweets
                 },
+            }
+        case SET_EVENT_TYPE:
+            return {
+                ...state,
+                eventType: action.payload
             }
 
         default:

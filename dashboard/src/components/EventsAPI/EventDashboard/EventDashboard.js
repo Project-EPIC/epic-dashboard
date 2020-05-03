@@ -23,9 +23,8 @@ import TweetsChart from '../TweetsChart/TweetsChart';
 class EventDashboard extends React.Component {
 
     componentDidMount() {
-        this.props.fetchEvent(this.props.eventId);
+        this.props.fetchEvent(this.props.eventId, this.props.eventType);
         this.props.fetchCounts(this.props.eventId);
-
     }
 
     renderIconStatus(status) {
@@ -57,7 +56,7 @@ class EventDashboard extends React.Component {
     renderBigQuery(event, classes) {
         
         if (!event.big_query_table) {
-            return  <Button color="default" className={classes.button} onClick={() => this.props.createBigQueryTable(event.normalized_name)}>
+            return  <Button color="default" className={classes.button} onClick={() => this.props.createBigQueryTable(event.normalized_name, this.props.eventType)}>
                         Create BigQuery table
                         <CreateIcon className={classes.rightIcon} />
                     </Button>
@@ -76,7 +75,6 @@ class EventDashboard extends React.Component {
 
     render() {
         const rows = this.props.events;
-        console.log(rows)
         const classes = this.props.classes;
         const eventId = this.props.eventId;
         const event = rows.find((o) => {
@@ -105,12 +103,12 @@ class EventDashboard extends React.Component {
                                     </CardContent>
                                     <CardActions>
                                         {event.status === "ACTIVE" ?
-                                            <Button color="default" className={classes.button} onClick={() => this.props.modifyEvents("NOT_ACTIVE", event.normalized_name)}>
+                                            <Button color="default" className={classes.button} onClick={() => this.props.modifyEvents("NOT_ACTIVE", event.normalized_name, this.props.eventType)}>
                                                 Pause collection
                                         <PauseIcon className={classes.rightIcon} />
                                             </Button>
                                             :
-                                            <Button color="default" className={classes.button} onClick={() => this.props.modifyEvents("ACTIVE", event.normalized_name)}>
+                                            <Button color="default" className={classes.button} onClick={() => this.props.modifyEvents("ACTIVE", event.normalized_name, this.props.eventType)}>
                                                 Restart collection
                                         <PlayArrowIcon className={classes.rightIcon} />
                                             </Button>
@@ -237,6 +235,7 @@ EventDashboard.propTypes = {
 
 const mapStateToProps = state => ({
     events: state.eventsReducer.events,
+    eventType: state.eventsReducer.eventType,
     counts: state.eventsReducer.counts,
 });
 
