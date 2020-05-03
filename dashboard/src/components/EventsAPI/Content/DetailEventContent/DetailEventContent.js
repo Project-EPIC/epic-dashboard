@@ -38,11 +38,6 @@ const navigation = (event, eventType, eventId) => {
       url: `/events/${eventType}/${eventId}/media`,
       label: "Media",
       component: ListMedia,
-    },
-    {
-      url: `/events/${eventType}/${eventId}/filter`,
-      label: "Filter",
-      component: TweetFilterContent,
     })
   }
   return nav
