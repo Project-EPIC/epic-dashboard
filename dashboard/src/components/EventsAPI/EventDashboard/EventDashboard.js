@@ -54,13 +54,13 @@ class EventDashboard extends React.Component {
     }
 
     renderBigQuery(event, classes) {
-        
+
         if (!event.big_query_table) {
             return  <Button color="default" className={classes.button} onClick={() => this.props.createBigQueryTable(event.normalized_name, this.props.eventType)}>
                         Create BigQuery table
                         <CreateIcon className={classes.rightIcon} />
                     </Button>
-           
+
         } else if (event.big_query_table === "CREATING") {
             return  <Button color="default" className={classes.button} disabled>
                         Creating table...
@@ -81,8 +81,6 @@ class EventDashboard extends React.Component {
             return o.normalized_name === eventId;
         });
         const totalCount = (this.props.counts[eventId] && this.props.counts[eventId].map((item) => item.count).reduce((x, y) => x + y)) || 0;
-
-
 
         if (event !== undefined)
             return (
@@ -116,7 +114,7 @@ class EventDashboard extends React.Component {
                                     </CardActions>
                                 </Card>
                             </Grid>
-                           
+
                             <Grid item md={8} xs={12}>
                                 <Card className={classes.card}>
                                     <CardContent>
@@ -124,15 +122,15 @@ class EventDashboard extends React.Component {
                                             Keywords for collection
                                         </Typography>
 
-                                        
+
                                             {event.keywords.map(kw => <Chip key={kw} label={kw} className={classes.chip}/>
                                             )}
-                                        
+
                                                                                                             </CardContent>
 
                                 </Card>
                             </Grid>
-   
+
                             <Grid item md={8}xs={12} >
                                 <Paper className={classes.chartPaper}>
                                     <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -141,7 +139,7 @@ class EventDashboard extends React.Component {
                                     <TweetsChart annotateEvent={event.normalized_name} updateTimePeriod={(d) => (d)} />
                                 </Paper>
                             </Grid>
-                            
+
                             <Grid item md={4} xs={12}>
                                 <Card className={classes.card}>
                                     <CardContent>
@@ -159,14 +157,14 @@ class EventDashboard extends React.Component {
 
                                     </CardActions>
                                 </Card>
-                                
+
                             </Grid>
-                            
+
                         </Grid>
                     </Grid>
                     <Grid item md={4} xs={12} >
                     <Grid container spacing={24}>
-                    
+
                     <Grid item xs={12} >
                                 <Card className={classes.card}>
                                     <CardContent>
@@ -180,7 +178,7 @@ class EventDashboard extends React.Component {
                                         <Typography className={classes.title} color="textSecondary" gutterBottom>
                                         <i>{event.normalized_name}</i>
                                 </Typography>
-                                        
+
                                         <Typography variant="body1">
                                             {event.description}
                                         </Typography>

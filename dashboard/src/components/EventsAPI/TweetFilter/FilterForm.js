@@ -1,137 +1,176 @@
 import React, { Component } from 'react'
-// import AddIcon from '@material-ui/icons/Add';
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+import { Grid, Button, TextField, Typography, Card, CardContent, Select, FormControl, MenuItem } from "@material-ui/core";
 import { connect } from 'react-redux';
-// import Fab from '@material-ui/core/Fab';
 import { styles } from "./styles";
 import { withStyles } from '@material-ui/core/styles';
-import { Paper } from '@material-ui/core';
-import { fetchFilteredTweets, clearFilterErrors } from "../../../actions/filterActions";
+import { setFilter, clearFilter } from "../../../actions/filterActions";
+import { languages } from "./twitterLanguages";
+import DateRangePicker from "../../common-components/DateRangePicker/DateRangePicker";
+import TweetQueryBuilder from "../TweetQueryBuilder/TweetQueryBuilder";
+import moment from 'moment';
 
 class FilterForm extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      keyword: "",
-      keywordError: "",
-      waiting: false
+      startDate: props.startDate ? moment(props.startDate) : moment(props.startTimestamp),
+      endDate: props.endDate ? moment(props.endDate) : moment(props.endTimestamp),
+      hashtags: props.hashtags,
+      language: props.language || "",
     }
-    // this.resetFields = this.resetFields.bind(this)
-    this.onChange = this.onChange.bind(this);
   }
 
-  componentDidMount() {
-    this.props.clearFilterErrors();
+  componentWillUnmount() {
+    // User clicked out of the modal so we need to flush this state to redux
+    this.fetchFilteredTweets(false);
+  }
+
+  onChange = stateName => event => {
     this.setState(
-      { keyword: this.props.keyword }
+      { [stateName]: stateName === "phrase" ? event.target.value : event.target.value.replace(" ", ",") }
     );
   }
 
-  onChange = keyword => event => {
-    this.setState(
-      { keyword: event.target.value }
-    );
+  onFormSubmit = e => {
+    e.preventDefault();
+    this.fetchFilteredTweets(true);
   }
 
-  fetchFilteredTweets = (e) => {
-    e.preventDefault()
-
-    if (this.state.keyword.length===0) {
-      this.setState(
-        {
-            keywordError: this.state.keyword.length === 0 ? "Required field!" : "",
-        }
-      );
-      return;
-    }
+  fetchFilteredTweets = (submit) => {
     const newFilter = {
-      eventName: this.props.eventId,
-      keyword: this.state.keyword,
+      startDate: this.state.startDate.startOf("day").isSame(moment(this.props.startTimestamp).startOf("day")) ? null : this.state.startDate.valueOf(),
+      endDate: this.state.endDate.startOf("day").isSame(moment(this.props.endTimestamp).startOf("day")) ? null : this.state.endDate.valueOf(),
+      hashtags: this.state.hashtags,
+      language: this.state.language
     }
-    this.props.fetchFilteredTweets(newFilter)
-    this.setState({
-      waiting:true,
-    })
+    this.props.setFilter(newFilter, submit);
+    this.props.closeForm();
   }
 
-  resetFields() {
+  clearFields = () => {
     this.setState({
-      keyword: "",
-      keywordError: "",
-      waiting:false,
-    })
-    this.props.clearFilterErrors();
+      startDate: moment(this.props.startTimestamp),
+      endDate: moment(this.props.endTimestamp),
+      hashtags: "",
+      language: ""
+    });
+    this.props.clearFilter(false);
+  }
+
+  handleSelect = (e) => {
+    this.setState({ language: e.target.value });
   }
 
   render() {
     const { classes } = this.props;
-    // const keyword = this.props.keyword;
 
     return (
-      <div>
-        {/* <Paper>       */}
-        {/* <Grid container spacing={12} alignContent="flex-start"> */}
-        {/* <Grid item  xs={12}> */}
-
-        <Card className={classes.card}>
-          <CardContent>
-            <form onSubmit={this.fetchFilteredTweets}>
-              <Typography color="textPrimary" gutterBottom>
-                Add keywords to filter tweet set
+      <Card>
+        <CardContent className={classes.cardContainer}>
+          <form onSubmit={this.onFormSubmit} className={classes.cardContainer}>
+            <div className={classes.card}>
+              <Typography variant="subtitle1" color="textPrimary" gutterBottom>
+                Search for tweets with
               </Typography>
               <Grid container spacing={24}>
                 <Grid item xs={12} md={12}>
+                  <TweetQueryBuilder />
+                </Grid>
+
+
+                <Grid item xs={12} md={12}>
+
+                  {/* 'Any of these hashtags' filter */}
                   <TextField
-                    autoFocus
-                    required
-                    id="keyword"
-                    label="keyword"
-                    placeholder={this.state.keywordError}
-                    helperText={
-                      this.state.keywordError !== ""
-                        ? this.state.keywordError
-                        : "Enter keywords to filter tweets. Must not be empty."
-                    }
+                    variant="filled"
+                    id="any of these hashtags"
+                    label="Any of these hashtags"
+                    helperText={'Example: "rain,snow" → tweets that do contain either "#rain" or "#snow" (or both)'}
                     className={classes.TextField}
-                    onChange={this.onChange("keyword")}
-                    value={this.state.keyword}
-                    error={this.state.keywordError !== ""}
+                    onChange={this.onChange("hashtags")}
+                    value={this.state.hashtags || ""}
                     fullWidth
                     margin="dense"
                   />
+
                 </Grid>
+
+                {/* Language selector */}
                 <Grid item xs={12} md={12}>
-                  {/* <Button onClick={this.toggleOpen(false)} color="default">Cancel</Button> */}
-                  <Button type="submit" variant="contained" color="primary">
-                    Apply Filter
-                  </Button>
-                  <Button
-                    disabled={this.state.waiting}
-                    onClick={this.resetFields}
-                    color="default"
-                  >
-                    Cancel
-                  </Button>
+                  <Typography variant="subtitle1" color="textPrimary" gutterBottom>
+                    Language
+                  </Typography>
+                  <FormControl className={classes.languageContainer}>
+                    <Select
+                      value={this.state.language}
+                      onChange={this.handleSelect}
+                      displayEmpty
+                      inputProps={{
+                        name: "language",
+                        id: "language-select"
+                      }}
+                    >
+                      {/* https://developer.twitter.com/en/docs/twitter-for-websites/twitter-for-websites-supported-languages/overview */}
+                      <MenuItem value="">Any language</MenuItem>
+                      {Object.keys(languages).map((key) => {
+                        return <MenuItem key={key} value={languages[key]}>{key}</MenuItem>
+                      })}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                {/* Date range picker */}
+                <Grid item xs={12} md={12}>
+                  <Typography variant="subtitle1" color="textPrimary" gutterBottom>
+                    Created between
+                  </Typography>
+                  <div className={classes.dateContainer}>
+                    <DateRangePicker
+                      dateStart={moment(this.props.startTimestamp)}
+                      dateEnd={moment(this.props.endTimestamp)}
+                      dateRangeStart={this.state.startDate}
+                      dateRangeEnd={this.state.endDate}
+                      setStartDate={(startDate) => this.setState({ startDate })}
+                      setEndDate={(endDate) => this.setState({ endDate })}
+                    />
+                  </div>
                 </Grid>
               </Grid>
-            </form>
-          </CardContent>
-        </Card>
-
-        {/* </Paper> */}
-      </div>
+            </div>
+            <Grid item xs={12} md={12} className={classes.buttonContainer}>
+              <Grid container justify="flex-end">
+                <Grid item>
+                  <Button
+                    onClick={this.clearFields}
+                    color="default"
+                  >
+                    Clear
+                    </Button>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    style={{ margin: "0 0 0 7px" }}
+                  >
+                    Apply Filter
+                    </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </form>
+        </CardContent>
+      </Card>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  keyword: state.filterReducer.keyword,
-  error: state.filterReducer.error,
+  startDate: state.filterReducer.startDate,
+  endDate: state.filterReducer.endDate,
+  hashtags: state.filterReducer.hashtags,
+  language: state.filterReducer.language,
+  error: state.filterReducer.error
 });
 
-export default connect(mapStateToProps, { fetchFilteredTweets:fetchFilteredTweets, clearFilterErrors:clearFilterErrors })(withStyles(styles)(FilterForm));
+const mapDispatchToProps = { setFilter, clearFilter }
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(FilterForm));

@@ -1,56 +1,94 @@
-import { FETCH_FILTERED_TWEETS, FILTER_KEYWORD, FILTER_ERROR } from './types';
-import firebase from "firebase";
-import fetch from 'cross-fetch';
-// import axios from 'axios';
+import { FILTER_CONSTRAINT_SET, FILTER_SET, FILTER_RESET, FILTER_CLEAR_SUBMIT, FILTER_RESTORE_PREV_FILTER } from './types';
+import { FILTER_PREDICATE_ADD, FILTER_PREDICATE_ISOR, FILTER_PREDICATE_DELETE } from './types';
+import { FILTER_EXPRESSION_ADD, FILTER_EXPRESSION_ISOR, FILTER_EXPRESSION_SET, FILTER_EXPRESSION_DELETE } from './types';
 
-export const fetchFilteredTweets = (newFilter) => dispatch => {
-    if (firebase.auth().currentUser == null) {
-        throw Error("Not authed")
+export const setFilter = (newFilter, submit) => dispatch => {
+  const cleanedFilter = Object.keys(newFilter).reduce((acc, key) => {
+    if (newFilter[key]) {
+      // Remove any keys with values that are empty strings or null
+      return { ...acc, [key]: newFilter[key] }
     }
-    console.log(newFilter)
-    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(idToken => {
-        fetch(`https://epicapi.gerard.space/filtering/${newFilter.eventName}?keywords=${newFilter.keyword}&page=1&count=15`,
-          {
-            headers: {
-              "content-type": "application/json",
-              Authorization: `Bearer ${idToken}`
-            }
-          }
-        )
-          .then(res => res.json())
-          .then(result =>
-            dispatch({
-              type: FETCH_FILTERED_TWEETS,
-              payload: { keyword: newFilter.keyword, tweets: result.tweets }
-            })
-          );
-    });
+    
+    return acc;
+  }, {})
 
-    // axios({
-    //         method: 'get',
-    //         url: `http://localhost:8080/filtering/${newFilter.eventName}/${newFilter.keyword}/?page=1&count=15`,
-    //         withCredentials: true,
-    //         crossdomain: true,
-    //     headers: {
-    //         "Content-Type": 'application/json',
-    //         "Cache-Control": "no-cache",
-    //     }
-    //     }).then(function (response) {
-    //     console.log("Header With Authentication :" + response);
-    //     })
-    //     .catch(function (error) {
-    //     console.log(error);
-    //     });
+  dispatch({
+    type: FILTER_SET,
+    payload: { filter: cleanedFilter, submit},
+  })
 }
 
-// export const fetchFilterKeyword = (keyword = "") => ({
-//     type: FILTER_KEYWORD,
-//     payload: keyword
-//   });
 
-export const clearFilterErrors = () => dispatch => {
-    dispatch({
-        type: FILTER_ERROR,
-        payload: ""
-    })
+export const setConstraint = (newConstraint) => dispatch => {
+  dispatch({
+    type: FILTER_CONSTRAINT_SET,
+    payload: newConstraint,
+  })
+}
+
+export const addPredicate = () => dispatch => {
+  dispatch({
+    type: FILTER_PREDICATE_ADD
+  })
+}
+
+export const toggleIsOrPredicate = (id) => dispatch => {
+  dispatch({
+    type: FILTER_PREDICATE_ISOR,
+    payload: { predicateId: id }
+  })
+}
+
+export const deletePredicate = (id) => dispatch => {
+  dispatch({
+    type: FILTER_PREDICATE_DELETE,
+    payload: { predicateId: id }
+  })
+}
+
+export const addExpression = (parentId) => dispatch => {
+  dispatch({
+    type: FILTER_EXPRESSION_ADD,
+    payload: { parentId }
+  })
+}
+
+export const toggleIsOrExpression = (id) => dispatch => {
+  dispatch({
+    type: FILTER_EXPRESSION_ISOR,
+    payload: { expressionId: id }
+  })
+}
+
+export const setExpression = (id, expression) => dispatch => {
+  dispatch({
+    type: FILTER_EXPRESSION_SET,
+    payload: { expressionId: id, newExpression: expression }
+  })
+}
+
+export const deleteExpression = (parentId, id) => dispatch => {
+  dispatch({
+    type: FILTER_EXPRESSION_DELETE,
+    payload: { parentId, expressionId: id }
+  })
+}
+
+export const clearFilter = (submit=true) => dispatch => {
+  dispatch({
+    type: FILTER_RESET,
+    payload: submit
+  })
+}
+
+export const clearFilterSubmit = () => dispatch => {
+  dispatch({
+    type: FILTER_CLEAR_SUBMIT
+  });
+}
+
+export const restorePrevFilter = () => dispatch => {
+  dispatch({
+    type: FILTER_RESTORE_PREV_FILTER
+  });
 }

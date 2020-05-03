@@ -12,7 +12,6 @@ import { NavLink } from 'react-router-dom'
 import ListMentions from "../../ListMentions/ListMentions";
 import ListMedia from "../../ListMedia/ListMedia";
 import EventDashboard from "../../EventDashboard/EventDashboard";
-import TweetFilterContent from "../../TweetFilter/TweetFilterContent"
 
 
 const navigation = (event, eventType, eventId) => {
@@ -28,25 +27,20 @@ const navigation = (event, eventType, eventId) => {
     component: EventDashboard,
   },
 
-]
-if (event && event.status === "NOT_ACTIVE") {
-  nav.push({
-    url: `/events/${eventType}/${eventId}/mentions`,
-    label: "Mentions",
-    component: ListMentions,
-  },
-  {
-    url: `/events/${eventType}/${eventId}/media`,
-    label: "Media",
-    component: ListMedia,
-  },
-  {
-    url: `/events/${eventType}/${eventId}/filter`,
-    label: "Filter",
-    component: TweetFilterContent,
-  })
-}
-return nav
+  ]
+  if (event && event.status === "NOT_ACTIVE") {
+    nav.push({
+      url: `/events/${eventType}/${eventId}/mentions`,
+      label: "Mentions",
+      component: ListMentions,
+    },
+    {
+      url: `/events/${eventType}/${eventId}/media`,
+      label: "Media",
+      component: ListMedia,
+    })
+  }
+  return nav
 }
 
 class DetailEventContent extends Component {
@@ -79,8 +73,8 @@ class DetailEventContent extends Component {
       {  navigation(event, eventType, eventsId).map(
         nav => <Tab key={nav.url} component={NavLink} to={nav.url} value={nav.url} label={nav.label} />
       )}
-      </Tabs>
-    
+    </Tabs>
+
 
     return (
       <div className={classes.Main}>
@@ -91,7 +85,6 @@ class DetailEventContent extends Component {
           nav => <Route exact key={nav.url} path={nav.url} render={() => <nav.component eventId={eventsId}/>} />
         )}
 
-      
 
         </main>
       </div>
