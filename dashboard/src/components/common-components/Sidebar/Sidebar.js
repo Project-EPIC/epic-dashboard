@@ -59,7 +59,7 @@ class Sidebar extends Component {
                     classes.itemActionable,
                   )}
                   onClick={async ()=> {
-                    const eventType = childId.includes("Follow") ? "follows" : "keywords"
+                    const eventType = childId.substring(0, childId.indexOf(" ")).toLowerCase()
                     await setEventType(eventType)
                     return other.onClose()
                   }}
