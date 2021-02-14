@@ -38,7 +38,6 @@ class CreateEvent extends Component {
   }
 
   componentDidMount() {   
-
     this.props.clearErrors();
     
   }
@@ -123,8 +122,7 @@ class CreateEvent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    
-    const currentNumEvents =nextProps.events.filter(e => e.status==="ACTIVE").length;
+    const currentNumEvents = nextProps.events.filter(e => e.status==="ACTIVE").length;
     if (currentNumEvents > this.state.numEvents) {
       // If there's a new event, close modal.
       this.resetFields();
@@ -142,13 +140,14 @@ class CreateEvent extends Component {
   render() {
     const { classes, eventType } = this.props;
     const creationError = this.props.error;
-    const [searchHelper, searchDesc] = eventType in SearchHelperText ? SearchHelperText[eventType] : (undefined, undefined)
 
+    const enabledEventType = eventType in SearchHelperText;
+    const [searchHelper, searchDesc] = enabledEventType ? SearchHelperText[eventType] : ("", "");
     return (
 
       <div>
 
-        <Fab onClick={this.toggleOpen(true)} variant="round" color="secondary" aria-label="Add" className={classes.fab}>
+        <Fab onClick={this.toggleOpen(true)} disabled={!enabledEventType} variant="round" color="secondary" aria-label="Add" className={classes.fab}>
           <AddIcon />
         </Fab>
         <Dialog open={this.state.open} onClose={this.resetFields} aria-labelledby="form-dialog-title">        
