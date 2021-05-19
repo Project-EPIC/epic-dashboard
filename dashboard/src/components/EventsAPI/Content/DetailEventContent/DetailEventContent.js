@@ -9,6 +9,7 @@ import Header from "../../../common-components/Header/Header";
 import TweetAnnotationTable from "../../TweetAnnotation/TweetAnnotationTable/TweetAnnotationTable";
 import { Tabs, Tab } from "@material-ui/core";
 import { NavLink } from 'react-router-dom'
+import GeoTagMap from "../../GeoTagMap/GeoTagMap";
 import ListMentions from "../../ListMentions/ListMentions";
 import ListMedia from "../../ListMedia/ListMedia";
 import EventDashboard from "../../EventDashboard/EventDashboard";
@@ -38,6 +39,11 @@ const navigation = (event, eventType, eventId) => {
       url: `/events/${eventType}/${eventId}/media`,
       label: "Media",
       component: ListMedia,
+    }, 
+    {
+      url: `/events/${eventType}/${eventId}/map`,
+      label: "Map",
+      component: GeoTagMap,
     })
   }
   return nav
@@ -68,8 +74,7 @@ class DetailEventContent extends Component {
 
     const title = `Event detail: ${params.eventId}`
     const eventsId = params.eventId;
-
-    const renderTabs =  () =>  <Tabs value={value} onChange={this.handleChange} >
+    const renderTabs = () => <Tabs value={value} onChange={this.handleChange} >
       {  navigation(event, eventType, eventsId).map(
         nav => <Tab key={nav.url} component={NavLink} to={nav.url} value={nav.url} label={nav.label} />
       )}

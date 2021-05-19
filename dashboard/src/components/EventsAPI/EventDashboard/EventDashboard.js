@@ -81,7 +81,6 @@ class EventDashboard extends React.Component {
             return o.normalized_name === eventId;
         });
         const totalCount = (this.props.counts[eventId] && this.props.counts[eventId].map((item) => item.count).reduce((x, y) => x + y)) || 0;
-
         if (event !== undefined)
             return (
                 <Grid container spacing={24}>
