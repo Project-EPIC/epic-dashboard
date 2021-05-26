@@ -38,9 +38,6 @@ export const styles = theme => ({
     itemPrimary: {
       color: "inherit",
       fontSize: theme.typography.fontSize,
-      "&$textDense": {
-        fontSize: theme.typography.fontSize
-      }
     },
     textDense: {},
     divider: {

@@ -68,8 +68,7 @@ class Sidebar extends Component {
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText
                     classes={{
-                      primary: classes.itemPrimary,
-                      textDense: classes.textDense
+                      primary: classes.itemPrimary
                     }}
                   >
                     {childId}
@@ -96,8 +95,7 @@ class Sidebar extends Component {
                 <ListItemIcon><PowerSettingsNewIcon></PowerSettingsNewIcon></ListItemIcon>
                 <ListItemText
                     classes={{
-                      primary: classes.itemPrimary,
-                      textDense: classes.textDense
+                      primary: classes.itemPrimary
                     }}
                   >
                     {isSignedIn ? "Logout" : "Sign in"}

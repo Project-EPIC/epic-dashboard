@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { InlineDatePicker } from "material-ui-pickers";
+import { DatePicker } from "@material-ui/pickers";
 import { styles } from "./styles";
 import { IconButton } from "@material-ui/core";
 import { withStyles } from '@material-ui/core/styles';
@@ -61,8 +61,8 @@ class DateRangePicker extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				<InlineDatePicker
-					variant="outlined"
+				<DatePicker
+					variant="inline"
 					label="Start Date"
 					minDate={this.props.dateStart.startOf("day")}
 					minDateMessage={"There is no event data before this date."}
@@ -74,8 +74,8 @@ class DateRangePicker extends Component {
 					format={"MM/DD/YYYY"}
 					mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
 				/>
-				<InlineDatePicker
-					variant="outlined"
+				<DatePicker
+					variant="inline"
 					label="End Date"
 					minDate={this.props.dateStart.startOf("day")}
 					minDateMessage={"There is no event data before this date."}
