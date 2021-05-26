@@ -18,7 +18,7 @@ class AlertDetail extends React.Component {
         return (
 
 
-            <Grid container spacing={24} className={classes.container}>
+            <Grid container spacing={3} className={classes.container}>
                 <Grid item md={12} xs={12}>
                     <Typography className={classes.title} color="textSecondary" gutterBottom>
                         Headline

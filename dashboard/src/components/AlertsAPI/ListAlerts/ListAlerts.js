@@ -21,7 +21,7 @@ class ListEvents extends React.Component {
 
     return   (      
 
-      <Grid container spacing={24}>
+      <Grid container spacing={3}>
         
         <Grid item xs={12} >
          <AlertTable title="Active alerts" data={rows}/>

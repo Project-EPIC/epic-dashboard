@@ -46,27 +46,27 @@ class TweetItem extends Component {
                 </Link>
 
                 <div className={classes.tableCell} style={{ width:"100%"}}>
-                        <div className={classes.titleChips} >
-                            <Link paragraph color="inherit" className={classes.profileLink} href={`https://twitter.com/${tweet.user.screen_name}`} target="_blank">
-                                <Typography inline variant="body1"><b>{tweet.user.name}</b></Typography>
-                            </Link>
-                            {tweet.user.verified ? 
-                                <Tooltip title="User Verified">
-                                    <DoneAllIcon color="primary" style={{paddingTop:8}}/>
-                                </Tooltip>
-                                :null}
-                            <span> </span>
-                            <Typography paragraph inline variant="caption" color="textSecondary">
-                                <Link href={`https://twitter.com/${tweet.user.screen_name}`} color="inherit" target="_blank">@{tweet.user.screen_name}</Link> <span className={classes.mediumReady}>- <Link color="inherit" href={`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`} target="_blank"><ReactTimeAgo timeStyle="twitter" date={parseInt(tweet.timestamp_ms, 10)} /></Link></span>
-                            </Typography>
-                            <div className={classes.chipArrayMedium} >
-                                {currentTags.map(tag =>
-                                <Tooltip key={`${tag.tag} ${tag.tweet_id}`}  title={`Owner ${tag.auth_user}`}>
-                                    <Chip label={tag.tag} style={{backgroundColor: colorFromText(tag.tag),color: contrastColorForText(tag.tag)}} className={classes.chip} onDelete={(e)=>this.handleDelete(tag.tag)} deleteIcon={<CloseIcon style={{color: contrastColorForText(tag.tag)}} />} />
-                                </Tooltip>
-                                )}
-                            </div>
+                    <div className={classes.titleChips} >
+                        <Link paragraph color="inherit" className={classes.profileLink} href={`https://twitter.com/${tweet.user.screen_name}`} target="_blank">
+                            <Typography style={{display: 'inline-block'}} variant="body1"><b>{tweet.user.name}</b></Typography>
+                        </Link>
+                        {tweet.user.verified ? 
+                            <Tooltip title="User Verified">
+                                <DoneAllIcon color="primary" style={{paddingTop:8}}/>
+                            </Tooltip>
+                            :null}
+                        <span> </span>
+                        <Typography style={{display: 'inline-block'}} paragraph inline variant="caption" color="textSecondary">
+                            <Link href={`https://twitter.com/${tweet.user.screen_name}`} color="inherit" target="_blank">@{tweet.user.screen_name}</Link> <span className={classes.mediumReady}>- <Link color="inherit" href={`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`} target="_blank"><ReactTimeAgo timeStyle="twitter" date={parseInt(tweet.timestamp_ms, 10)} /></Link></span>
+                        </Typography>
+                        <div className={classes.chipArrayMedium} >
+                            {currentTags.map(tag =>
+                            <Tooltip key={`${tag.tag} ${tag.tweet_id}`}  title={`Owner ${tag.auth_user}`}>
+                                <Chip label={tag.tag} style={{backgroundColor: colorFromText(tag.tag),color: contrastColorForText(tag.tag)}} className={classes.chip} onDelete={(e)=>this.handleDelete(tag.tag)} deleteIcon={<CloseIcon style={{color: contrastColorForText(tag.tag)}} />} />
+                            </Tooltip>
+                            )}
                         </div>
+                    </div>
                     
                     <Typography variant="body2" className={classes.mediumReady}>
                         {tweet.text}

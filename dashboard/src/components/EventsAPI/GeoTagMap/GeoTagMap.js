@@ -110,7 +110,7 @@ class GeoTagMap extends Component {
   render() {
     const { classes } = this.props;
     return (
-        <Grid container spacing={24} align="center" justify="center">
+        <Grid container spacing={3} align="center" justify="center">
             <Card>
                 <div ref={this.mapContainer} className={classes.mapContainer}/>
             </Card>

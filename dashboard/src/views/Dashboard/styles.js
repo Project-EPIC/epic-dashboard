@@ -42,7 +42,7 @@ export let theme = createMuiTheme({
       },
       MuiTabs: {
         root: {
-          marginLeft: theme.spacing.unit
+          marginLeft: theme.spacing
         },
         indicator: {
           height: 3,
@@ -69,7 +69,7 @@ export let theme = createMuiTheme({
       },
       MuiIconButton: {
         root: {
-          padding: theme.spacing.unit
+          padding: theme.spacing
         }
       },
       MuiTooltip: {

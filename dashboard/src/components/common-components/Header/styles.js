@@ -5,7 +5,7 @@ export const styles = theme => ({
     zIndex: 0
   },
   menuButton: {
-    marginLeft: -theme.spacing.unit
+    marginLeft: -theme.spacing
   },
   iconButtonAvatar: {
     padding: 4

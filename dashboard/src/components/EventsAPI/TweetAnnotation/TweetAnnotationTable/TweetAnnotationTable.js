@@ -7,6 +7,7 @@ import { Paper, Popover, TextField, IconButton, Grid, Button, Modal, Snackbar, T
 import { connect } from 'react-redux';
 import TweetCard from "../TweetCard/TweetCard";
 import MaterialTable, { MTableToolbar } from 'material-table'
+import Typography from '@material-ui/core/Typography';
 import TweetsChart from '../../TweetsChart/TweetsChart'
 import TweetItem from '../TweetItem/TweetItem';
 import { fetchTagsByEvent, addAnnotation } from '../../../../actions/annotationActions';
@@ -296,7 +297,11 @@ class TweetAnnotationTable extends React.Component {
           <main className={classes.mainContent}>
             <Grid item xs={12} >
               <MaterialTable
-                title={`${this.props.eventId} Tweets`.toUpperCase()}
+                title={
+                  <Typography style={{minWidth:"40vw"}} variant="h6">
+                    {`${this.props.eventId} Tweets`.toUpperCase()}
+                  </Typography> 
+                }
                 tableRef={this.tableRef}
                 columns={[
                   { title: 'Tweet', field: 'text', render: rowData => <TweetItem tweet={rowData} eventId={eventId} /> },
@@ -305,6 +310,7 @@ class TweetAnnotationTable extends React.Component {
                 options={{
                   pageSize: 10,
                   search: false,
+                  padding: "dense",
                   showTitle: true,
                   toolbar: true,
                   detailPanelType: "single",
@@ -385,7 +391,7 @@ const mapStateToProps = state => {
   // Make into array of predicates with expression objects loaded in (removing list of ids that are only needed within redux state)
   // And remove any predicates with empty expression objects
   const tweetConstraints = predicates.allIds.reduce((acc, predicateId) => {
-    if (predicates.byId[predicateId].expressions.length == 0) {
+    if (predicates.byId[predicateId].expressions.length === 0) {
       return acc
     }
 

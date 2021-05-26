@@ -3,7 +3,7 @@ import firebase from "firebase";
 import fetch from 'cross-fetch';
 
 export const fetchUsers = () => dispatch => {
-    if (firebase.auth().currentUser == null) {
+    if (firebase.auth().currentUser === null) {
         throw Error("Not authed")
     }
 
@@ -25,7 +25,7 @@ export const fetchUsers = () => dispatch => {
 
 
 export const makeAdmin = (user) => dispatch => {
-    if (firebase.auth().currentUser == null) {
+    if (firebase.auth().currentUser === null) {
         throw Error("Not authed")
     }
     // Dispatch update function sync to update UI
@@ -52,7 +52,7 @@ export const makeAdmin = (user) => dispatch => {
 };
 
 export const enableUser = (user) => dispatch => {
-    if (firebase.auth().currentUser == null) {
+    if (firebase.auth().currentUser === null) {
         throw Error("Not authed")
     }
 
@@ -80,7 +80,7 @@ export const enableUser = (user) => dispatch => {
 };
 
 export const disableUser = (user) => dispatch => {
-    if (firebase.auth().currentUser == null) {
+    if (firebase.auth().currentUser === null) {
         throw Error("Not authed")
     }
     // Dispatch update function sync to update UI

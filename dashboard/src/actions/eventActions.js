@@ -23,7 +23,7 @@ export const fetchEvents = (eventType="keywords") => dispatch => {
 };
 
 export const createEvent = (eventData) => dispatch => {
-    if (firebase.auth().currentUser == null) {
+    if (firebase.auth().currentUser === null) {
         dispatch({
             type: EVENT_CREATION_ERROR,
             payload: "Authorization error. Log out and log back in please."

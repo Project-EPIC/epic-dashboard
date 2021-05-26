@@ -86,22 +86,22 @@ class TweetCard extends Component {
     mentions.push(...extended_mentions);
 
     return (
-      <Grid container spacing={24} className={classes.root}>
+      <Grid container spacing={3} className={classes.root}>
         <Grid item xs={12} md={6}>
 
           <Link variant="h6" href={`https://twitter.com/${currentTweet.user.screen_name}/status/${currentTweet.id_str}`} target="_blank">
             Tweet details
           </Link>
 
-          <Typography color="textSecondary"  variant="caption">
+          <Typography color="textSecondary" variant="caption" style={{display: 'block'}}>
             <i>{tweet.retweeted_status ? "Retweeted " : "Tweeted "}
               on {new Date(parseInt(tweet.timestamp_ms, 10)).toLocaleString()} 
             </i>
           </Typography>
-          <Typography color="textSecondary" gutterBottom variant="caption">
+          <Typography color="textSecondary" gutterBottom variant="caption" style={{display: 'block'}}>
              <i>Tweet id: {currentTweet.id_str}</i>
           </Typography>
-          <Typography variant="body2" dangerouslySetInnerHTML={{ __html: text }}>
+          <Typography variant="body1" dangerouslySetInnerHTML={{ __html: text }} >
           </Typography>
           <Typography color="textSecondary" gutterBottom variant="caption" dangerouslySetInnerHTML={{ __html: currentTweet.source }}>
           </Typography>
@@ -117,7 +117,7 @@ class TweetCard extends Component {
               <Typography className={classes.title} color="textSecondary" gutterBottom>
                 Translated tweet
               </Typography>
-              <Typography variant="body2" dangerouslySetInnerHTML={{ __html: this.state.translation }}></Typography>
+              <Typography variant="body1" dangerouslySetInnerHTML={{ __html: this.state.translation }}></Typography>
             </div>
             :
             null}
@@ -172,7 +172,7 @@ class TweetCard extends Component {
             <DoneAllIcon style={{paddingTop:8}}/>
           </Tooltip>
           :null}
-          <Typography color="textSecondary"  variant="caption">
+          <Typography color="textSecondary"  variant="caption" style={{display: 'block'}}>
             <i>Account @{currentTweet.user.screen_name} created <ReactTimeAgo date={new Date(Date.parse(currentTweet.user.created_at.replace(/( \+)/, ' UTC$1')))} /> 
             </i>
           </Typography>
@@ -184,7 +184,7 @@ class TweetCard extends Component {
           <Typography paragraph variant="body2">
             {currentTweet.user.description}
           </Typography>
-          <Grid container spacing={24} >
+          <Grid container spacing={3} >
             <Grid item xs={3} md={2}>
               <Typography color="textSecondary" variant="caption">
                 <i>Tweets</i>

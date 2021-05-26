@@ -24,7 +24,7 @@ class ManageUsers extends React.Component {
                 <Header onDrawerToggle={this.props.onDrawerToggle} title="Manage Users" />
 
                 <main className={classes.mainContent}>
-                    <Grid container spacing={24}>
+                    <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
                             <MaterialTable
                                 columns={[
@@ -38,7 +38,7 @@ class ManageUsers extends React.Component {
                                     { title: 'Email', field: 'email' },
 
                                 ]}
-                                options={{ search: false, paging: false, actionsColumnIndex: -1 }}
+                                options={{ search: false, paging: false, actionsColumnIndex: -1, padding: "dense" }}
                                 data={this.props.users.filter(user => user.admin && !user.disabled)}
                                 title="Users with access"
                                 actions={[
@@ -64,7 +64,7 @@ class ManageUsers extends React.Component {
                                     },
                                     { title: 'Email', field: 'email' },
                                 ]}
-                                options={{ search: false, paging: false, actionsColumnIndex: -1 }}
+                                options={{ search: false, paging: false, actionsColumnIndex: -1, padding: "dense" }}
                                 data={this.props.users.filter(user => user.disabled)}
                                 title="Disabled users"
                                 actions={[
@@ -93,7 +93,7 @@ class ManageUsers extends React.Component {
                                     { title: 'Email', field: 'email' },
 
                                 ]}
-                                options={{ search: false, paging: false, actionsColumnIndex: -1 }}
+                                options={{ search: false, paging: false, actionsColumnIndex: -1, padding: "dense" }}
                                 data={this.props.users.filter(user => !user.disabled && !user.admin)}
                                 title="Users without access"
                                 actions={[

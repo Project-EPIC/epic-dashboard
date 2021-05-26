@@ -1,21 +1,21 @@
 export const styles = theme => ({
   root: {
     width: '100%',
-    marginBottom: theme.spacing.unit * 3,
+    marginBottom: theme.spacing(3),
 
   },
   chip: {
-    margin: theme.spacing.unit * 0.5,
+    margin: theme.spacing(0.5),
   },
   popOver: {
-    padding: theme.spacing.unit,
+    padding: theme.spacing(1),
   },
   chartPaper: {
     width: '100%',
     ...theme.mixins.gutters(),
-    marginBottom: theme.spacing.unit * 3,
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 1,
+    marginBottom: theme.spacing(3),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(1),
   },
   table: {
     minWidth: 500,

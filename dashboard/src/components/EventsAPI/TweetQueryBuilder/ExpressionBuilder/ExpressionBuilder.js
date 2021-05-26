@@ -49,7 +49,7 @@ class ExpressionBuilder extends Component {
                     <Grid item xs={12}>
                         <Card>
                             <CardContent>
-                                <Grid container alignItems="center" spacing={16} >
+                                <Grid container alignItems="center" spacing={2} >
                                     <Grid item xs={3}>
                                         <Select
                                             value={data.selectValue}
@@ -111,7 +111,7 @@ class ExpressionBuilder extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <Grid container justify="center" spacing={16}>
+            <Grid container justify="center" spacing={2}>
                 {this.renderExpressionList()}
                 {this.renderAddNewExpression()}
             </Grid>

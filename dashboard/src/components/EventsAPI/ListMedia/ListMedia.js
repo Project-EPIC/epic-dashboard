@@ -127,7 +127,7 @@ class ListMedia extends Component {
     const { error, hasMore, isLoading, media, lightbox, photoIndex } = this.state;
 
     return (
-      <Grid container spacing={24}>
+      <Grid container spacing={3}>
         <Grid item xs={12} >
           <GridList cellHeight={300} width={100} height={100} cols={3}>
             {media.map((media, index) => (

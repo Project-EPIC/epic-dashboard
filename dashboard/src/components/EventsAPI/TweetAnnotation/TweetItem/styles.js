@@ -1,6 +1,6 @@
 export const styles = theme => ({
     avatar: {
-        marginTop:5,
+        marginTop: 5,
         width: 40,
         height: 40,
         borderRadius: '50%',
@@ -15,19 +15,19 @@ export const styles = theme => ({
         paddingRight: 10,
       },
       profileLink: {
-          textDecoration: "none",
-          color: theme.palette.text
+        width: "auto",
+        textDecoration: "none",
+        color: theme.palette.text
       },
       chip: {
-        marginRight: theme.spacing.unit,
-        marginBottom:theme.spacing.unit,
+        marginRight: theme.spacing(1),
+        marginBottom: theme.spacing(1),
         borderRadius:"5%",
         height: 20,
       },
       titleChips: {
-        overflow: "auto",
-         width:"100%",
-         height: 20 + theme.spacing.unit,
+        width:"auto",
+        height: 20 + theme.spacing(1),
       },
       chipArraySmall:{
         [theme.breakpoints.up('md')]: {

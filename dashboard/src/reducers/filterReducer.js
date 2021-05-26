@@ -112,7 +112,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 predicates: state.predicates.allIds.reduce((acc, key) => {
-                    if (key != predicateId) {
+                    if (key !== predicateId) {
                         acc.byId[key] = state.predicates.byId[key]
                         acc.allIds.push(key)
                     }
@@ -180,7 +180,7 @@ export default function (state = initialState, action) {
 
             const newPredicate = {
                 ...state.predicates.byId[parentId],
-                expressions: state.predicates.byId[parentId].expressions.filter((expressionKey) => expressionKey != expressionId)
+                expressions: state.predicates.byId[parentId].expressions.filter((expressionKey) => expressionKey !== expressionId)
             }
 
             return {
@@ -190,7 +190,7 @@ export default function (state = initialState, action) {
                     allIds: state.predicates.allIds
                 },
                 expressions: state.expressions.allIds.reduce((acc, key) => {
-                    if (key != expressionId) {
+                    if (key !== expressionId) {
                         acc.byId[key] = state.expressions.byId[key]
                         acc.allIds.push(key)
                     }

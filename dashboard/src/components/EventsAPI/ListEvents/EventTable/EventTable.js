@@ -15,12 +15,9 @@ class EventTable extends React.Component {
     const { history, title, data, eventType } = this.props;    
 
     return   (      
-
-
           <MaterialTable
             columns={[
               { title: "Name", field: 'name', },
-              
               { title: 'Description', field: 'description' },
               { title: 'Query', field: 'keywords', render: rowData => rowData.keywords.join(', ') },    
             ]}

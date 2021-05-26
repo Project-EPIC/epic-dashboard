@@ -2,23 +2,23 @@ export const styles = theme => ({
   chartPaper: {
     width: '100%',
     ...theme.mixins.gutters(),
-    marginBottom: theme.spacing.unit * 3,
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 1,
+    marginBottom: theme.spacing(3),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(1),
   },
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
   },
   leftIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
   },
   rightIcon: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
   },
   iconSmall: {
     fontSize: 20,
   },
   chip: {
-    margin: theme.spacing.unit * 0.5,
+    margin: theme.spacing(0.5),
   },
 });

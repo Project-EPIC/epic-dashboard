@@ -31,7 +31,7 @@ class ListEvents extends React.Component {
 
     return   (      
 
-      <Grid container spacing={24}>
+      <Grid container spacing={3}>
         {activeEvents.length >0 ?
         <Grid item xs={12} >
          <EventTable title="Active events" data={activeEvents}/>

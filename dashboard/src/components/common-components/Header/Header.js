@@ -27,7 +27,7 @@ class  Header extends Component {
       <React.Fragment>
         <AppBar color="primary" position="sticky" elevation={0}>
           <Toolbar>
-            <Grid container spacing={8} alignItems="center">
+            <Grid container spacing={1} alignItems="center">
               <Hidden smUp>
                 <Grid item>
                   <IconButton
@@ -73,7 +73,7 @@ class  Header extends Component {
           elevation={0}
         >
           <Toolbar>
-            <Grid container alignItems="center" spacing={8}>
+            <Grid container alignItems="center" spacing={1}>
 
               <Grid item xs>
 

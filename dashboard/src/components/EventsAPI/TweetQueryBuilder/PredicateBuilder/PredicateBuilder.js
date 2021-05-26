@@ -66,7 +66,7 @@ class PredicateBuilder extends Component {
     renderExpressionText = (expressions, isExpanded, index) => {
         if (expressions && expressions.length > 0) {
             return (
-                <Grid container className={this.props.classes.expressionTextContainer} spacing={8}>
+                <Grid container className={this.props.classes.expressionTextContainer} spacing={1}>
                     {expressions.map(({ isOr, selectValue, text }, i) => {
                         return (
                             <React.Fragment key={`expressiontext-${i}`}>
@@ -131,7 +131,7 @@ class PredicateBuilder extends Component {
     render() {
         return (
             <Typography component="div">
-                <Grid container justify="center" spacing={8}>
+                <Grid container justify="center" spacing={1}>
                     {this.renderPanels()}
                     {this.renderAddNewPredicate()}
                 </Grid >

@@ -72,7 +72,7 @@ class FilterForm extends Component {
               <Typography variant="subtitle1" color="textPrimary" gutterBottom>
                 Search for tweets with
               </Typography>
-              <Grid container spacing={24}>
+              <Grid container spacing={3}>
                 <Grid item xs={12} md={12}>
                   <TweetQueryBuilder />
                 </Grid>
